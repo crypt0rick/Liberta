@@ -1,43 +1,43 @@
-Kore Core integration/staging tree
+Liberta Core integration/staging tree
 =====================================
 
-[![Build Status](https://travis-ci.org/kore/kore.svg?branch=master)](https://travis-ci.org/kore/kore)
+[![Build Status](https://travis-ci.org/liberta/liberta.svg?branch=master)](https://travis-ci.org/liberta/liberta)
 
-https://korecore.org
+https://libertacore.org
 
-What is Kore?
+What is Liberta?
 ----------------
 
-Kore is an experimental new digital currency that enables instant payments to
-anyone, anywhere in the world. Kore uses peer-to-peer technology to operate
+Liberta is an experimental new digital currency that enables instant payments to
+anyone, anywhere in the world. Liberta uses peer-to-peer technology to operate
 with no central authority: managing transactions and issuing money are carried
-out collectively by the network. Kore Core is the name of open source
+out collectively by the network. Liberta Core is the name of open source
 software which enables the use of this currency.
 
 For more information, as well as an immediately useable, binary version of
-the Kore Core software, see https://kore.org/en/download, or read the
-[original whitepaper](https://korecore.org/kore.pdf).
+the Liberta Core software, see https://liberta.org/en/download, or read the
+[original whitepaper](https://libertacore.org/liberta.pdf).
 
 License
 -------
 
-Kore Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
+Liberta Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
 
 Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/kore/kore/tags) are created
-regularly to indicate new official, stable release versions of Kore Core.
+completely stable. [Tags](https://github.com/liberta/liberta/tags) are created
+regularly to indicate new official, stable release versions of Liberta Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/kore-dev)
+The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/liberta-dev)
 should be used to discuss complicated or controversial changes before working
 on a patch set.
 
-Developer IRC can be found on Freenode at #kore-core-dev.
+Developer IRC can be found on Freenode at #liberta-core-dev.
 
 Testing
 -------
@@ -71,7 +71,7 @@ Translations
 ------------
 
 Changes to translations as well as new translations can be submitted to
-[Kore Core's Transifex page](https://www.transifex.com/projects/p/kore/).
+[Liberta Core's Transifex page](https://www.transifex.com/projects/p/liberta/).
 
 Translations are periodically pulled from Transifex and merged into the git repository. See the
 [translation process](doc/translation_process.md) for details on how this works.
@@ -79,7 +79,7 @@ Translations are periodically pulled from Transifex and merged into the git repo
 **Important**: We do not accept translation changes as GitHub pull requests because the next
 pull from Transifex would automatically overwrite them again.
 
-Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/kore-translators).
+Translators should also subscribe to the [mailing list](https://groups.google.com/forum/#!forum/liberta-translators).
 
 Wallet Updates
 --------------
@@ -88,7 +88,7 @@ Wallet Updates
 
 NOTE: The wallet still has the disappearing coins and reindexing
 issues experienced by many PoSv3 coins at this current time.
-The KORE wallet update to version 0.12.4.0 includes:
+The LIBERTA wallet update to version 0.12.4.0 includes:
 Partial memory leak fixes, other mods and fixes.
 Rather than remove the Bittrex trading window the wallet has been updated with 
 a check box toggle to "Enable Trading," found at the bottom of the page.
@@ -99,7 +99,7 @@ The staking icon remains on for a longer period of time when coins are sent out 
 Various links and spelling corrections.
 Commented out a buggy non functioning wallet repair option.
 Updated nodes list.
-Added zapwallettxes to the kore.conf file.
+Added zapwallettxes to the liberta.conf file.
 Windows 32bit version.
 Updated curl and dependency lists.
 Increased outbound connections.

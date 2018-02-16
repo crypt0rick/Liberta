@@ -1,0 +1,22 @@
+[Unit]
+Description=Liberta's distributed currency daemon
+After=network.target
+
+[Service]
+User=liberta
+Group=liberta
+
+Type=forking
+PIDFile=/var/lib/libertad/libertad.pid
+ExecStart=/usr/bin/libertad -daemon -pid=/var/lib/libertad/libertad.pid \
+-conf=/etc/liberta/liberta.conf -datadir=/var/lib/libertad -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target

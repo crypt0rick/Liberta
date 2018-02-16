@@ -1,10 +1,10 @@
-Kore version 0.7.2 is now available from:
-  http://sourceforge.net/projects/kore/files/Kore/kore-0.7.2
+Liberta version 0.7.2 is now available from:
+  http://sourceforge.net/projects/liberta/files/Liberta/liberta-0.7.2
 
 This is a bug-fix minor release.
 
 Please report bugs using the issue tracker at github:
-  https://github.com/kore/kore/issues
+  https://github.com/liberta/liberta/issues
 
 How to Upgrade
 --------------
@@ -12,7 +12,7 @@ How to Upgrade
 If you are running an older version, shut it down. Wait
 until it has completely shut down (which might take a few minutes for older
 versions), then run the installer (on Windows) or just copy over
-/Applications/Kore-Qt (on Mac) or kored/kore-qt (on Linux).
+/Applications/Liberta-Qt (on Mac) or libertad/liberta-qt (on Linux).
 
 If you were running on Linux with a version that might have been compiled
 with a different version of Berkeley DB (for example, if you were using an
@@ -40,7 +40,7 @@ Bug fixes
   database twice.
 
 * Fix use-after-free problems in initialization and shutdown, the latter of
-  which caused Kore-Qt to crash on Windows when exiting.
+  which caused Liberta-Qt to crash on Windows when exiting.
 
 * Correct library linking so building on Windows natively works.
 

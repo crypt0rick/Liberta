@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -66,7 +66,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                         isminetype mine = wallet->IsMine(wtx.vout[i]);
                         sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                         sub.type = TransactionRecord::MNReward;
-                        sub.address = CKoreAddress(outAddress).ToString();
+                        sub.address = CLibertaAddress(outAddress).ToString();
                         sub.credit = wtx.vout[i].nValue;
                     }
                 }
@@ -76,7 +76,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
             isminetype mine = wallet->IsMine(wtx.vout[1]);
             sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
             sub.type = TransactionRecord::Staked;
-            sub.address = CKoreAddress(address).ToString();
+            sub.address = CLibertaAddress(address).ToString();
             sub.credit = nNet;
        }
         parts.append(sub);
@@ -97,9 +97,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 sub.involvesWatchAddress = mine & ISMINE_WATCH_ONLY;
                 if (ExtractDestination(txout.scriptPubKey, address) && IsMine(*wallet, address))
                 {
-                    // Received by KoreAddress
+                    // Received by LibertaAddress
                     sub.type = TransactionRecord::RecvWithAddress;
-                    sub.address = CKoreAddress(address).ToString();
+                    sub.address = CLibertaAddress(address).ToString();
                 }
                 else
                 {
@@ -167,7 +167,7 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 CTxDestination address;
                 if (ExtractDestination(wtx.vout[0].scriptPubKey, address)) {
                     // Sent to PIVX Address
-                    sub.address = CKoreAddress(address).ToString();
+                    sub.address = CLibertaAddress(address).ToString();
                 } else {
                     // Sent to IP, or other non-address transaction like OP_EVAL
                     sub.address = mapValue["to"];
@@ -214,9 +214,9 @@ QList<TransactionRecord> TransactionRecord::decomposeTransaction(const CWallet *
                 CTxDestination address;
                 if (ExtractDestination(txout.scriptPubKey, address))
                 {
-                    // Sent to KoreAddress
+                    // Sent to LibertaAddress
                     sub.type = TransactionRecord::SendToAddress;
-                    sub.address = CKoreAddress(address).ToString();
+                    sub.address = CLibertaAddress(address).ToString();
                 }
                 else
                 {

@@ -32,8 +32,8 @@ const QString apiCoinbasePrice = "https://www.bitstamp.net/api/ticker/";
 
 //Bittrex API
 const QString apiBittrexMarketSummary = "https://bittrex.com/api/v1.1/public/getmarketsummaries";
-const QString apiBittrexTrades = "https://bittrex.com/api/v1.1/public/getmarkethistory?market=btc-kore";
-const QString apiBittrexOrders = "https://bittrex.com/api/v1.1/public/getorderbook?market=btc-kore&type=both&depth=50";
+const QString apiBittrexTrades = "https://bittrex.com/api/v1.1/public/getmarkethistory?market=btc-liberta";
+const QString apiBittrexOrders = "https://bittrex.com/api/v1.1/public/getorderbook?market=btc-liberta&type=both&depth=50";
 
 QString dequote(QString s)
 {
@@ -66,7 +66,7 @@ tradingDialog::tradingDialog(QWidget* parent) : QWidget(parent),
 
     ui->BuyCostLabel->setPalette(sample_palette);
     ui->SellCostLabel->setPalette(sample_palette);
-    ui->KOREAvailableLabel->setPalette(sample_palette);
+    ui->LBTAvailableLabel->setPalette(sample_palette);
     ui->BtcAvailableLbl_2->setPalette(sample_palette);
     //Set tabs to inactive
     ui->TradingTabWidget->setTabEnabled(2, false);
@@ -77,11 +77,11 @@ tradingDialog::tradingDialog(QWidget* parent) : QWidget(parent),
 
     /*OrderBook Table Init*/
     CreateOrderBookTables(*ui->BidsTable, QStringList() << "Total(BTC)"
-                                                        << "KORE(SIZE)"
+                                                        << "LBT(SIZE)"
                                                         << "Bid(BTC)");
     ui->BidsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);                                                    
     CreateOrderBookTables(*ui->AsksTable, QStringList() << "Ask(BTC)"
-                                                        << "KORE(SIZE)"
+                                                        << "LBT(SIZE)"
                                                         << "Total(BTC)");
     ui->AsksTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);                                                    
     /*OrderBook Table Init*/
@@ -93,7 +93,7 @@ tradingDialog::tradingDialog(QWidget* parent) : QWidget(parent),
     ui->MarketHistoryTable->setHorizontalHeaderLabels(QStringList() << "Date"
                                                                     << "Buy/Sell"
                                                                     << "Bid/Ask"
-                                                                    << "Total units(KORE)"
+                                                                    << "Total units(LBT)"
                                                                     << "Total cost(BTC");
     ui->MarketHistoryTable->setRowCount(0);
 
@@ -244,19 +244,19 @@ QString tradingDialog::GetNonce()
 
 QString tradingDialog::GetMarketSummary()
 {
-    QString Response = sendRequest("https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-kore");
+    QString Response = sendRequest("https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-liberta");
     return dequote(Response);
 }
 
 QString tradingDialog::GetMarketHistory()
 {
-    QString Response = sendRequest("https://bittrex.com/api/v1.1/public/getmarkethistory?market=btc-kore");
+    QString Response = sendRequest("https://bittrex.com/api/v1.1/public/getmarkethistory?market=btc-liberta");
     return dequote(Response);
 }
 
 QString tradingDialog::GetOrderBook()
 {
-    QString Response = sendRequest("https://bittrex.com/api/v1.1/public/getorderbook?market=btc-kore&type=both&depth=50");
+    QString Response = sendRequest("https://bittrex.com/api/v1.1/public/getorderbook?market=btc-liberta&type=both&depth=50");
     return dequote(Response);
 }
 
@@ -280,13 +280,13 @@ QString tradingDialog::GetOpenOrders()
     URL += this->ApiKey;
     URL += "&nonce=",
         URL += tradingDialog::GetNonce(),
-        URL += "&market=btc-kore";
+        URL += "&market=btc-liberta";
 
     QString Response = sendRequest(URL);
     return dequote(Response);
 }
 
-QString tradingDialog::BuyKORE(QString OrderType, double Quantity, double Rate)
+QString tradingDialog::BuyLBT(QString OrderType, double Quantity, double Rate)
 {
     QString str = "";
     QString URL = "https://bittrex.com/api/v1.1/market/";
@@ -295,7 +295,7 @@ QString tradingDialog::BuyKORE(QString OrderType, double Quantity, double Rate)
     URL += this->ApiKey;
     URL += "&nonce=",
         URL += tradingDialog::GetNonce(),
-        URL += "&market=btc-kore&quantity=";
+        URL += "&market=btc-liberta&quantity=";
     URL += str.number(Quantity, 'i', 8);
     URL += "&rate=";
     URL += str.number(Rate, 'i', 8);
@@ -304,7 +304,7 @@ QString tradingDialog::BuyKORE(QString OrderType, double Quantity, double Rate)
     return dequote(Response);
 }
 
-QString tradingDialog::SellKORE(QString OrderType, double Quantity, double Rate)
+QString tradingDialog::SellLBT(QString OrderType, double Quantity, double Rate)
 {
     QString str = "";
     QString URL = "https://bittrex.com/api/v1.1/market/";
@@ -313,7 +313,7 @@ QString tradingDialog::SellKORE(QString OrderType, double Quantity, double Rate)
     URL += this->ApiKey;
     URL += "&nonce=",
         URL += tradingDialog::GetNonce(),
-        URL += "&market=btc-kore&quantity=";
+        URL += "&market=btc-liberta&quantity=";
     URL += str.number(Quantity, 'i', 8);
     URL += "&rate=";
     URL += str.number(Rate, 'i', 8);
@@ -341,7 +341,7 @@ QString tradingDialog::GetDepositAddress()
     URL += this->ApiKey;
     URL += "&nonce=",
         URL += tradingDialog::GetNonce(),
-        URL += "&currency=KORE";
+        URL += "&currency=LBT";
 
     QString Response = sendRequest(URL);
     return dequote(Response);
@@ -353,7 +353,7 @@ QString tradingDialog::GetAccountHistory()
     URL += this->ApiKey;
     URL += "&nonce=",
         URL += tradingDialog::GetNonce(),
-        URL += "&market=btc-kore";
+        URL += "&market=btc-liberta";
 
     QString Response = sendRequest(URL);
     return dequote(Response);
@@ -378,7 +378,7 @@ int tradingDialog::SetExchangeInfoTextLabels()
 
     ui->Bid->setText("<b>Bid:</b> <span style='font-weight:bold; font-size:11px; color:Green;'>" + str.number(obj["Bid"].toDouble(), 'i', 8) + "</span> BTC");
 
-    ui->volumet->setText("<b>KORE Volume:</b> <span style='font-weight:bold; font-size:11px; color:blue;'>" + str.number(obj["Volume"].toDouble(), 'i', 8) + "</span> KORE");
+    ui->volumet->setText("<b>LBT Volume:</b> <span style='font-weight:bold; font-size:11px; color:blue;'>" + str.number(obj["Volume"].toDouble(), 'i', 8) + "</span> LBT");
 
     ui->volumebtc->setText("<b>BTC Volume:</b> <span style='font-weight:bold; font-size:11px; color:blue;'>" + str.number(obj["BaseVolume"].toDouble(), 'i', 8) + "</span> BTC");
 
@@ -551,8 +551,8 @@ void tradingDialog::ParseAndPopulateOrderBookTables(QString OrderBook)
     QJsonArray BuyArray = ResultObject.value("buy").toArray();   //get buy/sell object from result object
     QJsonArray SellArray = ResultObject.value("sell").toArray(); //get buy/sell object from result object
 
-    double KORESupply = 0;
-    double KOREDemand = 0;
+    double LBTSupply = 0;
+    double LBTDemand = 0;
     double BtcSupply = 0;
     double BtcDemand = 0;
 
@@ -565,7 +565,7 @@ void tradingDialog::ParseAndPopulateOrderBookTables(QString OrderBook)
         double y = obj["Quantity"].toDouble();
         double a = (x * y);
 
-        KORESupply = KORESupply + y;
+        LBTSupply = LBTSupply + y;
         BtcSupply = BtcSupply + a;
 
         AskRows = ui->AsksTable->rowCount();
@@ -586,7 +586,7 @@ void tradingDialog::ParseAndPopulateOrderBookTables(QString OrderBook)
         double y = obj["Quantity"].toDouble();
         double a = (x * y);
 
-        KOREDemand = KOREDemand + y;
+        LBTDemand = LBTDemand + y;
         BtcDemand = BtcDemand + a;
 
         BidRows = ui->BidsTable->rowCount();
@@ -597,12 +597,12 @@ void tradingDialog::ParseAndPopulateOrderBookTables(QString OrderBook)
         BuyItteration++;
     }
 
-    ui->KORESupply->setText("<b>Supply:</b> <span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(KORESupply, 'i', 8) + "</span><b> KORE</b>");
+    ui->LBTSupply->setText("<b>Supply:</b> <span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(LBTSupply, 'i', 8) + "</span><b> LBT</b>");
     ui->BtcSupply->setText("<span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(BtcSupply, 'i', 8) + "</span><b> BTC</b>");
     ui->AsksCount->setText("<b>#Asks :</b> <span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(ui->AsksTable->rowCount()) + "</span>");
 
 
-    ui->KOREDemand->setText("<b>Demand:</b> <span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(KOREDemand, 'i', 8) + "</span><b> KORE</b>");
+    ui->LBTDemand->setText("<b>Demand:</b> <span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(LBTDemand, 'i', 8) + "</span><b> LBT</b>");
     ui->BtcDemand->setText("<span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(BtcDemand, 'i', 8) + "</span><b> BTC</b>");
     ui->BidsCount->setText("<b>#Bids :</b> <span style='font-weight:bold; font-size:11px; color:blue'>" + str.number(ui->BidsTable->rowCount()) + "</span>");
     obj.empty();
@@ -685,24 +685,24 @@ void tradingDialog::ActionsOnSwitch(int index = -1)
     case 5: // Sell tab is active
         Response = GetMarketSummary();
         if (Response.size() > 0 && Response != "Error") {
-            QString balance = GetBalance("KORE");
+            QString balance = GetBalance("LBT");
             QString str;
             QJsonObject ResultObject = GetResultObjectFromJSONObject(balance);
 
-            ui->KOREAvailableLabel->setText(str.number(ResultObject["Available"].toDouble(), 'i', 8));
+            ui->LBTAvailableLabel->setText(str.number(ResultObject["Available"].toDouble(), 'i', 8));
         }
         break;
 
     case 6: // Show balance tab
         Response = GetBalance("BTC");
         if (Response.size() > 0 && Response != "Error") {
-            DisplayBalance(*ui->CodexBalanceLabel, *ui->CodexAvailableLabel, *ui->CodexPendingLabel, QString::fromUtf8("BTC"), Response);
+            DisplayBalance(*ui->LibertaBalanceLabel, *ui->LibertaavailableLabel, *ui->LibertaPendingLabel, QString::fromUtf8("BTC"), Response);
         }
 
-        Response = GetBalance("KORE");
+        Response = GetBalance("LBT");
 
         if (Response.size() > 0 && Response != "Error") {
-            DisplayBalance(*ui->KOREBalanceLabel, *ui->KOREAvailableLabel, *ui->KOREPendingLabel, QString::fromUtf8("KORE"), Response);
+            DisplayBalance(*ui->LBTBalanceLabel, *ui->LBTAvailableLabel, *ui->LBTPendingLabel, QString::fromUtf8("LBT"), Response);
         }
         break;
 
@@ -802,7 +802,7 @@ void tradingDialog::CalculateBuyCostLabel()
 void tradingDialog::CalculateSellCostLabel()
 {
     double price = ui->SellBidPriceEdit->text().toDouble();
-    double Quantity = ui->UnitsInputKORE->text().toDouble();
+    double Quantity = ui->UnitsInputLBT->text().toDouble();
     double cost = ((price * Quantity) - ((price * Quantity / 100) * 0.25));
 
     QString Str = "";
@@ -813,7 +813,7 @@ void tradingDialog::on_UpdateKeys_clicked()
 {
     this->ApiKey = ui->ApiKeyInput->text();
     this->SecretKey = ui->SecretKeyInput->text();
-    this->Currency = "KORE";
+    this->Currency = "LBT";
 
 
     QJsonDocument jsonResponse = QJsonDocument::fromJson(GetBalance(this->Currency).toUtf8()); //get json from str.
@@ -846,19 +846,19 @@ void tradingDialog::on_GenDepositBTN_clicked()
 
 void tradingDialog::on_Sell_Max_Amount_clicked()
 {
-    //calculate amount of BTC that can be gained from selling KORE available balance
-    QString responseA = GetBalance("KORE");
+    //calculate amount of BTC that can be gained from selling LBT available balance
+    QString responseA = GetBalance("LBT");
     QString str;
     QJsonObject ResultObject = GetResultObjectFromJSONObject(responseA);
 
-    double AvailableKORE = ResultObject["Available"].toDouble();
+    double AvailableLBT = ResultObject["Available"].toDouble();
 
-    ui->UnitsInputKORE->setText(str.number(AvailableKORE, 'i', 8));
+    ui->UnitsInputLBT->setText(str.number(AvailableLBT, 'i', 8));
 }
 
 void tradingDialog::on_Buy_Max_Amount_clicked()
 {
-    //calculate amount of currency than can be brought with the KORE balance available
+    //calculate amount of currency than can be brought with the LBT balance available
     QString responseA = GetBalance("BTC");
     QString responseB = GetMarketSummary();
     QString str;
@@ -978,7 +978,7 @@ void tradingDialog::on_BuyBidcomboBox_currentIndexChanged(const QString& arg1)
     CalculateBuyCostLabel(); //update cost
 }
 
-void tradingDialog::on_BuyKORE_clicked()
+void tradingDialog::on_BuyLBT_clicked()
 {
     double Rate;
     double Quantity;
@@ -997,7 +997,7 @@ void tradingDialog::on_BuyKORE_clicked()
 
     QString Msg = "Are you sure you want to buy ";
     Msg += ui->UnitsInput->text();
-    Msg += "KORE @ ";
+    Msg += "LBT @ ";
     Msg += ui->BuyBidPriceEdit->text();
     Msg += " BTC Each";
 
@@ -1005,7 +1005,7 @@ void tradingDialog::on_BuyKORE_clicked()
     reply = QMessageBox::question(this, "Buy Order", Msg, QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        QString Response = BuyKORE(Order, Quantity, Rate);
+        QString Response = BuyLBT(Order, Quantity, Rate);
 
         QJsonDocument jsonResponse = QJsonDocument::fromJson(Response.toUtf8()); //get json from str.
         QJsonObject ResponseObject = jsonResponse.object();                      //get json obj
@@ -1021,13 +1021,13 @@ void tradingDialog::on_BuyKORE_clicked()
     }
 }
 
-void tradingDialog::on_SellKOREBTN_clicked()
+void tradingDialog::on_SellLBTBTN_clicked()
 {
     double Rate;
     double Quantity;
 
     Rate = ui->SellBidPriceEdit->text().toDouble();
-    Quantity = ui->UnitsInputKORE->text().toDouble();
+    Quantity = ui->UnitsInputLBT->text().toDouble();
 
     QString OrderType = ui->SellOrdertypeCombo->currentText();
     QString Order;
@@ -1039,8 +1039,8 @@ void tradingDialog::on_SellKOREBTN_clicked()
     }
 
     QString Msg = "Are you sure you want to Sell ";
-    Msg += ui->UnitsInputKORE->text();
-    Msg += " KORE @ ";
+    Msg += ui->UnitsInputLBT->text();
+    Msg += " LBT @ ";
     Msg += ui->SellBidPriceEdit->text();
     Msg += " BTC Each";
 
@@ -1048,7 +1048,7 @@ void tradingDialog::on_SellKOREBTN_clicked()
     reply = QMessageBox::question(this, "Sell Order", Msg, QMessageBox::Yes | QMessageBox::No);
 
     if (reply == QMessageBox::Yes) {
-        QString Response = SellKORE(Order, Quantity, Rate);
+        QString Response = SellLBT(Order, Quantity, Rate);
         QJsonDocument jsonResponse = QJsonDocument::fromJson(Response.toUtf8()); //get json from str.
         QJsonObject ResponseObject = jsonResponse.object();                      //get json obj
 
@@ -1081,7 +1081,7 @@ void tradingDialog::on_AdvancedView_stateChanged(int arg1)
     }
 }
 
-void tradingDialog::on_UnitsInputKORE_textChanged(const QString& arg1)
+void tradingDialog::on_UnitsInputLBT_textChanged(const QString& arg1)
 {
     CalculateSellCostLabel(); //update cost
 }

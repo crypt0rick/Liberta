@@ -1,15 +1,15 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/kore-config.h"
+#include "config/liberta-config.h"
 #endif
 
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
 
-#include "koreunits.h"
+#include "libertaunits.h"
 #include "guiutil.h"
 #include "obfuscation.h"
 #include "optionsmodel.h"
@@ -124,7 +124,7 @@ OptionsDialog::OptionsDialog(QWidget *parent, bool enableWallet) :
     ui->thirdPartyTxUrls->setPlaceholderText("https://example.com/tx/%s");
 #endif
 
-    ui->unit->setModel(new KoreUnits(this));
+    ui->unit->setModel(new LibertaUnits(this));
 
     /* Widget-to-option mapper */
     mapper = new QDataWidgetMapper(this);
@@ -188,7 +188,7 @@ void OptionsDialog::setModel(OptionsModel *model)
 void OptionsDialog::setMapper()
 {
     /* Main */
-    mapper->addMapping(ui->koreAtStartup, OptionsModel::StartAtStartup);
+    mapper->addMapping(ui->libertaAtStartup, OptionsModel::StartAtStartup);
     mapper->addMapping(ui->threadsScriptVerif, OptionsModel::ThreadsScriptVerif);
     mapper->addMapping(ui->databaseCache, OptionsModel::DatabaseCache);
     mapper->addMapping(ui->reserveBalance, OptionsModel::ReserveBalance);
@@ -225,7 +225,7 @@ void OptionsDialog::setMapper()
 
     /* Obfuscation Rounds */
     mapper->addMapping(ui->obfuscationRounds, OptionsModel::ObfuscationRounds);
-    mapper->addMapping(ui->anonymizeKore, OptionsModel::AnonymizeKoreAmount);
+    mapper->addMapping(ui->anonymizeLiberta, OptionsModel::AnonymizeLibertaAmount);
     mapper->addMapping(ui->showMasternodesTab, OptionsModel::ShowMasternodesTab);
 }
 

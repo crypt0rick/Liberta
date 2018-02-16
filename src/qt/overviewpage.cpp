@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "overviewpage.h"
 #include "ui_overviewpage.h"
 
-#include "koreunits.h"
+#include "libertaunits.h"
 #include "clientmodel.h"
 #include "guiconstants.h"
 #include "guiutil.h"
@@ -31,7 +31,7 @@ class TxViewDelegate : public QAbstractItemDelegate
     Q_OBJECT
 public:
     TxViewDelegate(const PlatformStyle *platformStyle):
-        QAbstractItemDelegate(), unit(KoreUnits::KORE),
+        QAbstractItemDelegate(), unit(LibertaUnits::LBT),
         platformStyle(platformStyle)
     {
 
@@ -89,7 +89,7 @@ public:
             foreground = option.palette.color(QPalette::Text);
         }
         painter->setPen(foreground);
-        QString amountText = KoreUnits::formatWithUnit(unit, amount, true, KoreUnits::separatorAlways);
+        QString amountText = LibertaUnits::formatWithUnit(unit, amount, true, LibertaUnits::separatorAlways);
         if(!confirmed)
         {
             amountText = QString("[") + amountText + QString("]");
@@ -194,18 +194,18 @@ void OverviewPage::setBalance(const CAmount& balance, const CAmount& stake, cons
     currentWatchOnlyBalance = watchOnlyBalance;
     currentWatchUnconfBalance = watchUnconfBalance;
     currentWatchImmatureBalance = watchImmatureBalance;
-    ui->labelBalance->setText(KoreUnits::formatWithUnit(unit, balance, false, KoreUnits::separatorAlways));
-    ui->labelStake->setText(KoreUnits::formatWithUnit(unit, stake, false, KoreUnits::separatorAlways));
-    ui->labelUnconfirmed->setText(KoreUnits::formatWithUnit(unit, unconfirmedBalance, false, KoreUnits::separatorAlways));
-    ui->labelImmature->setText(KoreUnits::formatWithUnit(unit, immatureBalance, false, KoreUnits::separatorAlways));
-    ui->labelAnonymized->setText(KoreUnits::formatWithUnit(unit, anonymizedBalance, false, KoreUnits::separatorAlways));
-    ui->labelTotal->setText(KoreUnits::formatWithUnit(unit, balance + stake + unconfirmedBalance + immatureBalance, false, KoreUnits::separatorAlways));
-    //ui->labelTotal->setText(KoreUnits::formatWithUnit(unit, balance + unconfirmedBalance + immatureBalance, false, KoreUnits::separatorAlways));
+    ui->labelBalance->setText(LibertaUnits::formatWithUnit(unit, balance, false, LibertaUnits::separatorAlways));
+    ui->labelStake->setText(LibertaUnits::formatWithUnit(unit, stake, false, LibertaUnits::separatorAlways));
+    ui->labelUnconfirmed->setText(LibertaUnits::formatWithUnit(unit, unconfirmedBalance, false, LibertaUnits::separatorAlways));
+    ui->labelImmature->setText(LibertaUnits::formatWithUnit(unit, immatureBalance, false, LibertaUnits::separatorAlways));
+    ui->labelAnonymized->setText(LibertaUnits::formatWithUnit(unit, anonymizedBalance, false, LibertaUnits::separatorAlways));
+    ui->labelTotal->setText(LibertaUnits::formatWithUnit(unit, balance + stake + unconfirmedBalance + immatureBalance, false, LibertaUnits::separatorAlways));
+    //ui->labelTotal->setText(LibertaUnits::formatWithUnit(unit, balance + unconfirmedBalance + immatureBalance, false, LibertaUnits::separatorAlways));
 
-    ui->labelWatchAvailable->setText(KoreUnits::formatWithUnit(unit, watchOnlyBalance, false, KoreUnits::separatorAlways));
-    ui->labelWatchPending->setText(KoreUnits::formatWithUnit(unit, watchUnconfBalance, false, KoreUnits::separatorAlways));
-    ui->labelWatchImmature->setText(KoreUnits::formatWithUnit(unit, watchImmatureBalance, false, KoreUnits::separatorAlways));
-    ui->labelWatchTotal->setText(KoreUnits::formatWithUnit(unit, watchOnlyBalance + watchUnconfBalance + watchImmatureBalance, false, KoreUnits::separatorAlways));
+    ui->labelWatchAvailable->setText(LibertaUnits::formatWithUnit(unit, watchOnlyBalance, false, LibertaUnits::separatorAlways));
+    ui->labelWatchPending->setText(LibertaUnits::formatWithUnit(unit, watchUnconfBalance, false, LibertaUnits::separatorAlways));
+    ui->labelWatchImmature->setText(LibertaUnits::formatWithUnit(unit, watchImmatureBalance, false, LibertaUnits::separatorAlways));
+    ui->labelWatchTotal->setText(LibertaUnits::formatWithUnit(unit, watchOnlyBalance + watchUnconfBalance + watchImmatureBalance, false, LibertaUnits::separatorAlways));
 
     // only show immature (newly mined) balance if it's non-zero, so as not to complicate things
     // for the non-mining users
@@ -276,7 +276,7 @@ void OverviewPage::setWalletModel(WalletModel *model)
         connect(model, SIGNAL(notifyWatchonlyChanged(bool)), this, SLOT(updateWatchOnlyLabels(bool)));
     }
 
-    // update the display unit, to not use the default ("KORE")
+    // update the display unit, to not use the default ("LBT")
     updateDisplayUnit();
 }
 
@@ -316,15 +316,15 @@ void OverviewPage::updateObfuscationProgress()
     if (!pwalletMain) return;
 
     QString strAmountAndRounds;
-    QString strAnonymizeKoreAmount = KoreUnits::formatHtmlWithUnit(nDisplayUnit, nAnonymizeKoreAmount * COIN, false, KoreUnits::separatorAlways);
+    QString strAnonymizeLibertaAmount = LibertaUnits::formatHtmlWithUnit(nDisplayUnit, nAnonymizeLibertaAmount * COIN, false, LibertaUnits::separatorAlways);
 
     if (currentBalance == 0) {
         ui->obfuscationProgress->setValue(0);
         ui->obfuscationProgress->setToolTip(tr("No inputs detected"));
 
         // when balance is zero just show info from settings
-        strAnonymizeKoreAmount = strAnonymizeKoreAmount.remove(strAnonymizeKoreAmount.indexOf("."), KoreUnits::decimals(nDisplayUnit) + 1);
-        strAmountAndRounds = strAnonymizeKoreAmount + " / " + tr("%n Rounds", "", nObfuscationRounds);
+        strAnonymizeLibertaAmount = strAnonymizeLibertaAmount.remove(strAnonymizeLibertaAmount.indexOf("."), LibertaUnits::decimals(nDisplayUnit) + 1);
+        strAmountAndRounds = strAnonymizeLibertaAmount + " / " + tr("%n Rounds", "", nObfuscationRounds);
 
         ui->labelAmountRounds->setToolTip(tr("No inputs detected"));
         ui->labelAmountRounds->setText(strAmountAndRounds);
@@ -351,24 +351,24 @@ void OverviewPage::updateObfuscationProgress()
     CAmount nMaxToAnonymize = nAnonymizableBalance + currentAnonymizedBalance + nDenominatedUnconfirmedBalance;
 
     // If it's more than the anon threshold, limit to that.
-    if (nMaxToAnonymize > nAnonymizeKoreAmount * COIN) nMaxToAnonymize = nAnonymizeKoreAmount * COIN;
+    if (nMaxToAnonymize > nAnonymizeLibertaAmount * COIN) nMaxToAnonymize = nAnonymizeLibertaAmount * COIN;
 
     if (nMaxToAnonymize == 0) return;
 
-    if (nMaxToAnonymize >= nAnonymizeKoreAmount * COIN) {
+    if (nMaxToAnonymize >= nAnonymizeLibertaAmount * COIN) {
         ui->labelAmountRounds->setToolTip(tr("Found enough compatible inputs to anonymize %1")
-                                              .arg(strAnonymizeKoreAmount));
-        strAnonymizeKoreAmount = strAnonymizeKoreAmount.remove(strAnonymizeKoreAmount.indexOf("."), KoreUnits::decimals(nDisplayUnit) + 1);
-        strAmountAndRounds = strAnonymizeKoreAmount + " / " + tr("%n Rounds", "", nObfuscationRounds);
+                                              .arg(strAnonymizeLibertaAmount));
+        strAnonymizeLibertaAmount = strAnonymizeLibertaAmount.remove(strAnonymizeLibertaAmount.indexOf("."), LibertaUnits::decimals(nDisplayUnit) + 1);
+        strAmountAndRounds = strAnonymizeLibertaAmount + " / " + tr("%n Rounds", "", nObfuscationRounds);
     } else {
-        QString strMaxToAnonymize = KoreUnits::formatHtmlWithUnit(nDisplayUnit, nMaxToAnonymize, false, KoreUnits::separatorAlways);
+        QString strMaxToAnonymize = LibertaUnits::formatHtmlWithUnit(nDisplayUnit, nMaxToAnonymize, false, LibertaUnits::separatorAlways);
         ui->labelAmountRounds->setToolTip(tr("Not enough compatible inputs to anonymize <span style='color:red;'>%1</span>,<br>"
                                              "will anonymize <span style='color:red;'>%2</span> instead")
-                                              .arg(strAnonymizeKoreAmount)
+                                              .arg(strAnonymizeLibertaAmount)
                                               .arg(strMaxToAnonymize));
-        strMaxToAnonymize = strMaxToAnonymize.remove(strMaxToAnonymize.indexOf("."), KoreUnits::decimals(nDisplayUnit) + 1);
+        strMaxToAnonymize = strMaxToAnonymize.remove(strMaxToAnonymize.indexOf("."), LibertaUnits::decimals(nDisplayUnit) + 1);
         strAmountAndRounds = "<span style='color:red;'>" +
-                             QString(KoreUnits::factor(nDisplayUnit) == 1 ? "" : "~") + strMaxToAnonymize +
+                             QString(LibertaUnits::factor(nDisplayUnit) == 1 ? "" : "~") + strMaxToAnonymize +
                              " / " + tr("%n Rounds", "", nObfuscationRounds) + "</span>";
     }
     ui->labelAmountRounds->setText(strAmountAndRounds);
@@ -502,7 +502,7 @@ void OverviewPage::toggleObfuscation()
         int64_t balance = currentBalance;
         float minAmount = 14.90 * COIN;
         if (balance < minAmount) {
-            QString strMinAmount(KoreUnits::formatWithUnit(nDisplayUnit, minAmount));
+            QString strMinAmount(LibertaUnits::formatWithUnit(nDisplayUnit, minAmount));
             QMessageBox::warning(this, tr("Obfuscation"),
                 tr("Obfuscation requires at least %1 to use.").arg(strMinAmount),
                 QMessageBox::Ok, QMessageBox::Ok);
@@ -535,7 +535,7 @@ void OverviewPage::toggleObfuscation()
 
         /* show obfuscation configuration if client has defaults set */
 
-        if (nAnonymizeKoreAmount == 0) {
+        if (nAnonymizeLibertaAmount == 0) {
             ObfuscationConfig dlg(this);
             dlg.setModel(walletModel);
             dlg.exec();

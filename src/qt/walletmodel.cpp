@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -207,7 +207,7 @@ void WalletModel::updateWatchOnlyFlag(bool fHaveWatchonly)
 
 bool WalletModel::validateAddress(const QString &address)
 {
-    CKoreAddress addressParsed(address.toStdString());
+    CLibertaAddress addressParsed(address.toStdString());
     return addressParsed.IsValid();
 }
 
@@ -258,7 +258,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
             total += subtotal;
         }
         else
-        {   // User-entered kore address / amount:
+        {   // User-entered liberta address / amount:
             if(!validateAddress(rcp.address))
             {
                 return InvalidAddress;
@@ -270,7 +270,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
             setAddress.insert(rcp.address);
             ++nAddresses;
 
-            CScript scriptPubKey = GetScriptForDestination(CKoreAddress(rcp.address.toStdString()).Get());
+            CScript scriptPubKey = GetScriptForDestination(CLibertaAddress(rcp.address.toStdString()).Get());
             CRecipient recipient = {scriptPubKey, rcp.amount, rcp.fSubtractFeeFromAmount};
             vecSend.push_back(recipient);
 
@@ -302,7 +302,7 @@ WalletModel::SendCoinsReturn WalletModel::prepareTransaction(WalletModelTransact
         CReserveKey *keyChange = transaction.getPossibleKeyChange();
 
         if (recipients[0].useSwiftTX && total > GetSporkValue(SPORK_5_MAX_VALUE) * COIN) {
-            Q_EMIT message(tr("Send Coins"), tr("SwiftTX doesn't support sending values that high yet. Transactions are currently limited to %1 KORE.").arg(GetSporkValue(SPORK_5_MAX_VALUE)),
+            Q_EMIT message(tr("Send Coins"), tr("SwiftTX doesn't support sending values that high yet. Transactions are currently limited to %1 LBT.").arg(GetSporkValue(SPORK_5_MAX_VALUE)),
                 CClientUIInterface::MSG_ERROR);
             return TransactionCreationFailed;
         }
@@ -368,7 +368,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
                 rcp.paymentRequest.SerializeToString(&value);
                 newTx->vOrderForm.push_back(make_pair(key, value));
             }
-            else if (!rcp.message.isEmpty()) // Message from normal kore:URI (kore:123...?message=example)
+            else if (!rcp.message.isEmpty()) // Message from normal liberta:URI (liberta:123...?message=example)
                 newTx->vOrderForm.push_back(make_pair("Message", rcp.message.toStdString()));
         }
 
@@ -390,7 +390,7 @@ WalletModel::SendCoinsReturn WalletModel::sendCoins(WalletModelTransaction &tran
         if (!rcp.paymentRequest.IsInitialized())
         {
             std::string strAddress = rcp.address.toStdString();
-            CTxDestination dest = CKoreAddress(strAddress).Get();
+            CTxDestination dest = CLibertaAddress(strAddress).Get();
             std::string strLabel = rcp.label.toStdString();
             {
                 LOCK(wallet->cs_wallet);
@@ -467,7 +467,6 @@ bool WalletModel::setWalletLocked(bool locked, const SecureString &passPhrase, b
 {
     if(locked)
     {
-        
         // Lock
         wallet->fWalletUnlockAnonymizeOnly = false;
         return wallet->Lock();
@@ -512,7 +511,7 @@ static void NotifyAddressBookChanged(WalletModel *walletmodel, CWallet *wallet,
         const CTxDestination &address, const std::string &label, bool isMine,
         const std::string &purpose, ChangeType status)
 {
-    QString strAddress = QString::fromStdString(CKoreAddress(address).ToString());
+    QString strAddress = QString::fromStdString(CLibertaAddress(address).ToString());
     QString strLabel = QString::fromStdString(label);
     QString strPurpose = QString::fromStdString(purpose);
 
@@ -573,7 +572,6 @@ WalletModel::UnlockContext WalletModel::requestUnlock(bool relock)
     bool was_locked = getEncryptionStatus() == Locked;
 
     if (!was_locked && isAnonymizeOnlyUnlocked()) {
- 
         setWalletLocked(true);
         wallet->fWalletUnlockAnonymizeOnly = false;
         was_locked = getEncryptionStatus() == Locked;
@@ -677,7 +675,7 @@ void WalletModel::listCoins(std::map<QString, std::vector<COutput> >& mapCoins) 
         CTxDestination address;
         if(!out.fSpendable || !ExtractDestination(cout.tx->vout[cout.i].scriptPubKey, address))
             continue;
-        mapCoins[QString::fromStdString(CKoreAddress(address).ToString())].push_back(out);
+        mapCoins[QString::fromStdString(CLibertaAddress(address).ToString())].push_back(out);
     }
 }
 
@@ -716,7 +714,7 @@ void WalletModel::loadReceiveRequests(std::vector<std::string>& vReceiveRequests
 
 bool WalletModel::saveReceiveRequest(const std::string &sAddress, const int64_t nId, const std::string &sRequest)
 {
-    CTxDestination dest = CKoreAddress(sAddress).Get();
+    CTxDestination dest = CLibertaAddress(sAddress).Get();
 
     std::stringstream ss;
     ss << nId;
@@ -729,7 +727,7 @@ bool WalletModel::saveReceiveRequest(const std::string &sAddress, const int64_t 
         return wallet->AddDestData(dest, key, sRequest);
 }
 
-bool WalletModel::isMine(CKoreAddress address)
+bool WalletModel::isMine(CLibertaAddress address)
 {
     return IsMine(*wallet, address.Get());
 }

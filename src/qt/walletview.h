@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_WALLETVIEW_H
-#define BITCOIN_QT_WALLETVIEW_H
+#ifndef LIBERTA_QT_WALLETVIEW_H
+#define LIBERTA_QT_WALLETVIEW_H
 
 #include "amount.h"
 #include "masternodelist.h"
@@ -11,7 +11,7 @@
 
 #include <QStackedWidget>
 
-class KoreGUI;
+class LibertaGUI;
 class ClientModel;
 class OverviewPage;
 class PlatformStyle;
@@ -45,13 +45,13 @@ public:
     explicit WalletView(const PlatformStyle *platformStyle, QWidget *parent);
     ~WalletView();
 
-    void setKoreGUI(KoreGUI *gui);
+    void setLibertaGUI(LibertaGUI *gui);
     /** Set the client model.
         The client model represents the part of the core that communicates with the P2P network, and is wallet-agnostic.
     */
     void setClientModel(ClientModel *clientModel);
     /** Set the wallet model.
-        The wallet model represents a kore wallet, and offers access to the list of transactions, address book and sending
+        The wallet model represents a liberta wallet, and offers access to the list of transactions, address book and sending
         functionality.
     */
     void setWalletModel(WalletModel *walletModel);
@@ -132,7 +132,7 @@ public Q_SLOTS:
     /** Show progress dialog e.g. for rescan */
     void showProgress(const QString &title, int nProgress);
 
-    /** Update selected KORE amount from transactionview */
+    /** Update selected LIBERTA amount from transactionview */
     void trxAmount(QString amount);
 
 Q_SIGNALS:
@@ -146,4 +146,4 @@ Q_SIGNALS:
     void incomingTransaction(const QString& date, int unit, const CAmount& amount, const QString& type, const QString& address, const QString& label);
 };
 
-#endif // BITCOIN_QT_WALLETVIEW_H
+#endif // LIBERTA_QT_WALLETVIEW_H

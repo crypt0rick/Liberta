@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2013 The KoreCore developers
+// Copyright (c) 2011-2013 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -16,7 +16,7 @@ OpenURIDialog::OpenURIDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 #if QT_VERSION >= 0x040700
-    ui->uriEdit->setPlaceholderText("kore:");
+    ui->uriEdit->setPlaceholderText("liberta:");
 #endif
 }
 
@@ -33,7 +33,7 @@ QString OpenURIDialog::getURI()
 void OpenURIDialog::accept()
 {
     SendCoinsRecipient rcp;
-    if(GUIUtil::parseKoreURI(getURI(), &rcp))
+    if(GUIUtil::parseLibertaURI(getURI(), &rcp))
     {
         /* Only accept value URIs */
         QDialog::accept();
@@ -48,5 +48,5 @@ void OpenURIDialog::on_selectFileButton_clicked()
     if(filename.isEmpty())
         return;
     QUrl fileUri = QUrl::fromLocalFile(filename);
-    ui->uriEdit->setText("kore:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
+    ui->uriEdit->setText("liberta:?r=" + QUrl::toPercentEncoding(fileUri.toString()));
 }

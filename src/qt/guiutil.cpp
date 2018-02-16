@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "guiutil.h"
 
-#include "koreaddressvalidator.h"
-#include "koreunits.h"
+#include "libertaaddressvalidator.h"
+#include "libertaunits.h"
 #include "qvalidatedlineedit.h"
 #include "walletmodel.h"
 
@@ -115,10 +115,10 @@ void setupAddressWidget(QValidatedLineEdit *widget, QWidget *parent)
 #if QT_VERSION >= 0x040700
     // We don't want translators to use own addresses in translations
     // and this is the only place, where this address is supplied.
-    widget->setPlaceholderText(QObject::tr("Enter a Kore address (e.g. %1)").arg("KTdxzF6FkgrLH7Mmkbvv66j31ctJTB6Y6H"));
+    widget->setPlaceholderText(QObject::tr("Enter a Liberta address (e.g. %1)").arg("KTdxzF6FkgrLH7Mmkbvv66j31ctJTB6Y6H"));
 #endif
-    widget->setValidator(new KoreAddressEntryValidator(parent));
-    widget->setCheckValidator(new KoreAddressCheckValidator(parent));
+    widget->setValidator(new LibertaAddressEntryValidator(parent));
+    widget->setCheckValidator(new LibertaAddressCheckValidator(parent));
 }
 
 void setupAmountWidget(QLineEdit *widget, QWidget *parent)
@@ -130,10 +130,10 @@ void setupAmountWidget(QLineEdit *widget, QWidget *parent)
     widget->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 }
 
-bool parseKoreURI(const QUrl &uri, SendCoinsRecipient *out)
+bool parseLibertaURI(const QUrl &uri, SendCoinsRecipient *out)
 {
-    // return if URI is not valid or is no kore: URI
-    if(!uri.isValid() || uri.scheme() != QString("kore"))
+    // return if URI is not valid or is no liberta: URI
+    if(!uri.isValid() || uri.scheme() != QString("liberta"))
         return false;
 
     SendCoinsRecipient rv;
@@ -173,7 +173,7 @@ bool parseKoreURI(const QUrl &uri, SendCoinsRecipient *out)
         {
             if(!i->second.isEmpty())
             {
-                if(!KoreUnits::parse(KoreUnits::KORE, i->second, &rv.amount))
+                if(!LibertaUnits::parse(LibertaUnits::LBT, i->second, &rv.amount))
                 {
                     return false;
                 }
@@ -191,28 +191,28 @@ bool parseKoreURI(const QUrl &uri, SendCoinsRecipient *out)
     return true;
 }
 
-bool parseKoreURI(QString uri, SendCoinsRecipient *out)
+bool parseLibertaURI(QString uri, SendCoinsRecipient *out)
 {
-    // Convert kore:// to kore:
+    // Convert liberta:// to liberta:
     //
-    //    Cannot handle this later, because kore:// will cause Qt to see the part after // as host,
+    //    Cannot handle this later, because liberta:// will cause Qt to see the part after // as host,
     //    which will lower-case it (and thus invalidate the address).
-    if(uri.startsWith("kore://", Qt::CaseInsensitive))
+    if(uri.startsWith("liberta://", Qt::CaseInsensitive))
     {
-        uri.replace(0, 10, "kore:");
+        uri.replace(0, 10, "liberta:");
     }
     QUrl uriInstance(uri);
-    return parseKoreURI(uriInstance, out);
+    return parseLibertaURI(uriInstance, out);
 }
 
-QString formatKoreURI(const SendCoinsRecipient &info)
+QString formatLibertaURI(const SendCoinsRecipient &info)
 {
-    QString ret = QString("kore:%1").arg(info.address);
+    QString ret = QString("liberta:%1").arg(info.address);
     int paramCount = 0;
 
     if (info.amount)
     {
-        ret += QString("?amount=%1").arg(KoreUnits::format(KoreUnits::KORE, info.amount, false, KoreUnits::separatorNever));
+        ret += QString("?amount=%1").arg(LibertaUnits::format(LibertaUnits::LBT, info.amount, false, LibertaUnits::separatorNever));
         paramCount++;
     }
 
@@ -235,7 +235,7 @@ QString formatKoreURI(const SendCoinsRecipient &info)
 
 bool isDust(const QString& address, const CAmount& amount)
 {
-    CTxDestination dest = CKoreAddress(address.toStdString()).Get();
+    CTxDestination dest = CLibertaAddress(address.toStdString()).Get();
     CScript script = GetScriptForDestination(dest);
     CTxOut txOut(amount, script);
     return txOut.IsDust(::minRelayTxFee);
@@ -412,7 +412,7 @@ void openConfigfile()
 {
     boost::filesystem::path pathConfig = GetConfigFile();
 
-    /* Open kore.conf with the associated application */
+    /* Open liberta.conf with the associated application */
     if (boost::filesystem::exists(pathConfig))
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathConfig)));
 }
@@ -645,15 +645,15 @@ boost::filesystem::path static StartupShortcutPath()
 {
     std::string chain = ChainNameFromCommandLine();
     if (chain == CBaseChainParams::MAIN)
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Kore.lnk";
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Liberta.lnk";
     if (chain == CBaseChainParams::TESTNET) // Remove this special case when CBaseChainParams::TESTNET = "testnet4"
-        return GetSpecialFolderPath(CSIDL_STARTUP) / "Kore(testnet).lnk";
-    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Kore(%s).lnk", chain);
+        return GetSpecialFolderPath(CSIDL_STARTUP) / "Liberta(testnet).lnk";
+    return GetSpecialFolderPath(CSIDL_STARTUP) / strprintf("Liberta(%s).lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
 {
-    // check for Kore*.lnk
+    // check for Liberta*.lnk
     return boost::filesystem::exists(StartupShortcutPath());
 }
 
@@ -745,8 +745,8 @@ boost::filesystem::path static GetAutostartFilePath()
 {
     std::string chain = ChainNameFromCommandLine();
     if (chain == CBaseChainParams::MAIN)
-        return GetAutostartDir() / "kore.desktop";
-    return GetAutostartDir() / strprintf("kore-%s.lnk", chain);
+        return GetAutostartDir() / "liberta.desktop";
+    return GetAutostartDir() / strprintf("liberta-%s.lnk", chain);
 }
 
 bool GetStartOnSystemStartup()
@@ -785,13 +785,13 @@ bool SetStartOnSystemStartup(bool fAutoStart)
         if (!optionFile.good())
             return false;
         std::string chain = ChainNameFromCommandLine();
-        // Write a kore.desktop file to the autostart directory:
+        // Write a liberta.desktop file to the autostart directory:
         optionFile << "[Desktop Entry]\n";
         optionFile << "Type=Application\n";
         if (chain == CBaseChainParams::MAIN)
-            optionFile << "Name=Kore\n";
+            optionFile << "Name=Liberta\n";
         else
-            optionFile << strprintf("Name=Kore (%s)\n", chain);
+            optionFile << strprintf("Name=Liberta (%s)\n", chain);
         optionFile << "Exec=" << pszExePath << strprintf(" -min -testnet=%d -regtest=%d\n", GetBoolArg("-testnet", false), GetBoolArg("-regtest", false));
         optionFile << "Terminal=false\n";
         optionFile << "Hidden=false\n";
@@ -810,7 +810,7 @@ bool SetStartOnSystemStartup(bool fAutoStart)
 LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef findUrl);
 LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef findUrl)
 {
-    // loop through the list of startup items and try to find the kore app
+    // loop through the list of startup items and try to find the liberta app
     CFArrayRef listSnapshot = LSSharedFileListCopySnapshot(list, NULL);
     for(int i = 0; i < CFArrayGetCount(listSnapshot); i++) {
         LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(listSnapshot, i);
@@ -842,21 +842,21 @@ LSSharedFileListItemRef findStartupItemInList(LSSharedFileListRef list, CFURLRef
 
 bool GetStartOnSystemStartup()
 {
-    CFURLRef koreAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    CFURLRef libertaAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
     LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, koreAppUrl);
+    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, libertaAppUrl);
     return !!foundItem; // return boolified object
 }
 
 bool SetStartOnSystemStartup(bool fAutoStart)
 {
-    CFURLRef koreAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    CFURLRef libertaAppUrl = CFBundleCopyBundleURL(CFBundleGetMainBundle());
     LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL, kLSSharedFileListSessionLoginItems, NULL);
-    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, koreAppUrl);
+    LSSharedFileListItemRef foundItem = findStartupItemInList(loginItems, libertaAppUrl);
 
     if(fAutoStart && !foundItem) {
-        // add kore app to startup item list
-        LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, koreAppUrl, NULL, NULL);
+        // add liberta app to startup item list
+        LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, NULL, NULL, libertaAppUrl, NULL, NULL);
     }
     else if(!fAutoStart && foundItem) {
         // remove item

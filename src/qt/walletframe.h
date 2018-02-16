@@ -1,14 +1,14 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_WALLETFRAME_H
-#define BITCOIN_QT_WALLETFRAME_H
+#ifndef LIBERTA_QT_WALLETFRAME_H
+#define LIBERTA_QT_WALLETFRAME_H
 
 #include <QFrame>
 #include <QMap>
 
-class KoreGUI;
+class LibertaGUI;
 class ClientModel;
 class PlatformStyle;
 class SendCoinsRecipient;
@@ -26,7 +26,7 @@ class WalletFrame : public QFrame
     Q_OBJECT
 
 public:
-    explicit WalletFrame(const PlatformStyle *platformStyle, KoreGUI *_gui = 0);
+    explicit WalletFrame(const PlatformStyle *platformStyle, LibertaGUI *_gui = 0);
     ~WalletFrame();
 
     void setClientModel(ClientModel *clientModel);
@@ -42,7 +42,7 @@ public:
 
 private:
     QStackedWidget *walletStack;
-    KoreGUI *gui;
+    LibertaGUI *gui;
     ClientModel *clientModel;
     QMap<QString, WalletView*> mapWalletViews;
 
@@ -95,4 +95,4 @@ public Q_SLOTS:
     void usedReceivingAddresses();
 };
 
-#endif // BITCOIN_QT_WALLETFRAME_H
+#endif // LIBERTA_QT_WALLETFRAME_H

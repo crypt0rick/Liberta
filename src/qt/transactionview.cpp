@@ -1,11 +1,11 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "transactionview.h"
 
 #include "addresstablemodel.h"
-#include "koreunits.h"
+#include "libertaunits.h"
 #include "csvmodelwriter.h"
 #include "editaddressdialog.h"
 #include "guiutil.h"
@@ -322,7 +322,7 @@ void TransactionView::changedAmount(const QString &amount)
     if(!transactionProxyModel)
         return;
     CAmount amount_parsed = 0;
-    if(KoreUnits::parse(model->getOptionsModel()->getDisplayUnit(), amount, &amount_parsed))
+    if(LibertaUnits::parse(model->getOptionsModel()->getDisplayUnit(), amount, &amount_parsed))
     {
         transactionProxyModel->setMinAmount(amount_parsed);
     }
@@ -353,7 +353,7 @@ void TransactionView::exportClicked()
     writer.addColumn(tr("Type"), TransactionTableModel::Type, Qt::EditRole);
     writer.addColumn(tr("Label"), 0, TransactionTableModel::LabelRole);
     writer.addColumn(tr("Address"), 0, TransactionTableModel::AddressRole);
-    writer.addColumn(KoreUnits::getAmountColumnTitle(model->getOptionsModel()->getDisplayUnit()), 0, TransactionTableModel::FormattedAmountRole);
+    writer.addColumn(LibertaUnits::getAmountColumnTitle(model->getOptionsModel()->getDisplayUnit()), 0, TransactionTableModel::FormattedAmountRole);
     writer.addColumn(tr("ID"), 0, TransactionTableModel::TxIDRole);
 
     if(!writer.write()) {
@@ -470,7 +470,7 @@ void TransactionView::computeSum()
     Q_FOREACH (QModelIndex index, selection) {
         amount += index.data(TransactionTableModel::AmountRole).toLongLong();
     }
-    QString strAmount(KoreUnits::formatWithUnit(nDisplayUnit, amount, true, KoreUnits::separatorAlways));
+    QString strAmount(LibertaUnits::formatWithUnit(nDisplayUnit, amount, true, LibertaUnits::separatorAlways));
     if (amount < 0) strAmount = "<span style='color:red;'>" + strAmount + "</span>";
     Q_EMIT trxAmount(strAmount);
 }

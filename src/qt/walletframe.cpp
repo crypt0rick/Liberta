@@ -1,10 +1,10 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "walletframe.h"
 
-#include "koregui.h"
+#include "libertagui.h"
 #include "walletview.h"
 
 #include <cstdio>
@@ -12,7 +12,7 @@
 #include <QHBoxLayout>
 #include <QLabel>
 
-WalletFrame::WalletFrame(const PlatformStyle *platformStyle, KoreGUI *_gui) :
+WalletFrame::WalletFrame(const PlatformStyle *platformStyle, LibertaGUI *_gui) :
     QFrame(_gui),
     gui(_gui),
     platformStyle(platformStyle)
@@ -44,7 +44,7 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
         return false;
 
     WalletView *walletView = new WalletView(platformStyle, this);
-    walletView->setKoreGUI(gui);
+    walletView->setLibertaGUI(gui);
     walletView->setClientModel(clientModel);
     walletView->setWalletModel(walletModel);
     walletView->showOutOfSyncWarning(bOutOfSync);
@@ -133,7 +133,7 @@ void WalletFrame::gotoTradingPage() // Bittrex trading
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
         i.value()->gotoTradingPage();
-}
+}  
 
 void WalletFrame::gotoBlockExplorerPage()
 {

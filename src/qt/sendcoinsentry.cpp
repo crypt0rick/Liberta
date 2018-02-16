@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -37,9 +37,9 @@ SendCoinsEntry::SendCoinsEntry(const PlatformStyle *platformStyle, QWidget *pare
     ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
 #endif
 
-    // normal kore address field
+    // normal liberta address field
     GUIUtil::setupAddressWidget(ui->payTo, this);
-    // just a label for displaying kore address(es)
+    // just a label for displaying liberta address(es)
     ui->payTo_is->setFont(GUIUtil::fixedPitchFont());
 
     // Connect signals
@@ -56,7 +56,7 @@ void SendCoinsEntry::payAmountChange(){
    //CAmount amount = ui->payAmount->value();
    double mprice = ui->payAmount->value();   
    
-   QString xprice = QString::number((koreprice*mprice)/COIN , 'f',8);
+   QString xprice = QString::number((LBTprice*mprice)/COIN , 'f',8);
    ui->btcvalue->setText(xprice);
 
    QString price = QString::number((usdrate * mprice)/COIN, 'f',2);
@@ -122,7 +122,7 @@ void SendCoinsEntry::clear()
     ui->memoTextLabel_s->clear();
     ui->payAmount_s->clear();
 
-    // update the display unit, to not use the default ("KORE")
+    // update the display unit, to not use the default ("LBT")
     updateDisplayUnit();
 }
 

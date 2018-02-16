@@ -1,9 +1,9 @@
-// Copyright (c) 2014 The KoreCore developers
+// Copyright (c) 2014 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_NETWORKSTYLE_H
-#define BITCOIN_QT_NETWORKSTYLE_H
+#ifndef LIBERTA_QT_NETWORKSTYLE_H
+#define LIBERTA_QT_NETWORKSTYLE_H
 
 #include <QIcon>
 #include <QPixmap>
@@ -31,4 +31,4 @@ private:
     QPixmap splashImage;
 };
 
-#endif // BITCOIN_QT_NETWORKSTYLE_H
+#endif // LIBERTA_QT_NETWORKSTYLE_H

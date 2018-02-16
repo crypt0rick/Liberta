@@ -53,11 +53,11 @@ private Q_SLOTS:
     void on_BuyBidcomboBox_currentIndexChanged(const QString& arg1);
     void on_UnitsInput_textChanged(const QString& arg1);
     void on_BuyBidPriceEdit_textChanged(const QString& arg1);
-    void on_BuyKORE_clicked();
-    void on_SellKOREBTN_clicked();
+    void on_BuyLBT_clicked();
+    void on_SellLBTBTN_clicked();
     void on_SellBidcomboBox_currentIndexChanged(const QString& arg1);
     void on_Sell_Max_Amount_clicked();
-    void on_UnitsInputKORE_textChanged(const QString& arg1);
+    void on_UnitsInputLBT_textChanged(const QString& arg1);
     void on_SellBidPriceEdit_textChanged(const QString& arg1);
     void on_AdvancedView_stateChanged(int arg1);
     void enableTradingWindow(bool state);
@@ -66,8 +66,8 @@ private Q_SLOTS:
     QString BittrexTimeStampToReadable(QString DateTime);
     qint64 BittrexTimeStampToSeconds(QString DateTime);
     QString CancelOrder(QString Orderid);
-    QString BuyKORE(QString OrderType, double Quantity, double Rate);
-    QString SellKORE(QString OrderType, double Quantity, double Rate);
+    QString BuyLBT(QString OrderType, double Quantity, double Rate);
+    QString SellLBT(QString OrderType, double Quantity, double Rate);
     QString GetMarketHistory();
     QString GetMarketSummary();
     QString GetOrderBook();

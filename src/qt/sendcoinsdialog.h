@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_SENDCOINSDIALOG_H
-#define BITCOIN_QT_SENDCOINSDIALOG_H
+#ifndef LIBERTA_QT_SENDCOINSDIALOG_H
+#define LIBERTA_QT_SENDCOINSDIALOG_H
 
 #include "walletmodel.h"
 
@@ -26,7 +26,7 @@ QT_END_NAMESPACE
 
 const int defaultConfirmTarget = 25;
 
-/** Dialog for sending kores */
+/** Dialog for sending libertas */
 class SendCoinsDialog : public QDialog
 {
     Q_OBJECT
@@ -105,4 +105,4 @@ Q_SIGNALS:
     void message(const QString &title, const QString &message, unsigned int style);
 };
 
-#endif // BITCOIN_QT_SENDCOINSDIALOG_H
+#endif // LIBERTA_QT_SENDCOINSDIALOG_H

@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_RPCCONSOLE_H
-#define BITCOIN_QT_RPCCONSOLE_H
+#ifndef LIBERTA_QT_RPCCONSOLE_H
+#define LIBERTA_QT_RPCCONSOLE_H
 
 #include "guiutil.h"
 #include "peertablemodel.h"
@@ -27,7 +27,7 @@ class QMenu;
 class QItemSelection;
 QT_END_NAMESPACE
 
-/** Local KoreRPC console. */
+/** Local LibertaRPC console. */
 class RPCConsole: public QWidget
 {
     Q_OBJECT
@@ -116,7 +116,7 @@ public Q_SLOTS:
     void setTabFocus(enum TabTypes tabType);
     /** Switch to wallet-repair tab and show */
     void showRepair();
-    /** Open external (default) editor with kore.conf */
+    /** Open external (default) editor with liberta.conf */
     void showConfEditor();
     /** Open external (default) editor with masternode.conf */
     void showMNConfEditor();
@@ -161,4 +161,4 @@ private:
     QCompleter *autoCompleter;
 };
 
-#endif // BITCOIN_QT_RPCCONSOLE_H
+#endif // LIBERTA_QT_RPCCONSOLE_H

@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_OPTIONSMODEL_H
-#define BITCOIN_QT_OPTIONSMODEL_H
+#ifndef LIBERTA_QT_OPTIONSMODEL_H
+#define LIBERTA_QT_OPTIONSMODEL_H
 
 #include "amount.h"
 #include "wallet/wallet.h"
@@ -13,7 +13,7 @@ QT_BEGIN_NAMESPACE
 class QNetworkProxy;
 QT_END_NAMESPACE
 
-/** Interface from Qt to configuration data structure for Koreclient.
+/** Interface from Qt to configuration data structure for Libertaclient.
    To Qt, the options are presented as a list with the different options
    laid out vertically.
    This can be changed to a tree once the settings become sufficiently
@@ -47,7 +47,7 @@ public:
         DatabaseCache,          // int
         SpendZeroConfChange,    // bool
         ObfuscationRounds,   // int
-        AnonymizeKoreAmount, //int
+        AnonymizeLibertaAmount, //int
         ShowMasternodesTab,  // bool
         Listen,                 // bool
         OptionIDRowCount,
@@ -94,8 +94,8 @@ private:
 Q_SIGNALS:
     void displayUnitChanged(int unit);
     void obfuscationRoundsChanged(int);
-    void anonymizeKoreAmountChanged(int);
+    void anonymizeLibertaAmountChanged(int);
     void coinControlFeaturesChanged(bool);
 };
 
-#endif // BITCOIN_QT_OPTIONSMODEL_H
+#endif // LIBERTA_QT_OPTIONSMODEL_H

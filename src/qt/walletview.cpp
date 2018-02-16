@@ -1,4 +1,4 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,7 +6,7 @@
 
 #include "addressbookpage.h"
 #include "askpassphrasedialog.h"
-#include "koregui.h"
+#include "libertagui.h"
 #include "blockexplorer.h"
 #include "clientmodel.h"
 #include "guiutil.h"
@@ -89,7 +89,7 @@ WalletView::WalletView(const PlatformStyle *platformStyle, QWidget *parent):
     addWidget(tradingPage);
     addWidget(explorerWindow);
     addWidget(masternodeListPage);
-    //addWidget(phone);
+   // addWidget(phone);
 
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
@@ -113,7 +113,7 @@ WalletView::~WalletView()
 {
 }
 
-void WalletView::setKoreGUI(KoreGUI *gui)
+void WalletView::setLibertaGUI(LibertaGUI *gui)
 {
     if (gui)
     {
@@ -207,8 +207,8 @@ void WalletView::gotoHistoryPage()
 
 void WalletView::gotoTradingPage()
 {
-    setCurrentWidget(tradingPage);
-}
+   setCurrentWidget(tradingPage);
+ }
 
 void WalletView::gotoBlockExplorerPage()
 {

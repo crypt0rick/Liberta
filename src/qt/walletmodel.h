@@ -1,9 +1,9 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_QT_WALLETMODEL_H
-#define BITCOIN_QT_WALLETMODEL_H
+#ifndef LIBERTA_QT_WALLETMODEL_H
+#define LIBERTA_QT_WALLETMODEL_H
 
 #include "paymentrequestplus.h"
 #include "walletmodeltransaction.h"
@@ -99,7 +99,7 @@ public:
     }
 };
 
-/** Interface to Korewallet from Qt view code. */
+/** Interface to Libertawallet from Qt view code. */
 class WalletModel : public QObject
 {
     Q_OBJECT
@@ -201,7 +201,7 @@ public:
     UnlockContext requestUnlock(bool relock = false);
 
     bool getPubKey(const CKeyID &address, CPubKey& vchPubKeyOut) const;
-    bool isMine(CKoreAddress address);
+    bool isMine(CLibertaAddress address);
     bool havePrivKey(const CKeyID &address) const;
     void getOutputs(const std::vector<COutPoint>& vOutpoints, std::vector<COutput>& vOutputs);
     bool isSpent(const COutPoint& outpoint) const;
@@ -285,4 +285,4 @@ public Q_SLOTS:
     void pollBalanceChanged();
 };
 
-#endif // BITCOIN_QT_WALLETMODEL_H
+#endif // LIBERTA_QT_WALLETMODEL_H

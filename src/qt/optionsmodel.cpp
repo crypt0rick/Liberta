@@ -1,14 +1,14 @@
-// Copyright (c) 2011-2015 The KoreCore developers
+// Copyright (c) 2011-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/kore-config.h"
+#include "config/liberta-config.h"
 #endif
 
 #include "optionsmodel.h"
 
-#include "koreunits.h"
+#include "libertaunits.h"
 #include "guiutil.h"
 
 #include "amount.h"
@@ -62,7 +62,7 @@ void OptionsModel::Init(bool resetSettings)
 
     // Display
     if (!settings.contains("nDisplayUnit"))
-        settings.setValue("nDisplayUnit", KoreUnits::KORE);
+        settings.setValue("nDisplayUnit", LibertaUnits::LBT);
     nDisplayUnit = settings.value("nDisplayUnit").toInt();
 
     if (!settings.contains("strThirdPartyTxUrls"))
@@ -76,11 +76,11 @@ void OptionsModel::Init(bool resetSettings)
     if (!settings.contains("nObfuscationRounds"))
         settings.setValue("nObfuscationRounds", 2);
 
-    if (!settings.contains("nAnonymizeKoreAmount"))
-        settings.setValue("nAnonymizeKoreAmount", 1000);
+    if (!settings.contains("nAnonymizeLibertaAmount"))
+        settings.setValue("nAnonymizeLibertaAmount", 1000);
 
     nObfuscationRounds = settings.value("nObfuscationRounds").toLongLong();
-    nAnonymizeKoreAmount = settings.value("nAnonymizeKoreAmount").toLongLong();
+    nAnonymizeLibertaAmount = settings.value("nAnonymizeLibertaAmount").toLongLong();
 
     if (!settings.contains("fShowMasternodesTab"))
         settings.setValue("fShowMasternodesTab", masternodeConfig.getCount());
@@ -158,8 +158,8 @@ void OptionsModel::Init(bool resetSettings)
 
     if (settings.contains("nObfuscationRounds"))
         SoftSetArg("-obfuscationrounds", settings.value("nObfuscationRounds").toString().toStdString());
-    if (settings.contains("nAnonymizeKoreAmount"))
-        SoftSetArg("-anonymizekoreamount", settings.value("nAnonymizeKoreAmount").toString().toStdString());
+    if (settings.contains("nAnonymizeLibertaAmount"))
+        SoftSetArg("-anonymizelibertaamount", settings.value("nAnonymizeLibertaAmount").toString().toStdString());
 
     language = settings.value("language").toString();
 }
@@ -170,7 +170,7 @@ void OptionsModel::Reset()
 
     // Remove all entries from our QSettings object
     settings.clear();
-    resetSettings = true; // Needed in kore.cpp during shotdown to also remove the window positions
+    resetSettings = true; // Needed in liberta.cpp during shotdown to also remove the window positions
 
     // default setting for OptionsModel::StartAtStartup - disabled
     if (GUIUtil::GetStartOnSystemStartup())
@@ -255,8 +255,8 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return settings.value("nThreadsScriptVerif");
         case ObfuscationRounds:
             return settings.value("nObfuscationRounds"); 
-        case AnonymizeKoreAmount:
-            return settings.value("nAnonymizeKoreAmount"); 
+        case AnonymizeLibertaAmount:
+            return settings.value("nAnonymizeLibertaAmount"); 
         case Listen:
             return settings.value("fListen");
         default:
@@ -402,10 +402,10 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
             settings.setValue("nObfuscationRounds", nObfuscationRounds);
             Q_EMIT obfuscationRoundsChanged(nObfuscationRounds);
             break;
-        case AnonymizeKoreAmount:
-            nAnonymizeKoreAmount = value.toInt();
-            settings.setValue("nAnonymizeKoreAmount", nAnonymizeKoreAmount);
-            Q_EMIT anonymizeKoreAmountChanged(nAnonymizeKoreAmount);
+        case AnonymizeLibertaAmount:
+            nAnonymizeLibertaAmount = value.toInt();
+            settings.setValue("nAnonymizeLibertaAmount", nAnonymizeLibertaAmount);
+            Q_EMIT anonymizeLibertaAmountChanged(nAnonymizeLibertaAmount);
             break;
         case CoinControlFeatures:
             fCoinControlFeatures = value.toBool();

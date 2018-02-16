@@ -1,7 +1,7 @@
 Release Process
 ====================
 
-* Update translations (ping wumpus, Diapolo or tcatm on IRC) see [translation_process.md](https://github.com/kore/kore/blob/master/doc/translation_process.md#syncing-with-transifex)
+* Update translations (ping wumpus, Diapolo or tcatm on IRC) see [translation_process.md](https://github.com/liberta/liberta/blob/master/doc/translation_process.md#syncing-with-transifex)
 * Update [bips.md](bips.md) to account for changes since the last release.
 * Update hardcoded [seeds](/contrib/seeds)
 
@@ -11,14 +11,14 @@ Release Process
 Check out the source code in the following directory hierarchy.
 
 	cd /path/to/your/toplevel/build
-	git clone https://github.com/kore/gitian.sigs.git
-	git clone https://github.com/kore/kore-detached-sigs.git
+	git clone https://github.com/liberta/gitian.sigs.git
+	git clone https://github.com/liberta/liberta-detached-sigs.git
 	git clone https://github.com/devrandom/gitian-builder.git
-	git clone https://github.com/kore/kore.git
+	git clone https://github.com/liberta/liberta.git
 
-###Kore maintainers/release engineers, update (commit) version in sources
+###Liberta maintainers/release engineers, update (commit) version in sources
 
-	pushd ./kore
+	pushd ./liberta
 	contrib/verifysfbinaries/verify.sh
 	configure.ac
 	doc/README*
@@ -41,7 +41,7 @@ Check out the source code in the following directory hierarchy.
 
  Setup Gitian descriptors:
 
-	pushd ./kore
+	pushd ./liberta
 	export SIGNER=(your Gitian key, ie bluematt, sipa, etc)
 	export VERSION=(new version, e.g. 0.8.0)
 	git fetch
@@ -62,7 +62,7 @@ Check out the source code in the following directory hierarchy.
 ###Fetch and create inputs: (first time, or when dependency versions change)
 
 	mkdir -p inputs
-	wget -P inputs https://korecore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
+	wget -P inputs https://libertacore.org/cfields/osslsigncode-Backports-to-1.7.1.patch
 	wget -P inputs http://downloads.sourceforge.net/project/osslsigncode/osslsigncode/osslsigncode-1.7.1.tar.gz
 
  Register and download the Apple SDK: see [OS X readme](README_osx.txt) for details.
@@ -77,51 +77,51 @@ Check out the source code in the following directory hierarchy.
 
 By default, Gitian will fetch source files as needed. To cache them ahead of time:
 
-	make -C ../kore/depends download SOURCES_PATH=`pwd`/cache/common
+	make -C ../liberta/depends download SOURCES_PATH=`pwd`/cache/common
 
 Only missing files will be fetched, so this is safe to re-run for each build.
 
 NOTE: Offline builds must use the --url flag to ensure Gitian fetches only from local URLs. For example:
 ```
-./bin/gbuild --url kore=/path/to/kore,signature=/path/to/sigs {rest of arguments}
+./bin/gbuild --url liberta=/path/to/liberta,signature=/path/to/sigs {rest of arguments}
 ```
 The gbuild invocations below <b>DO NOT DO THIS</b> by default.
 
-###Build and sign Kore Core for Linux, Windows, and OS X:
+###Build and sign Liberta Core for Linux, Windows, and OS X:
 
-	./bin/gbuild --commit kore=v${VERSION} ../kore/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../kore/contrib/gitian-descriptors/gitian-linux.yml
-    mv build/out/kore-*.tar.gz build/out/src/kore-*.tar.gz ../
+	./bin/gbuild --commit liberta=v${VERSION} ../liberta/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-linux --destination ../gitian.sigs/ ../liberta/contrib/gitian-descriptors/gitian-linux.yml
+    mv build/out/liberta-*.tar.gz build/out/src/liberta-*.tar.gz ../
 
-	./bin/gbuild --commit kore=v${VERSION} ../kore/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../kore/contrib/gitian-descriptors/gitian-win.yml
-    mv build/out/kore-*-win-unsigned.tar.gz inputs/kore-win-unsigned.tar.gz
-    mv build/out/kore-*.zip build/out/kore-*.exe ../
+	./bin/gbuild --commit liberta=v${VERSION} ../liberta/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win-unsigned --destination ../gitian.sigs/ ../liberta/contrib/gitian-descriptors/gitian-win.yml
+    mv build/out/liberta-*-win-unsigned.tar.gz inputs/liberta-win-unsigned.tar.gz
+    mv build/out/liberta-*.zip build/out/liberta-*.exe ../
 
-	./bin/gbuild --commit kore=v${VERSION} ../kore/contrib/gitian-descriptors/gitian-osx.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../kore/contrib/gitian-descriptors/gitian-osx.yml
-    mv build/out/kore-*-osx-unsigned.tar.gz inputs/kore-osx-unsigned.tar.gz
-    mv build/out/kore-*.tar.gz build/out/kore-*.dmg ../
+	./bin/gbuild --commit liberta=v${VERSION} ../liberta/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-unsigned --destination ../gitian.sigs/ ../liberta/contrib/gitian-descriptors/gitian-osx.yml
+    mv build/out/liberta-*-osx-unsigned.tar.gz inputs/liberta-osx-unsigned.tar.gz
+    mv build/out/liberta-*.tar.gz build/out/liberta-*.dmg ../
 
   Build output expected:
 
-  1. source tarball (kore-${VERSION}.tar.gz)
-  2. linux 32-bit and 64-bit dist tarballs (kore-${VERSION}-linux[32|64].tar.gz)
-  3. windows 32-bit and 64-bit unsigned installers and dist zips (kore-${VERSION}-win[32|64]-setup-unsigned.exe, kore-${VERSION}-win[32|64].zip)
-  4. OS X unsigned installer and dist tarball (kore-${VERSION}-osx-unsigned.dmg, kore-${VERSION}-osx64.tar.gz)
+  1. source tarball (liberta-${VERSION}.tar.gz)
+  2. linux 32-bit and 64-bit dist tarballs (liberta-${VERSION}-linux[32|64].tar.gz)
+  3. windows 32-bit and 64-bit unsigned installers and dist zips (liberta-${VERSION}-win[32|64]-setup-unsigned.exe, liberta-${VERSION}-win[32|64].zip)
+  4. OS X unsigned installer and dist tarball (liberta-${VERSION}-osx-unsigned.dmg, liberta-${VERSION}-osx64.tar.gz)
   5. Gitian signatures (in gitian.sigs/${VERSION}-<linux|{win,osx}-unsigned>/(your Gitian key)/
 
 ###Verify other gitian builders signatures to your own. (Optional)
 
   Add other gitian builders keys to your gpg keyring
 
-	gpg --import ../kore/contrib/gitian-downloader/*.pgp
+	gpg --import ../liberta/contrib/gitian-downloader/*.pgp
 
   Verify the signatures
 
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../kore/contrib/gitian-descriptors/gitian-linux.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../kore/contrib/gitian-descriptors/gitian-win.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../kore/contrib/gitian-descriptors/gitian-osx.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-linux ../liberta/contrib/gitian-descriptors/gitian-linux.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-unsigned ../liberta/contrib/gitian-descriptors/gitian-win.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-unsigned ../liberta/contrib/gitian-descriptors/gitian-osx.yml
 
 	popd
 
@@ -139,25 +139,25 @@ Commit your signature to gitian.sigs:
 
   Wait for Windows/OS X detached signatures:
 	Once the Windows/OS X builds each have 3 matching signatures, they will be signed with their respective release keys.
-	Detached signatures will then be committed to the [kore-detached-sigs](https://github.com/kore/kore-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
+	Detached signatures will then be committed to the [liberta-detached-sigs](https://github.com/liberta/liberta-detached-sigs) repository, which can be combined with the unsigned apps to create signed binaries.
 
   Create (and optionally verify) the signed OS X binary:
 
 	pushd ./gitian-builder
-	./bin/gbuild -i --commit signature=v${VERSION} ../kore/contrib/gitian-descriptors/gitian-osx-signer.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../kore/contrib/gitian-descriptors/gitian-osx-signer.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../kore/contrib/gitian-descriptors/gitian-osx-signer.yml
-	mv build/out/kore-osx-signed.dmg ../kore-${VERSION}-osx.dmg
+	./bin/gbuild -i --commit signature=v${VERSION} ../liberta/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-osx-signed --destination ../gitian.sigs/ ../liberta/contrib/gitian-descriptors/gitian-osx-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-osx-signed ../liberta/contrib/gitian-descriptors/gitian-osx-signer.yml
+	mv build/out/liberta-osx-signed.dmg ../liberta-${VERSION}-osx.dmg
 	popd
 
   Create (and optionally verify) the signed Windows binaries:
 
 	pushd ./gitian-builder
-	./bin/gbuild -i --commit signature=v${VERSION} ../kore/contrib/gitian-descriptors/gitian-win-signer.yml
-	./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../kore/contrib/gitian-descriptors/gitian-win-signer.yml
-	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../kore/contrib/gitian-descriptors/gitian-win-signer.yml
-	mv build/out/kore-*win64-setup.exe ../kore-${VERSION}-win64-setup.exe
-	mv build/out/kore-*win32-setup.exe ../kore-${VERSION}-win32-setup.exe
+	./bin/gbuild -i --commit signature=v${VERSION} ../liberta/contrib/gitian-descriptors/gitian-win-signer.yml
+	./bin/gsign --signer $SIGNER --release ${VERSION}-win-signed --destination ../gitian.sigs/ ../liberta/contrib/gitian-descriptors/gitian-win-signer.yml
+	./bin/gverify -v -d ../gitian.sigs/ -r ${VERSION}-win-signed ../liberta/contrib/gitian-descriptors/gitian-win-signer.yml
+	mv build/out/liberta-*win64-setup.exe ../liberta-${VERSION}-win64-setup.exe
+	mv build/out/liberta-*win32-setup.exe ../liberta-${VERSION}-win32-setup.exe
 	popd
 
 Commit your signature for the signed OS X/Windows binaries:
@@ -182,35 +182,35 @@ rm SHA256SUMS
 (the digest algorithm is forced to sha256 to avoid confusion of the `Hash:` header that GPG adds with the SHA256 used for the files)
 Note: check that SHA256SUMS itself doesn't end up in SHA256SUMS, which is a spurious/nonsensical entry.
 
-- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the kore.org server
-  into `/var/www/bin/kore-core-${VERSION}`
+- Upload zips and installers, as well as `SHA256SUMS.asc` from last step, to the liberta.org server
+  into `/var/www/bin/liberta-core-${VERSION}`
 
-- Update kore.org version
+- Update liberta.org version
 
-  - First, check to see if the Kore.org maintainers have prepared a
-    release: https://github.com/kore-dot-org/kore.org/labels/Releases
+  - First, check to see if the Liberta.org maintainers have prepared a
+    release: https://github.com/liberta-dot-org/liberta.org/labels/Releases
 
       - If they have, it will have previously failed their Travis CI
         checks because the final release files weren't uploaded.
         Trigger a Travis CI rebuild---if it passes, merge.
 
-  - If they have not prepared a release, follow the Kore.org release
-    instructions: https://github.com/kore-dot-org/kore.org#release-notes
+  - If they have not prepared a release, follow the Liberta.org release
+    instructions: https://github.com/liberta-dot-org/liberta.org#release-notes
 
   - After the pull request is merged, the website will automatically show the newest version within 15 minutes, as well
     as update the OS download links. Ping @saivann/@harding (saivann/harding on Freenode) in case anything goes wrong
 
 - Announce the release:
 
-  - Release sticky on koretalk: https://koretalk.org/index.php?board=1.0
+  - Release sticky on libertatalk: https://libertatalk.org/index.php?board=1.0
 
-  - Kore-development mailing list
+  - Liberta-development mailing list
 
-  - Update title of #kore on Freenode IRC
+  - Update title of #liberta on Freenode IRC
 
-  - Optionally reddit /r/Kore, ... but this will usually sort out itself
+  - Optionally reddit /r/Liberta, ... but this will usually sort out itself
 
-- Notify BlueMatt so that he can start building [the PPAs](https://launchpad.net/~kore/+archive/ubuntu/kore)
+- Notify BlueMatt so that he can start building [the PPAs](https://launchpad.net/~liberta/+archive/ubuntu/liberta)
 
 - Add release notes for the new version to the directory `doc/release-notes` in git master
 

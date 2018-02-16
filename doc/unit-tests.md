@@ -6,13 +6,13 @@ and tests weren't explicitly disabled.
 
 After configuring, they can be run with `make check`.
 
-To run the kored tests manually, launch `src/test/test_kore`.
+To run the libertad tests manually, launch `src/test/test_liberta`.
 
-To add more kored tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
+To add more libertad tests, add `BOOST_AUTO_TEST_CASE` functions to the existing
 .cpp files in the `test/` directory or add new .cpp files that
 implement new BOOST_AUTO_TEST_SUITE sections.
 
-To run the kore-qt tests manually, launch `src/qt/test/test_kore-qt`
+To run the liberta-qt tests manually, launch `src/qt/test/test_liberta-qt`
 
-To add more kore-qt tests, add them to the `src/qt/test/` directory and
+To add more liberta-qt tests, add them to the `src/qt/test/` directory and
 the `src/qt/test/test_main.cpp` file.

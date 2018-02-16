@@ -1,16 +1,16 @@
-TOR SUPPORT IN BITCOIN
+TOR SUPPORT IN LIBERTA
 ======================
 
-It is possible to run Kore as a Tor hidden service, and connect to such services.
+It is possible to run Liberta as a Tor hidden service, and connect to such services.
 
 The following directions assume you have a Tor proxy running on port 9050. Many distributions default to having a SOCKS proxy listening on port 9050, but others may not. In particular, the Tor Browser Bundle defaults to listening on a random port. See [Tor Project FAQ:TBBSocksPort](https://www.torproject.org/docs/faq.html.en#TBBSocksPort) for how to properly
 configure Tor.
 
 
-1. Run kore behind a Tor proxy
+1. Run liberta behind a Tor proxy
 ---------------------------------
 
-The first step is running Kore behind a Tor proxy. This will already make all
+The first step is running Liberta behind a Tor proxy. This will already make all
 outgoing connections be anonymized, but more is possible.
 
 	-proxy=ip:port  Set the proxy server. If SOCKS5 is selected (default), this proxy
@@ -31,27 +31,27 @@ outgoing connections be anonymized, but more is possible.
 
 In a typical situation, this suffices to run behind a Tor proxy:
 
-	./kore -proxy=127.0.0.1:9050
+	./liberta -proxy=127.0.0.1:9050
 
 
-2. Run a kore hidden server
+2. Run a liberta hidden server
 ------------------------------
 
 If you configure your Tor system accordingly, it is possible to make your node also
 reachable from the Tor network. Add these lines to your /etc/tor/torrc (or equivalent
 config file):
 
-	HiddenServiceDir /var/lib/tor/kore-service/
+	HiddenServiceDir /var/lib/tor/liberta-service/
 	HiddenServicePort 8333 127.0.0.1:8333
 	HiddenServicePort 18333 127.0.0.1:18333
 
 The directory can be different of course, but (both) port numbers should be equal to
-your kored's P2P listen port (8333 by default).
+your libertad's P2P listen port (8333 by default).
 
-	-externalip=X   You can tell kore about its publicly reachable address using
+	-externalip=X   You can tell liberta about its publicly reachable address using
 	                this option, and this can be a .onion address. Given the above
 	                configuration, you can find your onion address in
-	                /var/lib/tor/kore-service/hostname. Onion addresses are given
+	                /var/lib/tor/liberta-service/hostname. Onion addresses are given
 	                preference for your node to advertise itself with, for connections
 	                coming from unroutable addresses (such as 127.0.0.1, where the
 	                Tor proxy typically runs).
@@ -68,39 +68,39 @@ your kored's P2P listen port (8333 by default).
 
 In a typical situation, where you're only reachable via Tor, this should suffice:
 
-	./kored -proxy=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -listen
+	./libertad -proxy=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -listen
 
 (obviously, replace the Onion address with your own). It should be noted that you still
 listen on all devices and another node could establish a clearnet connection, when knowing
 your address. To mitigate this, additionally bind the address of your Tor proxy:
 
-	./kored ... -bind=127.0.0.1
+	./libertad ... -bind=127.0.0.1
 
 If you don't care too much about hiding your node, and want to be reachable on IPv4
 as well, use `discover` instead:
 
-	./kored ... -discover
+	./libertad ... -discover
 
 and open port 8333 on your firewall (or use -upnp).
 
 If you only want to use Tor to reach onion addresses, but not use it as a proxy
 for normal IPv4/IPv6 communication, use:
 
-	./kore -onion=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -discover
+	./liberta -onion=127.0.0.1:9050 -externalip=57qr3yd1nyntf5k.onion -discover
 
 3. Automatically listen on Tor
 --------------------------------
 
 Starting with Tor version 0.2.7.1 it is possible, through Tor's control socket
 API, to create and destroy 'ephemeral' hidden services programmatically.
-Kore Core has been updated to make use of this.
+Liberta Core has been updated to make use of this.
 
 This means that if Tor is running (and proper authorization is available),
-Kore Core automatically creates a hidden service to listen on, without
+Liberta Core automatically creates a hidden service to listen on, without
 manual configuration. This will positively affect the number of available
 .onion nodes.
 
-This new feature is enabled by default if Kore Core is listening, and
+This new feature is enabled by default if Liberta Core is listening, and
 a connection to Tor can be made. It can be configured with the `-listenonion`,
 `-torcontrol` and `-torpassword` settings. To show verbose debugging
 information, pass `-debug=tor`.

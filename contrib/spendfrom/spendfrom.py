@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 #
-# Use the raw transactions API to spend kores received on particular addresses,
+# Use the raw transactions API to spend libertas received on particular addresses,
 # and send any change back to that same address.
 #
 # Example usage:
 #  spendfrom.py  # Lists available funds
 #  spendfrom.py --from=ADDRESS --to=ADDRESS --amount=11.00
 #
-# Assumes it will talk to a kored or Kore-Qt running
+# Assumes it will talk to a libertad or Liberta-Qt running
 # on localhost.
 #
 # Depends on jsonrpc
@@ -26,22 +26,22 @@ from jsonrpc import ServiceProxy, json
 BASE_FEE=Decimal("0.001")
 
 def check_json_precision():
-    """Make sure json library being used does not lose precision converting BTC values"""
+    """Make sure json library being used does not lose precision converting LBT values"""
     n = Decimal("20000000.00000003")
     satoshis = int(json.loads(json.dumps(float(n)))*1.0e8)
     if satoshis != 2000000000000003:
         raise RuntimeError("JSON encode/decode loses precision")
 
 def determine_db_dir():
-    """Return the default location of the kore data directory"""
+    """Return the default location of the liberta data directory"""
     if platform.system() == "Darwin":
-        return os.path.expanduser("~/Library/Application Support/Kore/")
+        return os.path.expanduser("~/Library/Application Support/Liberta/")
     elif platform.system() == "Windows":
-        return os.path.join(os.environ['APPDATA'], "Kore")
-    return os.path.expanduser("~/.kore")
+        return os.path.join(os.environ['APPDATA'], "Liberta")
+    return os.path.expanduser("~/.liberta")
 
-def read_kore_config(dbdir):
-    """Read the kore.conf file from dbdir, returns dictionary of settings"""
+def read_liberta_config(dbdir):
+    """Read the liberta.conf file from dbdir, returns dictionary of settings"""
     from ConfigParser import SafeConfigParser
 
     class FakeSecHead(object):
@@ -59,11 +59,11 @@ def read_kore_config(dbdir):
                 return s
 
     config_parser = SafeConfigParser()
-    config_parser.readfp(FakeSecHead(open(os.path.join(dbdir, "kore.conf"))))
+    config_parser.readfp(FakeSecHead(open(os.path.join(dbdir, "liberta.conf"))))
     return dict(config_parser.items("all"))
 
 def connect_JSON(config):
-    """Connect to a kore JSON-RPC server"""
+    """Connect to a liberta JSON-RPC server"""
     testnet = config.get('testnet', '0')
     testnet = (int(testnet) > 0)  # 0/1 in config file, convert to True/False
     if not 'rpcport' in config:
@@ -72,7 +72,7 @@ def connect_JSON(config):
     try:
         result = ServiceProxy(connect)
         # ServiceProxy is lazy-connect, so send an RPC command mostly to catch connection errors,
-        # but also make sure the kored we're talking to is/isn't testnet:
+        # but also make sure the libertad we're talking to is/isn't testnet:
         if result.getmininginfo()['testnet'] != testnet:
             sys.stderr.write("RPC server at "+connect+" testnet setting mismatch\n")
             sys.exit(1)
@@ -81,36 +81,36 @@ def connect_JSON(config):
         sys.stderr.write("Error connecting to RPC server at "+connect+"\n")
         sys.exit(1)
 
-def unlock_wallet(kored):
-    info = kored.getinfo()
+def unlock_wallet(libertad):
+    info = libertad.getinfo()
     if 'unlocked_until' not in info:
         return True # wallet is not encrypted
     t = int(info['unlocked_until'])
     if t <= time.time():
         try:
             passphrase = getpass.getpass("Wallet is locked; enter passphrase: ")
-            kored.walletpassphrase(passphrase, 5)
+            libertad.walletpassphrase(passphrase, 5)
         except:
             sys.stderr.write("Wrong passphrase\n")
 
-    info = kored.getinfo()
+    info = libertad.getinfo()
     return int(info['unlocked_until']) > time.time()
 
-def list_available(kored):
+def list_available(libertad):
     address_summary = dict()
 
     address_to_account = dict()
-    for info in kored.listreceivedbyaddress(0):
+    for info in libertad.listreceivedbyaddress(0):
         address_to_account[info["address"]] = info["account"]
 
-    unspent = kored.listunspent(0)
+    unspent = libertad.listunspent(0)
     for output in unspent:
         # listunspent doesn't give addresses, so:
-        rawtx = kored.getrawtransaction(output['txid'], 1)
+        rawtx = libertad.getrawtransaction(output['txid'], 1)
         vout = rawtx["vout"][output['vout']]
         pk = vout["scriptPubKey"]
 
-        # This code only deals with ordinary pay-to-kore-address
+        # This code only deals with ordinary pay-to-liberta-address
         # or pay-to-script-hash outputs right now; anything exotic is ignored.
         if pk["type"] != "pubkeyhash" and pk["type"] != "scripthash":
             continue
@@ -139,8 +139,8 @@ def select_coins(needed, inputs):
         n += 1
     return (outputs, have-needed)
 
-def create_tx(kored, fromaddresses, toaddress, amount, fee):
-    all_coins = list_available(kored)
+def create_tx(libertad, fromaddresses, toaddress, amount, fee):
+    all_coins = list_available(libertad)
 
     total_available = Decimal("0.0")
     needed = amount+fee
@@ -152,14 +152,14 @@ def create_tx(kored, fromaddresses, toaddress, amount, fee):
         total_available += all_coins[addr]["total"]
 
     if total_available < needed:
-        sys.stderr.write("Error, only %f BTC available, need %f\n"%(total_available, needed));
+        sys.stderr.write("Error, only %f LBT available, need %f\n"%(total_available, needed));
         sys.exit(1)
 
     #
     # Note:
     # Python's json/jsonrpc modules have inconsistent support for Decimal numbers.
     # Instead of wrestling with getting json.dumps() (used by jsonrpc) to encode
-    # Decimals, I'm casting amounts to float before sending them to kored.
+    # Decimals, I'm casting amounts to float before sending them to libertad.
     #  
     outputs = { toaddress : float(amount) }
     (inputs, change_amount) = select_coins(needed, potential_inputs)
@@ -170,8 +170,8 @@ def create_tx(kored, fromaddresses, toaddress, amount, fee):
         else:
             outputs[change_address] = float(change_amount)
 
-    rawtx = kored.createrawtransaction(inputs, outputs)
-    signed_rawtx = kored.signrawtransaction(rawtx)
+    rawtx = libertad.createrawtransaction(inputs, outputs)
+    signed_rawtx = libertad.signrawtransaction(rawtx)
     if not signed_rawtx["complete"]:
         sys.stderr.write("signrawtransaction failed\n")
         sys.exit(1)
@@ -179,10 +179,10 @@ def create_tx(kored, fromaddresses, toaddress, amount, fee):
 
     return txdata
 
-def compute_amount_in(kored, txinfo):
+def compute_amount_in(libertad, txinfo):
     result = Decimal("0.0")
     for vin in txinfo['vin']:
-        in_info = kored.getrawtransaction(vin['txid'], 1)
+        in_info = libertad.getrawtransaction(vin['txid'], 1)
         vout = in_info['vout'][vin['vout']]
         result = result + vout['value']
     return result
@@ -193,12 +193,12 @@ def compute_amount_out(txinfo):
         result = result + vout['value']
     return result
 
-def sanity_test_fee(kored, txdata_hex, max_fee):
+def sanity_test_fee(libertad, txdata_hex, max_fee):
     class FeeError(RuntimeError):
         pass
     try:
-        txinfo = kored.decoderawtransaction(txdata_hex)
-        total_in = compute_amount_in(kored, txinfo)
+        txinfo = libertad.decoderawtransaction(txdata_hex)
+        total_in = compute_amount_in(libertad, txinfo)
         total_out = compute_amount_out(txinfo)
         if total_in-total_out > max_fee:
             raise FeeError("Rejecting transaction, unreasonable fee of "+str(total_in-total_out))
@@ -221,15 +221,15 @@ def main():
 
     parser = optparse.OptionParser(usage="%prog [options]")
     parser.add_option("--from", dest="fromaddresses", default=None,
-                      help="addresses to get kores from")
+                      help="addresses to get libertas from")
     parser.add_option("--to", dest="to", default=None,
-                      help="address to get send kores to")
+                      help="address to get send libertas to")
     parser.add_option("--amount", dest="amount", default=None,
                       help="amount to send")
     parser.add_option("--fee", dest="fee", default="0.0",
                       help="fee to include")
     parser.add_option("--datadir", dest="datadir", default=determine_db_dir(),
-                      help="location of kore.conf file with RPC username/password (default: %default)")
+                      help="location of liberta.conf file with RPC username/password (default: %default)")
     parser.add_option("--testnet", dest="testnet", default=False, action="store_true",
                       help="Use the test network")
     parser.add_option("--dry_run", dest="dry_run", default=False, action="store_true",
@@ -238,12 +238,12 @@ def main():
     (options, args) = parser.parse_args()
 
     check_json_precision()
-    config = read_kore_config(options.datadir)
+    config = read_liberta_config(options.datadir)
     if options.testnet: config['testnet'] = True
-    kored = connect_JSON(config)
+    libertad = connect_JSON(config)
 
     if options.amount is None:
-        address_summary = list_available(kored)
+        address_summary = list_available(libertad)
         for address,info in address_summary.iteritems():
             n_transactions = len(info['outputs'])
             if n_transactions > 1:
@@ -253,14 +253,14 @@ def main():
     else:
         fee = Decimal(options.fee)
         amount = Decimal(options.amount)
-        while unlock_wallet(kored) == False:
+        while unlock_wallet(libertad) == False:
             pass # Keep asking for passphrase until they get it right
-        txdata = create_tx(kored, options.fromaddresses.split(","), options.to, amount, fee)
-        sanity_test_fee(kored, txdata, amount*Decimal("0.01"))
+        txdata = create_tx(libertad, options.fromaddresses.split(","), options.to, amount, fee)
+        sanity_test_fee(libertad, txdata, amount*Decimal("0.01"))
         if options.dry_run:
             print(txdata)
         else:
-            txid = kored.sendrawtransaction(txdata)
+            txid = libertad.sendrawtransaction(txdata)
             print(txid)
 
 if __name__ == '__main__':

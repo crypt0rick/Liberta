@@ -1,11 +1,11 @@
 Sample configuration files for:
 
-SystemD: kored.service
-Upstart: kored.conf
-OpenRC:  kored.openrc
-         kored.openrcconf
-CentOS:  kored.init
-OS X:    org.kore.kored.plist
+SystemD: libertad.service
+Upstart: libertad.conf
+OpenRC:  libertad.openrc
+         libertad.openrcconf
+CentOS:  libertad.init
+OS X:    org.liberta.libertad.plist
 
 have been made available to assist packagers in creating node packages here.
 

@@ -1,4 +1,4 @@
-Source: kore
+Source: liberta
 Section: utils
 Priority: optional
 Maintainer: Jonas Smedegaard <dr@jones.dk>
@@ -23,45 +23,45 @@ Build-Depends: debhelper,
  libprotobuf-dev, protobuf-compiler,
  python
 Standards-Version: 3.9.2
-Homepage: https://korecore.org/
-Vcs-Git: git://github.com/kore/kore.git
-Vcs-Browser: https://github.com/kore/kore
+Homepage: https://libertacore.org/
+Vcs-Git: git://github.com/liberta/liberta.git
+Vcs-Browser: https://github.com/liberta/liberta
 
-Package: kored
+Package: libertad
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - daemon
- Kore is an experimental new digital currency that enables instant
- payments to anyone, anywhere in the world. Kore uses peer-to-peer
+ Liberta is an experimental new digital currency that enables instant
+ payments to anyone, anywhere in the world. Liberta uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Kore Core
+ and issuing money are carried out collectively by the network. Liberta Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides the daemon, kored, and the CLI tool
- kore-cli to interact with the daemon.
+ This package provides the daemon, libertad, and the CLI tool
+ liberta-cli to interact with the daemon.
 
-Package: kore-qt
+Package: liberta-qt
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer network based digital currency - Qt GUI
- Kore is an experimental new digital currency that enables instant
- payments to anyone, anywhere in the world. Kore uses peer-to-peer
+ Liberta is an experimental new digital currency that enables instant
+ payments to anyone, anywhere in the world. Liberta uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Kore Core
+ and issuing money are carried out collectively by the network. Liberta Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides Kore-Qt, a GUI for Kore based on Qt.
+ This package provides Liberta-Qt, a GUI for Liberta based on Qt.
 
-Package: kore-tx
+Package: liberta-tx
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: peer-to-peer digital currency - standalone transaction tool
- Kore is an experimental new digital currency that enables instant
- payments to anyone, anywhere in the world. Kore uses peer-to-peer
+ Liberta is an experimental new digital currency that enables instant
+ payments to anyone, anywhere in the world. Liberta uses peer-to-peer
  technology to operate with no central authority: managing transactions
- and issuing money are carried out collectively by the network. Kore Core
+ and issuing money are carried out collectively by the network. Liberta Core
  is the name of the open source software which enables the use of this currency.
  .
- This package provides kore-tx, a command-line transaction creation
- tool which can be used without a kore daemon.  Some means of
+ This package provides liberta-tx, a command-line transaction creation
+ tool which can be used without a liberta daemon.  Some means of
  exchanging minimal transaction data with peers is still required.

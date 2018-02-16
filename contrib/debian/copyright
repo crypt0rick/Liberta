@@ -1,13 +1,13 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: Kore
+Upstream-Name: Liberta
 Upstream-Contact: Satoshi Nakamoto <satoshin@gmx.com>
- irc://#kore@freenode.net
-Source: https://github.com/kore/kore
+ irc://#liberta@freenode.net
+Source: https://github.com/liberta/liberta
 
 Files: *
-Copyright: 2009-2016, Kore Core Developers
+Copyright: 2009-2016, Liberta Core Developers
 License: Expat
-Comment: The Kore Core Developers encompasses the current developers listed on kore.org,
+Comment: The Liberta Core Developers encompasses the current developers listed on liberta.org,
          as well as the numerous contributors to the project.
 
 Files: debian/*
@@ -72,12 +72,12 @@ License: Expat
 Comment: Modifications of Stephan Hutchings Typicons
 
 Files: src/qt/res/icons/about.png
-       src/qt/res/icons/kore.*
-       share/pixmaps/kore*
-       src/qt/res/src/kore.svg
+       src/qt/res/icons/liberta.*
+       share/pixmaps/liberta*
+       src/qt/res/src/liberta.svg
 Copyright: Bitboy, Jonas Schnelli
 License: public-domain
-Comment: Site: https://koretalk.org/?topic=1756.0
+Comment: Site: https://libertatalk.org/?topic=1756.0
 
 
 License: Expat

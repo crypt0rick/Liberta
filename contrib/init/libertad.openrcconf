@@ -1,0 +1,33 @@
+# /etc/conf.d/libertad: config file for /etc/init.d/libertad
+
+# Config file location
+#LIBERTAD_CONFIGFILE="/etc/liberta/liberta.conf"
+
+# What directory to write pidfile to?  (created and owned by $LIBERTAD_USER)
+#LIBERTAD_PIDDIR="/var/run/libertad"
+
+# What filename to give the pidfile
+#LIBERTAD_PIDFILE="${LIBERTAD_PIDDIR}/libertad.pid"
+
+# Where to write libertad data (be mindful that the blockchain is large)
+#LIBERTAD_DATADIR="/var/lib/libertad"
+
+# User and group to own libertad process
+#LIBERTAD_USER="liberta"
+#LIBERTAD_GROUP="liberta"
+
+# Path to libertad executable
+#LIBERTAD_BIN="/usr/bin/libertad"
+
+# Nice value to run libertad under
+#LIBERTAD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+LIBERTAD_OPTS="-disablewallet"
+
+# The timeout in seconds OpenRC will wait for libertad to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+LIBERTAD_SIGTERM_TIMEOUT=60

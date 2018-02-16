@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Kore Core developers
+# Copyright (c) 2014-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.util import *
 
 from binascii import a2b_hex, b2a_hex
@@ -65,7 +65,7 @@ def assert_template(node, tmpl, txlist, expect):
     if rsp != expect:
         raise AssertionError('unexpected: %s' % (rsp,))
 
-class GetBlockTemplateProposalTest(KoreTestFramework):
+class GetBlockTemplateProposalTest(LibertaTestFramework):
     '''
     Test block proposals with getblocktemplate.
     '''

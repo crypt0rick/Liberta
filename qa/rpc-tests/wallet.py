@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Kore Core developers
+# Copyright (c) 2014-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.util import *
 
-class WalletTest (KoreTestFramework):
+class WalletTest (LibertaTestFramework):
 
     def check_fee_amount(self, curr_balance, balance_with_fee, fee_per_byte, tx_size):
         """Return curr_balance after asserting the fee was in range"""
         fee = balance_with_fee - curr_balance
         target_fee = fee_per_byte * tx_size
         if fee < target_fee:
-            raise AssertionError("Fee of %s BTC too low! (Should be %s BTC)"%(str(fee), str(target_fee)))
+            raise AssertionError("Fee of %s LBT too low! (Should be %s LBT)"%(str(fee), str(target_fee)))
         # allow the node's estimation to be at most 2 bytes off
         if fee > fee_per_byte * (tx_size + 2):
-            raise AssertionError("Fee of %s BTC too high! (Should be %s BTC)"%(str(fee), str(target_fee)))
+            raise AssertionError("Fee of %s LBT too high! (Should be %s LBT)"%(str(fee), str(target_fee)))
         return curr_balance
 
     def setup_chain(self):
@@ -59,7 +59,7 @@ class WalletTest (KoreTestFramework):
         assert_equal(len(self.nodes[1].listunspent()), 1)
         assert_equal(len(self.nodes[2].listunspent()), 0)
 
-        # Send 21 BTC from 0 to 2 using sendtoaddress call.
+        # Send 21 LBT from 0 to 2 using sendtoaddress call.
         # Second transaction will be child of first, and will require a fee
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 11)
         self.nodes[0].sendtoaddress(self.nodes[2].getnewaddress(), 10)
@@ -117,7 +117,7 @@ class WalletTest (KoreTestFramework):
         assert_equal(self.nodes[2].getbalance(), 100)
         assert_equal(self.nodes[2].getbalance("from1"), 100-21)
 
-        # Send 10 BTC normal
+        # Send 10 LBT normal
         address = self.nodes[0].getnewaddress("test")
         fee_per_byte = Decimal('0.001') / 1000
         self.nodes[2].settxfee(fee_per_byte * 1000)
@@ -127,7 +127,7 @@ class WalletTest (KoreTestFramework):
         node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), Decimal('90'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), Decimal('10'))
 
-        # Send 10 BTC with subtract fee from amount
+        # Send 10 LBT with subtract fee from amount
         txid = self.nodes[2].sendtoaddress(address, 10, "", "", True)
         self.nodes[2].generate(1)
         self.sync_all()
@@ -135,7 +135,7 @@ class WalletTest (KoreTestFramework):
         assert_equal(self.nodes[2].getbalance(), node_2_bal)
         node_0_bal = self.check_fee_amount(self.nodes[0].getbalance(), Decimal('20'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
 
-        # Sendmany 10 BTC
+        # Sendmany 10 LBT
         txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [])
         self.nodes[2].generate(1)
         self.sync_all()
@@ -143,7 +143,7 @@ class WalletTest (KoreTestFramework):
         node_2_bal = self.check_fee_amount(self.nodes[2].getbalance(), node_2_bal - Decimal('10'), fee_per_byte, count_bytes(self.nodes[2].getrawtransaction(txid)))
         assert_equal(self.nodes[0].getbalance(), node_0_bal)
 
-        # Sendmany 10 BTC with subtract fee from amount
+        # Sendmany 10 LBT with subtract fee from amount
         txid = self.nodes[2].sendmany('from1', {address: 10}, 0, "", [address])
         self.nodes[2].generate(1)
         self.sync_all()
@@ -203,7 +203,7 @@ class WalletTest (KoreTestFramework):
 
         #do some -walletbroadcast tests
         stop_nodes(self.nodes)
-        wait_koreds()
+        wait_libertads()
         self.nodes = start_nodes(3, self.options.tmpdir, [["-walletbroadcast=0"],["-walletbroadcast=0"],["-walletbroadcast=0"]])
         connect_nodes_bi(self.nodes,0,1)
         connect_nodes_bi(self.nodes,1,2)
@@ -229,7 +229,7 @@ class WalletTest (KoreTestFramework):
 
         #restart the nodes with -walletbroadcast=1
         stop_nodes(self.nodes)
-        wait_koreds()
+        wait_libertads()
         self.nodes = start_nodes(3, self.options.tmpdir)
         connect_nodes_bi(self.nodes,0,1)
         connect_nodes_bi(self.nodes,1,2)
@@ -315,7 +315,7 @@ class WalletTest (KoreTestFramework):
         for m in maintenance:
             print("check " + m)
             stop_nodes(self.nodes)
-            wait_koreds()
+            wait_libertads()
             self.nodes = start_nodes(3, self.options.tmpdir, [[m]] * 3)
             while m == '-reindex' and [block_count] * 3 != [self.nodes[i].getblockcount() for i in range(3)]:
                 # reindex will leave rpc warm up "early"; Wait for it to finish

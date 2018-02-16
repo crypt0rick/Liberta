@@ -2,7 +2,7 @@
 #
 # key.py - OpenSSL wrapper
 #
-# This file is modified from python-korelib.
+# This file is modified from python-libertalib.
 #
 
 """ECC secp256k1 crypto routines

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The Kore Core developers
+# Copyright (c) 2015-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.util import *
 
 
-class SignRawTransactionsTest(KoreTestFramework):
+class SignRawTransactionsTest(LibertaTestFramework):
     """Tests transaction signing via RPC command "signrawtransaction"."""
 
     def setup_chain(self):

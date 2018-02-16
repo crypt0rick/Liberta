@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The Kore Core developers
+# Copyright (c) 2015-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.util import *
 from test_framework.mininode import *
 from io import BytesIO
 
-class DecodeScriptTest(KoreTestFramework):
+class DecodeScriptTest(LibertaTestFramework):
     """Tests decoding scripts via RPC command "decodescript"."""
 
     def setup_chain(self):

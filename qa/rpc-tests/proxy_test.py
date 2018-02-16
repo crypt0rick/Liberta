@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The Kore Core developers
+# Copyright (c) 2015-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 import socket
 
 from test_framework.socks5 import Socks5Configuration, Socks5Command, Socks5Server, AddressType
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.util import *
 from test_framework.netutil import test_ipv6_local
 '''
 Test plan:
-- Start kored's with different proxy configurations
+- Start libertad's with different proxy configurations
 - Use addnode to initiate connections
 - Verify that proxies are connected to, and the right connection command is given
-- Proxy configurations to test on kored side:
+- Proxy configurations to test on libertad side:
     - `-proxy` (proxy everything)
     - `-onion` (proxy just onions)
     - `-proxyrandomize` Circuit randomization
@@ -24,8 +24,8 @@ Test plan:
     - proxy on IPv6
 
 - Create various proxies (as threads)
-- Create koreds that connect to them
-- Manipulate the koreds using addnode (onetry) an observe effects
+- Create libertads that connect to them
+- Manipulate the libertads using addnode (onetry) an observe effects
 
 addnode connect to IPv4
 addnode connect to IPv6
@@ -34,7 +34,7 @@ addnode connect to generic DNS name
 '''
 
 
-class ProxyTest(KoreTestFramework):
+class ProxyTest(LibertaTestFramework):
     def __init__(self):
         self.have_ipv6 = test_ipv6_local()
         # Create two proxies on different ports
@@ -85,7 +85,7 @@ class ProxyTest(KoreTestFramework):
         node.addnode("15.61.23.23:1234", "onetry")
         cmd = proxies[0].queue.get()
         assert(isinstance(cmd, Socks5Command))
-        # Note: kored's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
+        # Note: libertad's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
         assert_equal(cmd.atyp, AddressType.DOMAINNAME)
         assert_equal(cmd.addr, b"15.61.23.23")
         assert_equal(cmd.port, 1234)
@@ -99,7 +99,7 @@ class ProxyTest(KoreTestFramework):
             node.addnode("[1233:3432:2434:2343:3234:2345:6546:4534]:5443", "onetry")
             cmd = proxies[1].queue.get()
             assert(isinstance(cmd, Socks5Command))
-            # Note: kored's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
+            # Note: libertad's SOCKS5 implementation only sends atyp DOMAINNAME, even if connecting directly to IPv4/IPv6
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
             assert_equal(cmd.addr, b"1233:3432:2434:2343:3234:2345:6546:4534")
             assert_equal(cmd.port, 5443)
@@ -110,11 +110,11 @@ class ProxyTest(KoreTestFramework):
 
         if test_onion:
             # Test: outgoing onion connection through node
-            node.addnode("koreostk4e4re.onion:8333", "onetry")
+            node.addnode("libertaostk4e4re.onion:8333", "onetry")
             cmd = proxies[2].queue.get()
             assert(isinstance(cmd, Socks5Command))
             assert_equal(cmd.atyp, AddressType.DOMAINNAME)
-            assert_equal(cmd.addr, b"koreostk4e4re.onion")
+            assert_equal(cmd.addr, b"libertaostk4e4re.onion")
             assert_equal(cmd.port, 8333)
             if not auth:
                 assert_equal(cmd.username, None)

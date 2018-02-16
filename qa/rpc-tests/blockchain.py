@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2014-2016 The Kore Core developers
+# Copyright (c) 2014-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -10,7 +10,7 @@
 
 from decimal import Decimal
 
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.authproxy import JSONRPCException
 from test_framework.util import (
     initialize_chain,
@@ -23,7 +23,7 @@ from test_framework.util import (
 )
 
 
-class BlockchainTest(KoreTestFramework):
+class BlockchainTest(LibertaTestFramework):
     """
     Test blockchain-related RPC calls:
 

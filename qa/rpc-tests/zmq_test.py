@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright (c) 2015-2016 The Kore Core developers
+# Copyright (c) 2015-2016 The Liberta Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -7,7 +7,7 @@
 # Test ZMQ interface
 #
 
-from test_framework.test_framework import KoreTestFramework
+from test_framework.test_framework import LibertaTestFramework
 from test_framework.util import *
 import zmq
 import struct
@@ -15,7 +15,7 @@ import struct
 import http.client
 import urllib.parse
 
-class ZMQTest (KoreTestFramework):
+class ZMQTest (LibertaTestFramework):
 
     port = 28332
 

@@ -1,5 +1,5 @@
 #include "blockexplorer.h"
-#include "koreunits.h"
+#include "libertaunits.h"
 #include "chainparams.h"
 #include "clientmodel.h"
 #include "core_io.h"
@@ -51,7 +51,7 @@ static std::string ValueToString(CAmount nValue, bool AllowNegative = false)
     if (nValue < 0 && !AllowNegative)
         return "<span>" + _("unknown") + "</span>";
 
-    QString Str = KoreUnits::formatWithUnit(KoreUnits::KORE, nValue);
+    QString Str = LibertaUnits::formatWithUnit(LibertaUnits::LBT, nValue);
     if (AllowNegative && nValue > 0)
         Str = '+' + Str;
     return std::string("<span>") + Str.toUtf8().data() + "</span>";
@@ -63,7 +63,7 @@ static std::string ScriptToString(const CScript& Script, bool Long = false, bool
         return "unknown";
 
     CTxDestination Dest;
-    CKoreAddress Address;
+    CLibertaAddress Address;
     if (ExtractDestination(Script, Dest) && Address.Set(Dest)) {
         if (Highlight)
             return "<span class=\"addr\">" + Address.ToString() + "</span>";
@@ -381,7 +381,7 @@ std::string TxToString(uint256 BlockHash, const CTransaction& tx)
     return Content;
 }
 
-std::string AddressToString(const CKoreAddress& Address)
+std::string AddressToString(const CLibertaAddress& Address)
 {
     std::string TxLabels[] =
     {
@@ -478,8 +478,8 @@ void BlockExplorer::showEvent(QShowEvent*)
         updateNavButtons();
 
         if (!GetBoolArg("-txindex", true)) {
-            QString Warning = tr("Not all transactions will be shown. To view all transactions you need to set txindex=1 in the configuration file (kore.conf).");
-            QMessageBox::warning(this, "KORE Core Blockchain Explorer", Warning, QMessageBox::Ok);
+            QString Warning = tr("Not all transactions will be shown. To view all transactions you need to set txindex=1 in the configuration file (liberta.conf).");
+            QMessageBox::warning(this, "LIBERTA Core Blockchain Explorer", Warning, QMessageBox::Ok);
         }
     }
 }
@@ -518,7 +518,7 @@ bool BlockExplorer::switchTo(const QString& query)
     }
 
     // If the query is not an integer, nor a block hash, nor a transaction hash, assume an address
-    CKoreAddress Address;
+    CLibertaAddress Address;
     Address.SetString(query.toUtf8().constData());
     if (Address.IsValid()) {
         std::string Content = AddressToString(Address);

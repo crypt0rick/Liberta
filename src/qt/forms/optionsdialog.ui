@@ -28,12 +28,12 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_Main">
        <item>
-        <widget class="QCheckBox" name="koreAtStartup">
+        <widget class="QCheckBox" name="libertaAtStartup">
          <property name="toolTip">
-          <string>Automatically start Kore Core after logging in to the system.</string>
+          <string>Automatically start Liberta Core after logging in to the system.</string>
          </property>
          <property name="text">
-          <string>&amp;Start Kore Core on system login</string>
+          <string>&amp;Start Liberta Core on system login</string>
          </property>
         </widget>
        </item>
@@ -177,12 +177,12 @@
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>Amount of KORE to keep anonymized</string>
+            <string>Amount of LBT to keep anonymized</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="anonymizeKore">
+          <widget class="QSpinBox" name="anonymizeLBT">
            <property name="minimum">
             <number>100</number>
            </property>
@@ -268,7 +268,7 @@
        <item>
         <widget class="QCheckBox" name="mapPortUpnp">
          <property name="toolTip">
-          <string>Automatically open the Koreclient port on the router. This only works when your router supports UPnP and it is enabled.</string>
+          <string>Automatically open the Libertaclient port on the router. This only works when your router supports UPnP and it is enabled.</string>
          </property>
          <property name="text">
           <string>Map port using &amp;UPnP</string>
@@ -288,7 +288,7 @@
        <item>
         <widget class="QCheckBox" name="connectSocks">
          <property name="toolTip">
-          <string>Connect to the Korenetwork through a SOCKS5 proxy.</string>
+          <string>Connect to the Libertanetwork through a SOCKS5 proxy.</string>
          </property>
          <property name="text">
           <string>&amp;Connect through SOCKS5 proxy (default proxy):</string>
@@ -475,7 +475,7 @@
        <item>
         <widget class="QCheckBox" name="connectSocksTor">
          <property name="toolTip">
-          <string>Connect to the Korenetwork through a separate SOCKS5 proxy for Tor hidden services.</string>
+          <string>Connect to the Libertanetwork through a separate SOCKS5 proxy for Tor hidden services.</string>
          </property>
          <property name="text">
           <string>Use separate SOCKS5 proxy to reach peers via Tor hidden services:</string>
@@ -641,7 +641,7 @@
          <item>
           <widget class="QValueComboBox" name="lang">
            <property name="toolTip">
-            <string>The user interface language can be set here. This setting will take effect after restarting Kore Core.</string>
+            <string>The user interface language can be set here. This setting will take effect after restarting Liberta Core.</string>
            </property>
           </widget>
          </item>
@@ -726,7 +726,7 @@
      </widget>
      <widget class="QWidget" name="tab">
       <attribute name="title">
-       <string>Kore</string>
+       <string>Liberta</string>
       </attribute>
       <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
@@ -752,7 +752,7 @@
          </widget>
         </item>
         <item>
-         <widget class="KoreAmountField" name="reserveBalance"/>
+         <widget class="LibertaAmountField" name="reserveBalance"/>
         </item>
         <item>
          <spacer name="horizontalSpacer_3">
@@ -1021,9 +1021,9 @@
    <header>qvaluecombobox.h</header>
   </customwidget>
   <customwidget>
-   <class>KoreAmountField</class>
+   <class>LibertaAmountField</class>
    <extends>QSpinBox</extends>
-   <header>koreamountfield.h</header>
+   <header>libertaamountfield.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

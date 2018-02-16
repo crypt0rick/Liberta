@@ -153,7 +153,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="../kore.qrc"/>
+  <include location="../liberta.qrc"/>
  </resources>
  <connections/>
 </ui>

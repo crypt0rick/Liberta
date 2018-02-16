@@ -263,7 +263,7 @@
          <item>
           <widget class="QPushButton" name="openDebugLogfileButton">
            <property name="toolTip">
-            <string>Open the Kore Core debug log file from the current data directory. This can take a few seconds for large log files.</string>
+            <string>Open the Liberta Core debug log file from the current data directory. This can take a few seconds for large log files.</string>
            </property>
            <property name="text">
             <string>&amp;Open</string>
@@ -487,7 +487,7 @@
             <string/>
            </property>
            <property name="icon">
-            <iconset resource="../kore.qrc">
+            <iconset resource="../liberta.qrc">
              <normaloff>:/icons/remove</normaloff>:/icons/remove</iconset>
            </property>
            <property name="shortcut">
@@ -1298,7 +1298,7 @@
        </item>
       </layout>
      </widget>
-    <!--widget class="QWidget" name="tab_repair">
+     <widget class="QWidget" name="tab_repair">
       <attribute name="title">
        <string>&amp;Wallet Repair</string>
       </attribute>
@@ -1582,7 +1582,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../kore.qrc"/>
+  <include location="../liberta.qrc"/>
  </resources>
  <connections/>
 </ui>

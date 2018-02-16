@@ -137,7 +137,7 @@
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
                <item row="0" column="1">
-                <widget class="QLabel" name="KOREDemand">
+                <widget class="QLabel" name="LBTDemand">
                  <property name="text">
                   <string>label</string>
                  </property>
@@ -175,7 +175,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLabel" name="KORESupply">
+                <widget class="QLabel" name="LBTSupply">
                  <property name="text">
                   <string>label</string>
                  </property>
@@ -282,7 +282,7 @@
         <attribute name="title">
          <string>Buy</string>
         </attribute>
-        <widget class="QPushButton" name="BuyKORE">
+        <widget class="QPushButton" name="BuyLBT">
          <property name="geometry">
           <rect>
            <x>30</x>
@@ -292,7 +292,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Buy KORE</string>
+          <string>Buy LBT</string>
          </property>
          <property name="icon">
           <iconset>
@@ -362,7 +362,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>KORE</string>
+          <string>LBT</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_5">
@@ -375,7 +375,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>KORE</string>
+          <string>LBT</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_6">
@@ -483,7 +483,7 @@
              </font>
             </property>
             <property name="text">
-             <string>KORE Available:</string>
+             <string>LBT Available:</string>
             </property>
            </widget>
           </item>
@@ -927,7 +927,7 @@
              </font>
             </property>
             <property name="text">
-             <string>KORE</string>
+             <string>LBT</string>
             </property>
            </widget>
           </item>
@@ -1399,7 +1399,7 @@
              </font>
             </property>
             <property name="text">
-             <string>KORE</string>
+             <string>LBT</string>
             </property>
            </widget>
           </item>
@@ -1436,7 +1436,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>KORE</string>
+          <string>LBT</string>
          </property>
         </widget>
         <widget class="QComboBox" name="SellBidcomboBox">
@@ -1554,10 +1554,10 @@
           </rect>
          </property>
          <property name="text">
-          <string>KORE</string>
+          <string>LBT</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="UnitsInputKORE">
+        <widget class="QLineEdit" name="UnitsInputLBT">
          <property name="geometry">
           <rect>
            <x>310</x>
@@ -1591,7 +1591,7 @@
           </font>
          </property>
         </widget>
-        <widget class="QPushButton" name="SellKOREBTN">
+        <widget class="QPushButton" name="SellLBTBTN">
          <property name="geometry">
           <rect>
            <x>30</x>
@@ -1601,7 +1601,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Sell KORE</string>
+          <string>Sell LBT</string>
          </property>
          <property name="icon">
           <iconset>
@@ -1627,12 +1627,12 @@
              </font>
             </property>
             <property name="text">
-             <string>KORE Available:</string>
+             <string>LBT Available:</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="KOREAvailableLabel">
+           <widget class="QLabel" name="LBTAvailableLabel">
             <property name="palette">
              <palette>
               <active>
@@ -2063,7 +2063,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="labelKORE">
+           <widget class="QLabel" name="labelLBT">
             <property name="font">
              <font>
               <weight>75</weight>
@@ -2071,7 +2071,7 @@
              </font>
             </property>
             <property name="text">
-             <string>KORE</string>
+             <string>LBT</string>
             </property>
            </widget>
           </item>
@@ -2543,7 +2543,7 @@
              </font>
             </property>
             <property name="text">
-             <string> KORE</string>
+             <string> LBT</string>
             </property>
            </widget>
           </item>
@@ -2570,7 +2570,7 @@
         <attribute name="title">
          <string>Balance</string>
         </attribute>
-        <widget class="QLabel" name="CodexBalanceLabel">
+        <widget class="QLabel" name="LibertaBalanceLabel">
          <property name="geometry">
           <rect>
            <x>470</x>
@@ -2583,7 +2583,7 @@
           <string>TextLabel</string>
          </property>
         </widget>
-        <widget class="QLabel" name="KOREBalanceLabel">
+        <widget class="QLabel" name="LBTBalanceLabel">
          <property name="geometry">
           <rect>
            <x>150</x>
@@ -2612,7 +2612,7 @@
           </font>
          </property>
          <property name="text">
-          <string>KORE Balance:</string>
+          <string>LBT Balance:</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_12">
@@ -2631,10 +2631,10 @@
           </font>
          </property>
          <property name="text">
-          <string>KORE Balance:</string>
+          <string>LBT Balance:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="KOREAvailableLabel_2">
+        <widget class="QLabel" name="LBTAvailableLabel_2">
          <property name="geometry">
           <rect>
            <x>150</x>
@@ -2663,7 +2663,7 @@
           </font>
          </property>
          <property name="text">
-          <string>KORE Available:</string>
+          <string>LBT Available:</string>
          </property>
         </widget>
         <widget class="QLabel" name="label_14">
@@ -2682,10 +2682,10 @@
           </font>
          </property>
          <property name="text">
-          <string>KORE Pending:</string>
+          <string>LBT Pending:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="KOREPendingLabel">
+        <widget class="QLabel" name="LBTPendingLabel">
          <property name="geometry">
           <rect>
            <x>150</x>
@@ -2714,10 +2714,10 @@
           </font>
          </property>
          <property name="text">
-          <string>KORE Available:</string>
+          <string>LBT Available:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="CodexAvailableLabel">
+        <widget class="QLabel" name="LibertaAvailableLabel">
          <property name="geometry">
           <rect>
            <x>470</x>
@@ -2746,10 +2746,10 @@
           </font>
          </property>
          <property name="text">
-          <string>KORE Pending:</string>
+          <string>LBT Pending:</string>
          </property>
         </widget>
-        <widget class="QLabel" name="CodexPendingLabel">
+        <widget class="QLabel" name="LibertaPendingLabel">
          <property name="geometry">
           <rect>
            <x>470</x>
@@ -2778,7 +2778,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Bittrex KORE Deposit Address:</string>
+          <string>Bittrex LBT Deposit Address:</string>
          </property>
         </widget>
         <widget class="QPushButton" name="GenDepositBTN">
@@ -2791,7 +2791,7 @@
           </rect>
          </property>
          <property name="text">
-          <string>Generate Kore Deposit Address</string>
+          <string>Generate Liberta Deposit Address</string>
          </property>
          <property name="icon">
           <iconset>
@@ -2977,7 +2977,7 @@
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Convert KORE:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Convert LBT:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
          <widget class="QLineEdit" name="txtConvertVCoinQty">
@@ -3005,7 +3005,7 @@
            <string notr="true">border: 1px solid #61696c;margin-left:4px;</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="btnConvertKore">
+         <widget class="QPushButton" name="btnConvertLiberta">
           <property name="geometry">
            <rect>
             <x>260</x>
@@ -3056,7 +3056,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="../kore.qrc">:/icons/transaction_1</pixmap>
+           <pixmap resource="../liberta.qrc">:/icons/transaction_1</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -3200,8 +3200,8 @@
   </layout>
  </widget>
  <resources>
-  <include location="../kore.qrc"/>
-  <include location="../kore.qrc"/>
+  <include location="../liberta.qrc"/>
+  <include location="../liberta.qrc"/>
  </resources>
  <connections/>
 </ui>

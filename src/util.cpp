@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/kore-config.h"
+#include "config/liberta-config.h"
 #endif
 
 #include "util.h"
@@ -99,8 +99,8 @@ namespace boost {
 
 using namespace std;
 
-const char * const BITCOIN_CONF_FILENAME = "kore.conf";
-const char * const BITCOIN_PID_FILENAME = "kored.pid";
+const char * const LIBERTA_CONF_FILENAME = "liberta.conf";
+const char * const LIBERTA_PID_FILENAME = "libertad.pid";
 
 bool fMasterNode = false;
 string strMasterNodePrivKey = "";
@@ -109,7 +109,7 @@ bool fLiteMode = false;
 bool fEnableSwiftTX = true;
 int nSwiftTXDepth = 5;
 int nObfuscationRounds = 2;
-int nAnonymizeKoreAmount = 1000;
+int nAnonymizeLibertaAmount = 1000;
 int nLiquidityProvider = 0;
 /** Spork enforcement enabled time */
 int64_t enforceMasternodePaymentsTime = 4085657524;
@@ -452,7 +452,7 @@ static std::string FormatException(const std::exception* pex, const char* pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(NULL, pszModule, sizeof(pszModule));
 #else
-    const char* pszModule = "kore";
+    const char* pszModule = "liberta";
 #endif
     if (pex)
         return strprintf(
@@ -472,13 +472,13 @@ void PrintExceptionContinue(const std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Kore
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Kore
-    // Mac: ~/Library/Application Support/Kore
-    // Unix: ~/.kore
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Liberta
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Liberta
+    // Mac: ~/Library/Application Support/Liberta
+    // Unix: ~/.liberta
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Kore";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Liberta";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -490,10 +490,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     TryCreateDirectory(pathRet);
-    return pathRet / "Kore";
+    return pathRet / "Liberta";
 #else
     // Unix
-    return pathRet / ".kore";
+    return pathRet / ".liberta";
 #endif
 #endif
 }
@@ -540,7 +540,7 @@ void ClearDatadirCache()
 
 boost::filesystem::path GetConfigFile()
 {
-    boost::filesystem::path pathConfigFile(GetArg("-conf", BITCOIN_CONF_FILENAME));
+    boost::filesystem::path pathConfigFile(GetArg("-conf", LIBERTA_CONF_FILENAME));
     if (!pathConfigFile.is_complete())
         pathConfigFile = GetDataDir(false) / pathConfigFile;
 
@@ -559,14 +559,14 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 {
     boost::filesystem::ifstream streamConfig(GetConfigFile());
     if (!streamConfig.good())
-        return; // No kore.conf file is OK
+        return; // No liberta.conf file is OK
 
     set<string> setOptions;
     setOptions.insert("*");
 
     for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
     {
-        // Don't overwrite existing settings so command line settings override kore.conf
+        // Don't overwrite existing settings so command line settings override liberta.conf
         string strKey = string("-") + it->string_key;
         string strValue = it->value[0];
         InterpretNegativeSetting(strKey, strValue);
@@ -581,7 +581,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
 #ifndef WIN32
 boost::filesystem::path GetPidFile()
 {
-    boost::filesystem::path pathPidFile(GetArg("-pid", BITCOIN_PID_FILENAME));
+    boost::filesystem::path pathPidFile(GetArg("-pid", LIBERTA_PID_FILENAME));
     if (!pathPidFile.is_complete()) pathPidFile = GetDataDir() / pathPidFile;
     return pathPidFile;
 }

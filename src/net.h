@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_NET_H
-#define BITCOIN_NET_H
+#ifndef LIBERTA_NET_H
+#define LIBERTA_NET_H
 
 #include "bloom.h"
 #include "compat.h"
@@ -152,7 +152,7 @@ void SetReachable(enum Network net, bool fFlag = true);
 CAddress GetLocalAddress(const CNetAddr *paddrPeer = NULL);
 
 extern double usdprice;
-extern double koreprice;
+extern double LBTprice;
 extern double usdrate;
 
 extern bool fDiscover;
@@ -883,4 +883,4 @@ void DumpBanlist();
 /** Return a timestamp in the future (in microseconds) for exponentially distributed events. */
 int64_t PoissonNextSend(int64_t nNow, int average_interval_seconds);
 
-#endif // BITCOIN_NET_H
+#endif // LIBERTA_NET_H

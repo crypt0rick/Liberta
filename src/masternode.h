@@ -1,6 +1,6 @@
 
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2017 The KORE developers
+// Copyright (c) 2015-2017 The LIBERTA developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 #ifndef MASTERNODE_H
@@ -98,7 +98,7 @@ public:
 };
 
 //
-// The Masternode Class. For managing the Obfuscation process. It contains the input of the 500 KORE, signature to prove
+// The Masternode Class. For managing the Obfuscation process. It contains the input of the 500 LBT, signature to prove
 // it's the one who own that ip address and code for calculating the payment election.
 //
 class CMasternode

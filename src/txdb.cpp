@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -29,7 +29,7 @@ static const char DB_REINDEX_FLAG = 'R';
 static const char DB_LAST_BLOCK = 'l';
 
 
-CCoinsViewDB::CCoinsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(GetDataDir() / "chainstate", nCacheSize, fMemory, fWipe, true)
+CCoinsViewDB::CCoinsViewDB(size_t nCacheSize, bool fMemory, bool fWipe) : db(GetDataDir() / "chainstate", nCacheSize, fMemory, fWipe, true) 
 {
 }
 
@@ -241,9 +241,7 @@ bool CBlockTreeDB::LoadBlockIndexGuts()
                 pindexNew->nTime          = diskindex.nTime;
                 pindexNew->nBits          = diskindex.nBits;
                 pindexNew->nNonce         = diskindex.nNonce;
-                pindexNew->nBirthdayA     = diskindex.nBirthdayA;
-                pindexNew->nBirthdayB     = diskindex.nBirthdayB;
-                pindexNew->nStatus        = diskindex.nStatus;
+		pindexNew->nStatus        = diskindex.nStatus;
                 pindexNew->nStakeModifier = diskindex.nStakeModifier;
                 pindexNew->nMoneySupply   = diskindex.nMoneySupply;
                 pindexNew->nTx            = diskindex.nTx;

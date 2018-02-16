@@ -5,19 +5,19 @@ AM_CXXFLAGS = $(HARDENED_CXXFLAGS)
 AM_CPPFLAGS = $(HARDENED_CPPFLAGS)
 EXTRA_LIBRARIES =
 
-BITCOIN_CONFIG_INCLUDES=-I$(builddir)/config
-BITCOIN_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
+LIBERTA_CONFIG_INCLUDES=-I$(builddir)/config
+LIBERTA_INCLUDES=-I$(builddir) -I$(builddir)/obj $(BOOST_CPPFLAGS) $(LEVELDB_CPPFLAGS) $(CRYPTO_CFLAGS) $(SSL_CFLAGS)
 
-BITCOIN_INCLUDES += -I$(srcdir)/secp256k1/include
-BITCOIN_INCLUDES += -I$(srcdir)/univalue/include
+LIBERTA_INCLUDES += -I$(srcdir)/secp256k1/include
+LIBERTA_INCLUDES += -I$(srcdir)/univalue/include
 
-LIBBITCOIN_SERVER=libkore_server.a
-LIBBITCOIN_WALLET=libkore_wallet.a
-LIBBITCOIN_COMMON=libkore_common.a
-LIBBITCOIN_CLI=libkore_cli.a
-LIBBITCOIN_UTIL=libkore_util.a
-LIBBITCOIN_CRYPTO=crypto/libkore_crypto.a
-LIBBITCOINQT=qt/libkoreqt.a
+LIBLIBERTA_SERVER=libliberta_server.a
+LIBLIBERTA_WALLET=libliberta_wallet.a
+LIBLIBERTA_COMMON=libliberta_common.a
+LIBLIBERTA_CLI=libliberta_cli.a
+LIBLIBERTA_UTIL=libliberta_util.a
+LIBLIBERTA_CRYPTO=crypto/libliberta_crypto.a
+LIBLIBERTAQT=qt/liblibertaqt.a
 LIBSECP256K1=secp256k1/libsecp256k1.la
 LIBUNIVALUE=univalue/libunivalue.la
 
@@ -30,47 +30,46 @@ $(LIBUNIVALUE): $(wildcard univalue/lib/*) $(wildcard univalue/include/*)
 # Make is not made aware of per-object dependencies to avoid limiting building parallelization
 # But to build the less dependent modules first, we manually select their order here:
 EXTRA_LIBRARIES += \
-  crypto/libkore_crypto.a \
-  libkore_util.a \
-  libkore_common.a \
-  libkore_server.a \
-  libkore_cli.a
+  crypto/libliberta_crypto.a \
+  libliberta_util.a \
+  libliberta_common.a \
+  libliberta_server.a \
+  libliberta_cli.a
 if ENABLE_WALLET
-BITCOIN_INCLUDES += $(BDB_CPPFLAGS)
-EXTRA_LIBRARIES += libkore_wallet.a
+LIBERTA_INCLUDES += $(BDB_CPPFLAGS)
+EXTRA_LIBRARIES += libliberta_wallet.a
 endif
 if ENABLE_ZMQ
-EXTRA_LIBRARIES += libkore_zmq.a
+EXTRA_LIBRARIES += libliberta_zmq.a
 endif
 
-if BUILD_BITCOIN_LIBS
-lib_LTLIBRARIES = libkoreconsensus.la
-LIBBITCOIN_CONSENSUS=libkoreconsensus.la
+if BUILD_LIBERTA_LIBS
+lib_LTLIBRARIES = liblibertaconsensus.la
+LIBLIBERTA_CONSENSUS=liblibertaconsensus.la
 else
-LIBBITCOIN_CONSENSUS=
+LIBLIBERTA_CONSENSUS=
 endif
 
 bin_PROGRAMS =
 TESTS =
 BENCHMARKS =
 
-if BUILD_BITCOIND
-  bin_PROGRAMS += kored
+if BUILD_LIBERTAD
+  bin_PROGRAMS += libertad
 endif
 
-if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += kore-cli kore-tx
+if BUILD_LIBERTA_UTILS
+  bin_PROGRAMS += liberta-cli liberta-tx
 endif
 
 .PHONY: FORCE check-symbols check-security
-# kore core #
-BITCOIN_CORE_H = \
+# liberta core #
+LIBERTA_CORE_H = \
   activemasternode.h \
   addrman.h \
   alert.h \
   amount.h \
   arith_uint256.h \
-  axiom.h \
   base58.h \
   bloom.h \
   chain.h \
@@ -114,7 +113,6 @@ BITCOIN_CORE_H = \
   memusage.h \
   merkleblock.h \
   miner.h \
-  momentum.h \
   net.h \
   netbase.h \
   noui.h \
@@ -173,104 +171,20 @@ BITCOIN_CORE_H = \
   zmq/zmqabstractnotifier.h \
   zmq/zmqconfig.h\
   zmq/zmqnotificationinterface.h \
-  zmq/zmqpublishnotifier.h \
-  tor/ht.h \
-  tor/or.h \
-  tor/aes.h \
-  tor/dns.h \
-  tor/geoip.h \
-  tor/onion.h \
-  tor/relay.h \
-  tor/config.h \
-  tor/crypto.h \
-  tor/di_ops.h \
-  tor/ntmain.h \
-  tor/router.h \
-  tor/status.h \
-  tor/torint.h \
-  tor/torlog.h \
-  tor/tortls.h \
-  tor/address.h \
-  tor/buffers.h \
-  tor/channel.h \
-  tor/command.h \
-  tor/control.h \
-  tor/dirserv.h \
-  tor/dirvote.h \
-  tor/dnsserv.h \
-  tor/fp_pair.h \
-  tor/memarea.h \
-  tor/mempool.h \
-  tor/procmon.h \
-  tor/reasons.h \
-  tor/rendmid.h \
-  tor/rephist.h \
-  tor/sandbox.h \
-  tor/torgzip.h \
-  tor/eventdns.h \
-  tor/kore.h \
-  tor/nodelist.h \
-  tor/orconfig.h \
-  tor/policies.h \
-  tor/tinytest.h \
-  tor/tor_util.h \
-  tor/backtrace.h \
-  tor/confparse.h \
-  tor/container.h \
-  tor/cpuworker.h \
-  tor/directory.h \
-  tor/hibernate.h \
-  tor/microdesc.h \
-  tor/onion_tap.h \
-  tor/routerset.h \
-  tor/statefile.h \
-  tor/tor_queue.h \
-  tor/addressmap.h \
-  tor/channeltls.h \
-  tor/circuitmux.h \
-  tor/circuituse.h \
-  tor/connection.h \
-  tor/entrynodes.h \
-  tor/ext_orport.h \
-  tor/onion_fast.h \
-  tor/onion_main.h \
-  tor/onion_ntor.h \
-  tor/rendclient.h \
-  tor/rendcommon.h \
-  tor/routerlist.h \
-  tor/tor_compat.h \
-  tor/transports.h \
-  tor/circuitlist.h \
-  tor/rendservice.h \
-  tor/replaycache.h \
-  tor/routerparse.h \
-  tor/testsupport.h \
-  tor/circpathbias.h \
-  tor/circuitbuild.h \
-  tor/circuitstats.h \
-  tor/eventdns_tor.h \
-  tor/connection_or.h \
-  tor/networkstatus.h \
-  tor/orconfig_apple.h \
-  tor/orconfig_linux.h \
-  tor/orconfig_win32.h \
-  tor/circuitmux_ewma.h \
-  tor/compat_libevent.h \
-  tor/connection_edge.h \
-  tor/tinytest_macros.h \
-  tor/crypto_curve25519.h 
+  zmq/zmqpublishnotifier.h
+
 
 obj/build.h: FORCE
 	@$(MKDIR_P) $(builddir)/obj
 	@$(top_srcdir)/share/genbuild.sh $(abs_top_builddir)/src/obj/build.h \
 	  $(abs_top_srcdir)
-libkore_util_a-clientversion.$(OBJEXT): obj/build.h
+libliberta_util_a-clientversion.$(OBJEXT): obj/build.h
 
-# server: shared between kored and kore-qt
-libkore_server_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
-libkore_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+# server: shared between libertad and liberta-qt
+libliberta_server_a_CPPFLAGS = -fPIC $(AM_CPPFLAGS) $(LIBERTA_INCLUDES) $(MINIUPNPC_CPPFLAGS) $(EVENT_CFLAGS) $(EVENT_PTHREADS_CFLAGS)
+libliberta_server_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 LIBS += -lz -levent -levent_core
-libkore_server_a_SOURCES = \
+libliberta_server_a_SOURCES = \
   addrman.cpp \
   alert.cpp \
   bloom.cpp \
@@ -300,108 +214,30 @@ libkore_server_a_SOURCES = \
   rpc/server.cpp \
   script/sigcache.cpp \
   timedata.cpp \
-  tor/address.c \
-  tor/addressmap.c \
-  tor/aes.c \
-  tor/backtrace.c \
-  tor/buffers.c \
-  tor/channel.c \
-  tor/channeltls.c \
-  tor/circpathbias.c \
-  tor/circuitbuild.c \
-  tor/circuitlist.c \
-  tor/circuitmux.c \
-  tor/circuitmux_ewma.c \
-  tor/circuitstats.c \
-  tor/circuituse.c \
-  tor/command.c \
-  tor/compat.c \
-  tor/compat_libevent.c \
-  tor/config.c \
-  tor/config_codedigest.c \
-  tor/confparse.c \
-  tor/connection.c \
-  tor/connection_edge.c \
-  tor/connection_or.c \
-  tor/container.c \
-  tor/control.c \
-  tor/cpuworker.c \
-  tor/crypto.c \
-  tor/crypto_curve25519.c \
-  tor/crypto_format.c \
-  tor/curve25519-donna.c \
-  tor/di_ops.c \
-  tor/directory.c \
-  tor/dirserv.c \
-  tor/dirvote.c \
-  tor/dns.c \
-  tor/dnsserv.c \
-  tor/entrynodes.c \
-  tor/ext_orport.c \
-  tor/fp_pair.c \
-  tor/geoip.c \
-  tor/hibernate.c \
-  tor/log.c \
-  tor/memarea.c \
-  tor/mempool.c \
-  tor/microdesc.c \
-  tor/networkstatus.c \
-  tor/nodelist.c \
-  tor/onion.c \
-  tor/onion_fast.c \
-  tor/onion_main.c \
-  tor/onion_ntor.c \
-  tor/onion_tap.c \
-  tor/policies.c \
-  tor/kore.cpp \
-  tor/procmon.c \
-  tor/reasons.c \
-  tor/relay.c \
-  tor/rendclient.c \
-  tor/rendcommon.c \
-  tor/rendmid.c \
-  tor/rendservice.c \
-  tor/rephist.c \
-  tor/replaycache.c \
-  tor/router.c \
-  tor/routerlist.c \
-  tor/routerparse.c \
-  tor/routerset.c \
-  tor/sandbox.c \
-  tor/statefile.c \
-  tor/status.c \
-  tor/strlcat.c \
-  tor/strlcpy.c \
-  tor/tor_util.c \
-  tor/torgzip.c \
-  tor/tortls.c \
-  tor/transports.c \
-  tor/util_codedigest.c \
-  tor/kore.cpp \
   torcontrol.cpp \
   txdb.cpp \
   txmempool.cpp \
   validationinterface.cpp \
   versionbits.cpp \
-  $(BITCOIN_CORE_H)
+  $(LIBERTA_CORE_H)
 
 if ENABLE_ZMQ
-LIBBITCOIN_ZMQ=libkore_zmq.a
+LIBLIBERTA_ZMQ=libliberta_zmq.a
 
-libkore_zmq_a_CPPFLAGS = $(BITCOIN_INCLUDES) $(ZMQ_CFLAGS)
-libkore_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libkore_zmq_a_SOURCES = \
+libliberta_zmq_a_CPPFLAGS = $(LIBERTA_INCLUDES) $(ZMQ_CFLAGS)
+libliberta_zmq_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libliberta_zmq_a_SOURCES = \
   zmq/zmqabstractnotifier.cpp \
   zmq/zmqnotificationinterface.cpp \
   zmq/zmqpublishnotifier.cpp
 endif
 
 
-# wallet: shared between kored and kore-qt, but only linked
+# wallet: shared between libertad and liberta-qt, but only linked
 # when wallet enabled
-libkore_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libkore_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libkore_wallet_a_SOURCES = \
+libliberta_wallet_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES)
+libliberta_wallet_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libliberta_wallet_a_SOURCES = \
   wallet/crypter.cpp \
   activemasternode.cpp \
   obfuscation.cpp \
@@ -421,12 +257,12 @@ libkore_wallet_a_SOURCES = \
   wallet/wallet_ismine.cpp \
   wallet/walletdb.cpp \
   policy/rbf.cpp \
-  $(BITCOIN_CORE_H)
+  $(LIBERTA_CORE_H)
 
 # crypto primitives library
-crypto_libkore_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_CONFIG_INCLUDES)
-crypto_libkore_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-crypto_libkore_crypto_a_SOURCES = \
+crypto_libliberta_crypto_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_CONFIG_INCLUDES)
+crypto_libliberta_crypto_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+crypto_libliberta_crypto_a_SOURCES = \
   crypto/common.h \
   crypto/hmac_sha256.cpp \
   crypto/hmac_sha256.h \
@@ -439,22 +275,18 @@ crypto_libkore_crypto_a_SOURCES = \
   crypto/sha256.cpp \
   crypto/sha256.h \
   crypto/sha512.cpp \
-  crypto/sha512.h \
-  crypto/sph_shabal.cpp \
-  crypto/sph_shabal.h
+  crypto/sha512.h
 
-# common: shared between kored, and kore-qt and non-server tools
-libkore_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libkore_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libkore_common_a_SOURCES = \
+# common: shared between libertad, and liberta-qt and non-server tools
+libliberta_common_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES)
+libliberta_common_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libliberta_common_a_SOURCES = \
   amount.cpp \
-  axiom.cpp \
   arith_uint256.cpp \
   base58.cpp \
   chainparams.cpp \
   coins.cpp \
   compressor.cpp \
-  momentum.cpp \
   consensus/merkle.cpp \
   core_read.cpp \
   core_write.cpp \
@@ -472,14 +304,14 @@ libkore_common_a_SOURCES = \
   script/script_error.cpp \
   script/sign.cpp \
   script/standard.cpp \
-  $(BITCOIN_CORE_H)
+  $(LIBERTA_CORE_H)
 
 # util: shared between all executables.
 # This library *must* be included to make sure that the glibc
 # backward-compatibility objects and their sanity checks are linked.
-libkore_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libkore_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libkore_util_a_SOURCES = \
+libliberta_util_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES)
+libliberta_util_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libliberta_util_a_SOURCES = \
   support/pagelocker.cpp \
   chainparamsbase.cpp \
   clientversion.cpp \
@@ -495,94 +327,94 @@ libkore_util_a_SOURCES = \
   utilmoneystr.cpp \
   utilstrencodings.cpp \
   utiltime.cpp \
-  $(BITCOIN_CORE_H)
+  $(LIBERTA_CORE_H)
 
 if GLIBC_BACK_COMPAT
-libkore_util_a_SOURCES += compat/glibc_compat.cpp
+libliberta_util_a_SOURCES += compat/glibc_compat.cpp
 endif
 
-# cli: shared between kore-cli and kore-qt
-libkore_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-libkore_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-libkore_cli_a_SOURCES = \
+# cli: shared between liberta-cli and liberta-qt
+libliberta_cli_a_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES)
+libliberta_cli_a_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libliberta_cli_a_SOURCES = \
   rpc/client.cpp \
-  $(BITCOIN_CORE_H)
+  $(LIBERTA_CORE_H)
 
-nodist_libkore_util_a_SOURCES = $(srcdir)/obj/build.h
+nodist_libliberta_util_a_SOURCES = $(srcdir)/obj/build.h
 #
 
-# kored binary #
-kored_SOURCES = kored.cpp
-kored_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-kored_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-kored_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# libertad binary #
+libertad_SOURCES = libertad.cpp
+libertad_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES)
+libertad_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+libertad_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-kored_SOURCES += kored-res.rc
+libertad_SOURCES += libertad-res.rc
 endif
 
-kored_LDADD = \
-  $(LIBBITCOIN_SERVER) \
-  $(LIBBITCOIN_COMMON) \
+libertad_LDADD = \
+  $(LIBLIBERTA_SERVER) \
+  $(LIBLIBERTA_COMMON) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBLIBERTA_UTIL) \
+  $(LIBLIBERTA_CRYPTO) \
   $(LIBLEVELDB) \
   $(LIBMEMENV) \
   $(LIBSECP256K1)
 
 if ENABLE_ZMQ
-kored_LDADD += $(LIBBITCOIN_ZMQ) $(ZMQ_LIBS)
+libertad_LDADD += $(LIBLIBERTA_ZMQ) $(ZMQ_LIBS)
 endif
 
 if ENABLE_WALLET
-kored_LDADD += libkore_wallet.a
+libertad_LDADD += libliberta_wallet.a
 endif
 
-kored_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
+libertad_LDADD += $(BOOST_LIBS) $(BDB_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(MINIUPNPC_LIBS) $(EVENT_PTHREADS_LIBS) $(EVENT_LIBS)
 
-# kore-cli binary #
-kore_cli_SOURCES = kore-cli.cpp
-kore_cli_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES) $(EVENT_CFLAGS)
-kore_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-kore_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# liberta-cli binary #
+liberta_cli_SOURCES = liberta-cli.cpp
+liberta_cli_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES) $(EVENT_CFLAGS)
+liberta_cli_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+liberta_cli_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-kore_cli_SOURCES += kore-cli-res.rc
+liberta_cli_SOURCES += liberta-cli-res.rc
 endif
 
-kore_cli_LDADD = \
-  $(LIBBITCOIN_CLI) \
+liberta_cli_LDADD = \
+  $(LIBLIBERTA_CLI) \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_UTIL)
+  $(LIBLIBERTA_UTIL)
 
-kore_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
+liberta_cli_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS) $(EVENT_LIBS)
 #
 
-# kore-tx binary #
-kore_tx_SOURCES = kore-tx.cpp
-kore_tx_CPPFLAGS = $(AM_CPPFLAGS) $(BITCOIN_INCLUDES)
-kore_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
-kore_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+# liberta-tx binary #
+liberta_tx_SOURCES = liberta-tx.cpp
+liberta_tx_CPPFLAGS = $(AM_CPPFLAGS) $(LIBERTA_INCLUDES)
+liberta_tx_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+liberta_tx_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 if TARGET_WINDOWS
-kore_tx_SOURCES += kore-tx-res.rc
+liberta_tx_SOURCES += liberta-tx-res.rc
 endif
 
-kore_tx_LDADD = \
+liberta_tx_LDADD = \
   $(LIBUNIVALUE) \
-  $(LIBBITCOIN_COMMON) \
-  $(LIBBITCOIN_UTIL) \
-  $(LIBBITCOIN_CRYPTO) \
+  $(LIBLIBERTA_COMMON) \
+  $(LIBLIBERTA_UTIL) \
+  $(LIBLIBERTA_CRYPTO) \
   $(LIBSECP256K1)
 
-kore_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+liberta_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
 #
 
-# koreconsensus library #
-if BUILD_BITCOIN_LIBS
-include_HEADERS = script/koreconsensus.h
-libkoreconsensus_la_SOURCES = \
+# libertaconsensus library #
+if BUILD_LIBERTA_LIBS
+include_HEADERS = script/libertaconsensus.h
+liblibertaconsensus_la_SOURCES = \
   crypto/hmac_sha512.cpp \
   crypto/ripemd160.cpp \
   crypto/sha1.cpp \
@@ -591,20 +423,20 @@ libkoreconsensus_la_SOURCES = \
   hash.cpp \
   primitives/transaction.cpp \
   pubkey.cpp \
-  script/koreconsensus.cpp \
+  script/libertaconsensus.cpp \
   script/interpreter.cpp \
   script/script.cpp \
   uint256.cpp \
   utilstrencodings.cpp
 
 if GLIBC_BACK_COMPAT
-  libkoreconsensus_la_SOURCES += compat/glibc_compat.cpp
+  liblibertaconsensus_la_SOURCES += compat/glibc_compat.cpp
 endif
 
-libkoreconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
-libkoreconsensus_la_LIBADD = $(LIBSECP256K1)
-libkoreconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_BITCOIN_INTERNAL
-libkoreconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
+liblibertaconsensus_la_LDFLAGS = $(AM_LDFLAGS) -no-undefined $(RELDFLAGS)
+liblibertaconsensus_la_LIBADD = $(LIBSECP256K1)
+liblibertaconsensus_la_CPPFLAGS = $(AM_CPPFLAGS) -I$(builddir)/obj -I$(srcdir)/secp256k1/include -DBUILD_LIBERTA_INTERNAL
+liblibertaconsensus_la_CXXFLAGS = $(AM_CXXFLAGS) $(PIE_FLAGS)
 
 endif
 #

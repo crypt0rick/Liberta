@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_MINER_H
-#define BITCOIN_MINER_H
+#ifndef LIBERTA_MINER_H
+#define LIBERTA_MINER_H
 
 #include "primitives/block.h"
 
@@ -30,7 +30,7 @@ struct CBlockTemplate
 };
 
 /** Run the miner threads */
-void GenerateKores(bool fGenerate, int nThreads, const CChainParams& chainparams);
+void GenerateLibertas(bool fGenerate, int nThreads, const CChainParams& chainparams);
 /** Generate a new block, without valid proof-of-work */
 CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& scriptPubKeyIn, CWallet* pwallet, bool fProofOfStake = false);
 /** Modify the extranonce in a block */
@@ -42,4 +42,4 @@ std::string convertAddress(const char address[], char newVersionByte);
 bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainparams);
 extern double dHashesPerMin;
 extern int64_t nHPSTimerStart;
-#endif // BITCOIN_MINER_H
+#endif // LIBERTA_MINER_H

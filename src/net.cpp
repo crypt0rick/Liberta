@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/kore-config.h"
+#include "config/liberta-config.h"
 #endif
 
 #include "net.h"
@@ -86,7 +86,7 @@ const static std::string NET_MESSAGE_COMMAND_OTHER = "*other*";
 // Global state variables
 //
 double usdprice =0;
-double koreprice=0;
+double LBTprice=0;
 double usdrate=0;
 
 bool fDiscover = true;
@@ -664,7 +664,7 @@ void CNode::copyStats(CNodeStats &stats)
         nPingUsecWait = GetTimeMicros() - nPingUsecStart;
     }
 
-    // Raw ping time is in microseconds, but show it to user as whole seconds (Koreusers should be well used to small numbers with many decimal places by now :)
+    // Raw ping time is in microseconds, but show it to user as whole seconds (Libertausers should be well used to small numbers with many decimal places by now :)
     stats.dPingTime = (((double)nPingUsecTime) / 1e6);
     stats.dPingMin  = (((double)nMinPingUsecTime) / 1e6);
     stats.dPingWait = (((double)nPingUsecWait) / 1e6);
@@ -819,35 +819,7 @@ void SocketSendData(CNode *pnode)
         assert(pnode->nSendSize == 0);
     }
     pnode->vSendMsg.erase(pnode->vSendMsg.begin(), it);
-}
 
-void ThreadTorNet() {
-	
-    try
-    {	
-		boost::this_thread::interruption_point();
-		std::string logDecl = "notice file " + GetDataDir().string() + "/tor/tor.log";
-		char *argvLogDecl = (char*) logDecl.c_str();
-
-		char* argv[] = {
-			(char*)"tor",
-			(char*)"--hush",
-			(char*)"--Log",
-			argvLogDecl
-		};
-
-		tor_main(4, argv);
-    }
-    catch (const boost::thread_interrupted&)
-    {
-        LogPrintf("Tor terminated\n");
-        throw;
-    }
-    catch (const std::runtime_error &e)
-    {
-        LogPrintf("Tor runtime error: %s\n", e.what());
-        return;
-    }
 }
 
 static list<CNode*> vNodesDisconnected;
@@ -1403,7 +1375,7 @@ void ThreadMapPort()
             }
         }
 
-        string strDesc = "Kore " + FormatFullVersion();
+        string strDesc = "Liberta " + FormatFullVersion();
 
         try {
             while (true) {
@@ -1469,6 +1441,11 @@ void MapPort(bool)
     // Intentionally left blank.
 }
 #endif
+
+
+
+
+
 
 void ThreadDNSAddressSeed()
 {
@@ -1904,7 +1881,7 @@ bool BindListenPort(const CService &addrBind, string& strError, bool fWhiteliste
     {
         int nErr = WSAGetLastError();
         if (nErr == WSAEADDRINUSE)
-            strError = strprintf(_("Unable to bind to %s on this computer. Kore is probably already running."), addrBind.ToString());
+            strError = strprintf(_("Unable to bind to %s on this computer. Liberta is probably already running."), addrBind.ToString());
         else
             strError = strprintf(_("Unable to bind to %s on this computer (bind returned error %s)"), addrBind.ToString(), NetworkErrorString(nErr));
         LogPrintf("%s\n", strError);
@@ -2007,11 +1984,11 @@ std::string replacestring(std::string subject, const std::string& search,
     return subject;
 }
 
-void koregetprice()
+void LBTgetprice()
 {
 	double price;
     std::string url;
-    url = "https://bittrex.com/api/v1.1/public/getticker?market=BTC-KORE";
+    url = "https://bittrex.com/api/v1.1/public/getticker?market=BTC-LBT";
 
     const char * c = url.c_str();
 
@@ -2026,15 +2003,15 @@ void koregetprice()
 		curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Kore/0.12");
+		curl_easy_setopt(curl, CURLOPT_USERAGENT, "Liberta/0.12");
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         }
 		if(res != CURLE_OK) {
-			if (fDebug) LogPrintf("Curl Error koregetprice() - %s - on URL:%s.\n", curl_easy_strerror(res), url);
+			if (fDebug) LogPrintf("Curl Error LBTgetprice() - %s - on URL:%s.\n", curl_easy_strerror(res), url);
 		}
 		else {
-			if (fDebug) LogPrintf("Curl Response koregetprice() - Lenght %lu - Buffer - %s .\n", (long)readBuffer.size(), readBuffer);
+			if (fDebug) LogPrintf("Curl Response LBTgetprice() - Lenght %lu - Buffer - %s .\n", (long)readBuffer.size(), readBuffer);
 			std::size_t pos = readBuffer.find(",\"A");
 			readBuffer = readBuffer.substr(0,pos);
 			readBuffer = replacestring(readBuffer, ",", ",\n");
@@ -2051,7 +2028,7 @@ void koregetprice()
 		if ( ! (istringstream(readBuffer) >> price) ) price = 0;
 
       if (price > 0)
-         koreprice = price;
+         LBTprice = price;
 }
 
 void btcusdprice()
@@ -2069,7 +2046,7 @@ void btcusdprice()
         curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Kore/0.12");
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, "Liberta/0.12");
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 5);
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
@@ -2083,8 +2060,8 @@ void btcusdprice()
 void FiatData()
 {
     btcusdprice();
-    koregetprice();
-    usdrate = usdprice*koreprice;
+    LBTgetprice();
+    usdrate = usdprice*LBTprice;
 }
 
 void static Discover(boost::thread_group& threadGroup)
@@ -2092,15 +2069,8 @@ void static Discover(boost::thread_group& threadGroup)
     // no network discovery
 }
 
-void StartTor(boost::thread_group& threadGroup)
-{
-    threadGroup.create_thread(boost::bind(&TraceThread<void (*)()>, "kore-tornet", &ThreadTorNet));
-}
 
-void StopTor()
-{
-    //int a = check_interrupted();
-}
+
 
 void StartNode(boost::thread_group& threadGroup, CScheduler& scheduler)
 {

@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -48,7 +48,7 @@ std::string convertAddress(const char address[], char newVersionByte){
 }
 //////////////////////////////////////////////////////////////////////////////
 //
-// KoreMiner
+// LibertaMiner
 //
 
 //
@@ -289,7 +289,8 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
                 double dPriority = iter->GetPriority(nHeight);
                 CAmount dummy;
                 mempool.ApplyDeltas(tx.GetHash(), dPriority, dummy);
-                LogPrintf("priority %.1f fee %s txid %s\n", dPriority , CFeeRate(iter->GetModifiedFee(), nTxSize).ToString(), tx.GetHash().ToString());
+                LogPrintf("priority %.1f fee %s txid %s\n",
+                          dPriority , CFeeRate(iter->GetModifiedFee(), nTxSize).ToString(), tx.GetHash().ToString());
             }
 
             inBlock.insert(iter);
@@ -327,6 +328,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
         }
 
         pblocktemplate->vTxFees[0] = -nFees;
+
         // Fill in header
         pblock->hashPrevBlock  = pindexPrev->GetBlockHash();
         if (!fProofOfStake)
@@ -341,6 +343,7 @@ CBlockTemplate* CreateNewBlock(const CChainParams& chainparams, const CScript& s
             throw std::runtime_error(strprintf("%s: TestBlockValidity failed: %s", __func__, FormatStateMessage(state)));
         }
     }
+
     return pblocktemplate.release();
 }
 
@@ -393,9 +396,10 @@ bool ProcessBlockFound(const CBlock* pblock, const CChainParams& chainparams)
 
     // Inform about the new block
     GetMainSignals().BlockFound(pblock->GetHash());
+
     // Process this block the same as if we had received it from another node
-    if (!ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL))
-        return error("KoreMiner: ProcessNewBlock, block not accepted");
+      if (!ProcessNewBlock(state, chainparams, NULL, pblock, true, NULL))
+        return error("LibertaMiner: ProcessNewBlock, block not accepted");
 
     return true;
 }
@@ -415,20 +419,20 @@ void ThreadStakeMiner(CWallet* pwallet)
         throw std::runtime_error("No coinstake script available (staking requires a wallet)");
 
     bool fTryToSync = true;
-    
+
     while (true)
     {
     
         while (pwallet->IsLocked())
         {
-            // nLastCoinStakeSearchInterval = 0;
+          //  nLastCoinStakeSearchInterval = 0;
             MilliSleep(1000);
         }
-        
+
         while (vNodes.empty() || IsInitialBlockDownload())
         {
 			fTryToSync = true;
-            // nLastCoinStakeSearchInterval = 0;
+           // nLastCoinStakeSearchInterval = 0;
             MilliSleep(1000);
         }
 
@@ -523,11 +527,11 @@ bool SignBlock(CWallet* pwallet, CBlock* pblock)
     return false;
 }
 
-void static KoreMiner(const CChainParams& chainparams)
+void static LibertaMiner(const CChainParams& chainparams)
 {
-    LogPrintf("KoreMiner started\n");
+    LogPrintf("LibertaMiner started\n");
     SetThreadPriority(THREAD_PRIORITY_LOWEST);
-    RenameThread("kore-miner");
+    RenameThread("liberta-miner");
 
     unsigned int nExtraNonce = 0;
 
@@ -566,13 +570,13 @@ void static KoreMiner(const CChainParams& chainparams)
             unique_ptr<CBlockTemplate> pblocktemplate(CreateNewBlock(chainparams, coinbaseScript->reserveScript, NULL, false));
             if (!pblocktemplate.get())
             {
-                LogPrintf("Error in KoreMiner: Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
+                LogPrintf("Error in LibertaMiner: Keypool ran out, please call keypoolrefill before restarting the mining thread\n");
                 return;
             }
             CBlock *pblock = &pblocktemplate->block;
             IncrementExtraNonce(pblock, pindexPrev, nExtraNonce);
 
-            LogPrintf("Running KoreMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
+            LogPrintf("Running LibertaMiner with %u transactions in block (%u bytes)\n", pblock->vtx.size(),
                 ::GetSerializeSize(*pblock, SER_NETWORK, PROTOCOL_VERSION));
 
             //
@@ -588,7 +592,7 @@ void static KoreMiner(const CChainParams& chainparams)
 
                 for(int i=0;i<1;i++){
                     pblock->nNonce=pblock->nNonce+1;
-                    testHash=pblock->CalculateBestBirthdayHash();
+                    testHash=pblock;
                     nHashesDone++;
                     if (fDebug) LogPrintf("testHash %s\n", testHash.ToString().c_str());
                     if (fDebug) LogPrintf("Hash Target %s\n", hashTarget.ToString().c_str());
@@ -656,17 +660,17 @@ void static KoreMiner(const CChainParams& chainparams)
     }
     catch (const boost::thread_interrupted&)
     {
-        LogPrintf("KoreMiner terminated\n");
+        LogPrintf("LibertaMiner terminated\n");
         throw;
     }
     catch (const std::runtime_error &e)
     {
-        LogPrintf("KoreMiner runtime error: %s\n", e.what());
+        LogPrintf("LibertaMiner runtime error: %s\n", e.what());
         return;
     }
 }
 
-void GenerateKores(bool fGenerate, int nThreads, const CChainParams& chainparams)
+void GenerateLibertas(bool fGenerate, int nThreads, const CChainParams& chainparams)
 {
     static boost::thread_group* minerThreads = NULL;
 
@@ -685,5 +689,5 @@ void GenerateKores(bool fGenerate, int nThreads, const CChainParams& chainparams
 
     minerThreads = new boost::thread_group();
     for (int i = 0; i < nThreads; i++)
-        minerThreads->create_thread(boost::bind(&KoreMiner, boost::cref(chainparams)));
+        minerThreads->create_thread(boost::bind(&LibertaMiner, boost::cref(chainparams)));
 }

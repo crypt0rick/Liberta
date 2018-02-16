@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2015 The Dash developers
-// Copyright (c) 2015-2017 The KORE developers
+// Copyright (c) 2015-2017 The LIBERTA developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -321,7 +321,7 @@ void CMasternodePayments::FillBlockPayee(CMutableTransaction& txNew, int64_t nFe
 
         CTxDestination address1;
         ExtractDestination(payee, address1);
-        CKoreAddress address2(address1);
+        CLibertaAddress address2(address1);
 
         LogPrintf("Masternode payment of %s to %s\n", FormatMoney(masternodePayment).c_str(), address2.ToString().c_str());
     }
@@ -403,7 +403,7 @@ void CMasternodePayments::ProcessMessageMasternodePayments(CNode* pfrom, std::st
 
         CTxDestination address1;
         ExtractDestination(winner.payee, address1);
-        CKoreAddress address2(address1);
+        CLibertaAddress address2(address1);
 
         //   LogPrint("mnpayments", "mnw - winning vote - Addr %s Height %d bestHeight %d - %s\n", address2.ToString().c_str(), winner.nBlockHeight, nHeight, winner.vinMasternode.prevout.ToStringShort());
 
@@ -555,7 +555,7 @@ bool CMasternodeBlockPayees::IsTransactionValid(const CTransaction& txNew, bool 
 
             CTxDestination address1;
             ExtractDestination(payee.scriptPubKey, address1);
-            CKoreAddress address2(address1);
+            CLibertaAddress address2(address1);
 
             if (strPayeesPossible == "") {
                 strPayeesPossible += address2.ToString();
@@ -579,7 +579,7 @@ std::string CMasternodeBlockPayees::GetRequiredPaymentsString()
     BOOST_FOREACH (CMasternodePayee& payee, vecPayments) {
         CTxDestination address1;
         ExtractDestination(payee.scriptPubKey, address1);
-        CKoreAddress address2(address1);
+        CLibertaAddress address2(address1);
 
         if (ret != "Unknown") {
             ret += ", " + address2.ToString() + ":" + boost::lexical_cast<std::string>(payee.nVotes);
@@ -730,7 +730,7 @@ bool CMasternodePayments::ProcessBlock(int nBlockHeight)
 
             CTxDestination address1;
             ExtractDestination(payee, address1);
-            CKoreAddress address2(address1);
+            CLibertaAddress address2(address1);
 
             LogPrintf("CMasternodePayments::ProcessBlock() Winner payee %s nHeight %d. \n", address2.ToString().c_str(), newWinner.nBlockHeight);
         } else {

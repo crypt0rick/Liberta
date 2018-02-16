@@ -1,5 +1,5 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -428,13 +428,13 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
         {
             string strAddress;
             ssKey >> strAddress;
-            ssValue >> pwallet->mapAddressBook[CKoreAddress(strAddress).Get()].name;
+            ssValue >> pwallet->mapAddressBook[CLibertaAddress(strAddress).Get()].name;
         }
         else if (strType == "purpose")
         {
             string strAddress;
             ssKey >> strAddress;
-            ssValue >> pwallet->mapAddressBook[CKoreAddress(strAddress).Get()].purpose;
+            ssValue >> pwallet->mapAddressBook[CLibertaAddress(strAddress).Get()].purpose;
         }
         else if (strType == "tx")
         {
@@ -664,7 +664,7 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             ssKey >> i;
             std::pair<std::string, int> pMultiSend;
             ssValue >> pMultiSend;
-            if (CKoreAddress(pMultiSend.first).IsValid()) {
+            if (CLibertaAddress(pMultiSend.first).IsValid()) {
                 pwallet->vMultiSend.push_back(pMultiSend);
             }
         } else if (strType == "msettingsv2") //presstab HyperStake
@@ -691,7 +691,7 @@ ReadKeyValue(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssValue,
             ssKey >> strAddress;
             ssKey >> strKey;
             ssValue >> strValue;
-            if (!pwallet->LoadDestData(CKoreAddress(strAddress).Get(), strKey, strValue))
+            if (!pwallet->LoadDestData(CLibertaAddress(strAddress).Get(), strKey, strValue))
             {
                 strErr = "Error reading wallet database: LoadDestData failed";
                 return false;
@@ -716,7 +716,7 @@ bool ReadKeyValueImport(CWallet* pwallet, CDataStream& ssKey, CDataStream& ssVal
         {
             string strAddress;
             ssKey >> strAddress;
-            ssValue >> pwallet->mapAddressBook[CKoreAddress(strAddress).Get()].name;
+            ssValue >> pwallet->mapAddressBook[CLibertaAddress(strAddress).Get()].name;
         }
         else if (strType == "key" || strType == "wkey")
         {
@@ -1124,7 +1124,7 @@ DBErrors CWalletDB::ZapWalletTx(CWallet* pwallet, vector<CWalletTx>& vWtx)
 void ThreadFlushWalletDB(const string& strFile)
 {
     // Make this thread recognisable as the wallet flushing thread
-    RenameThread("kore-wallet");
+    RenameThread("liberta-wallet");
 
     static bool fOneThread;
     if (fOneThread)

@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_WALLET_WALLET_H
-#define BITCOIN_WALLET_WALLET_H
+#ifndef LIBERTA_WALLET_WALLET_H
+#define LIBERTA_WALLET_WALLET_H
 
 #include "amount.h"
 #include "base58.h"
@@ -88,12 +88,12 @@ enum AvailableCoinsType {
     ALL_COINS = 1,
     ONLY_DENOMINATED = 2,
     ONLY_NOT1000IFMN = 3,
-    ONLY_NONDENOMINATED_NOT1000IFMN = 4, // ONLY_NONDENOMINATED and not 500 KORE at the same time
+    ONLY_NONDENOMINATED_NOT1000IFMN = 4, // ONLY_NONDENOMINATED and not 500 LBT at the same time
     ONLY_1000 = 5                        // find masternode outputs including locked ones (use with caution)
 };
 
 struct CompactTallyItem {
-    CKoreAddress address;
+    CLibertaAddress address;
     CAmount nAmount;
     std::vector<CTxIn> vecTxIn;
     CompactTallyItem()
@@ -458,6 +458,8 @@ public:
 };
 
 
+
+
 class COutput
 {
 public:
@@ -478,6 +480,9 @@ public:
    
     std::string ToString() const;
 };
+
+
+
 
 /** Private key that includes an expiration date in case it never gets used. */
 class CWalletKey
@@ -681,7 +686,7 @@ public:
      */
 
     void AvailableCoins(std::vector<COutput>& vCoins, bool fOnlyConfirmed=true, const CCoinControl *coinControl = NULL, bool fIncludeZeroValue=false, AvailableCoinsType nCoinType = ALL_COINS, bool fUseIX = false, bool fProofOfStake=false) const;
-    std::map<CKoreAddress, std::vector<COutput> > AvailableCoinsByAddress(bool fConfirmed = true, CAmount maxCoinValue = 0);
+    std::map<CLibertaAddress, std::vector<COutput> > AvailableCoinsByAddress(bool fConfirmed = true, CAmount maxCoinValue = 0);
 
     /**
      * Shuffle and select coins until nTargetValue is reached while avoiding
@@ -968,6 +973,7 @@ public:
     void KeepScript() { KeepKey(); }
 };
 
+
 /** 
  * Account information.
  * Stored in wallet with key "acc"+string account name.
@@ -997,7 +1003,9 @@ public:
     }
 };
 
-/**
+
+
+/** 
  * Internal transfers.
  * Database key is acentry<account><counter>.
  */
@@ -1055,7 +1063,8 @@ public:
         READWRITE(LIMITED_STRING(strComment, 65536));
 
         size_t nSepPos = strComment.find("\0", 0, 1);
-        if (ser_action.ForRead()) {
+        if (ser_action.ForRead())
+        {
             mapValue.clear();
             if (std::string::npos != nSepPos) {
                 CDataStream ss(std::vector<char>(strComment.begin() + nSepPos + 1, strComment.end()), nType, nVersion);
@@ -1074,4 +1083,4 @@ private:
     std::vector<char> _ssExtra;
 };
 
-#endif // BITCOIN_WALLET_WALLET_H
+#endif // LIBERTA_WALLET_WALLET_H

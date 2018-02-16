@@ -1,4 +1,4 @@
-// Copyright (c) 2013-2015 The KoreCore developers
+// Copyright (c) 2013-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -6,6 +6,7 @@
 #include "crypto/common.h"
 #include "crypto/hmac_sha512.h"
 #include "pubkey.h"
+
 
 inline uint32_t ROTL32(uint32_t x, int8_t r)
 {

@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_CHAIN_H
-#define BITCOIN_CHAIN_H
+#ifndef LIBERTA_CHAIN_H
+#define LIBERTA_CHAIN_H
 
 #include "arith_uint256.h"
 #include "chainparams.h"
@@ -150,8 +150,6 @@ public:
     unsigned int nTime;
     unsigned int nBits;
     unsigned int nNonce;
-    uint32_t nBirthdayA;
-    uint32_t nBirthdayB;
 
     //! (memory only) Sequential id assigned to distinguish order in which blocks are received.
     uint32_t nSequenceId;
@@ -182,8 +180,6 @@ public:
         nTime          = 0;
         nBits          = 0;
         nNonce         = 0;
-        nBirthdayA	   = 0;
-        nBirthdayB	   = 0;
     }
 
     CBlockIndex()
@@ -200,8 +196,6 @@ public:
         nTime          = block.nTime;
         nBits          = block.nBits;
         nNonce         = block.nNonce;
-        nBirthdayA     = block.nBirthdayA;
-        nBirthdayB     = block.nBirthdayB;
     }
 
     CDiskBlockPos GetBlockPos() const {
@@ -232,8 +226,6 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
-        block.nBirthdayA     = nBirthdayA;
-        block.nBirthdayB     = nBirthdayB;
         return block;
     }
 
@@ -362,9 +354,7 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
-        READWRITE(nBirthdayA);
-        READWRITE(nBirthdayB);
-    }
+           }
 
     uint256 GetBlockHash() const
     {
@@ -375,8 +365,6 @@ public:
         block.nTime           = nTime;
         block.nBits           = nBits;
         block.nNonce          = nNonce;
-        block.nBirthdayA     = nBirthdayA;
-        block.nBirthdayB     = nBirthdayB;
         return block.GetHash();
     }
 
@@ -454,4 +442,4 @@ public:
 
 const CBlockIndex* GetLastBlockIndex(const CBlockIndex* pindex, bool fProofOfStake);
 
-#endif // BITCOIN_CHAIN_H
+#endif // LIBERTA_CHAIN_H

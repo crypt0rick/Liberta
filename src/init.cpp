@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #if defined(HAVE_CONFIG_H)
-#include "config/kore-config.h"
+#include "config/liberta-config.h"
 #endif
 
 #include "init.h"
@@ -42,8 +42,6 @@
 #include "utilmoneystr.h"
 #include "utilstrencodings.h"
 #include "validationinterface.h"
-#include "tor/kore.h"
-
 #ifdef ENABLE_WALLET
 #include "wallet/db.h"
 //#include "keepass.h"
@@ -199,8 +197,9 @@ void PrepareShutdown()
     /// for example if the data directory was found to be locked.
     /// Be sure that anything that writes files or flushes caches only does this if the respective
     /// module was initialized.
-    RenameThread("kore-shutoff");
+    RenameThread("liberta-shutoff");
     mempool.AddTransactionsUpdated(1);
+
     StopHTTPRPC();
     StopREST();
     StopRPC();
@@ -208,14 +207,13 @@ void PrepareShutdown()
 #ifdef ENABLE_WALLET
     if (pwalletMain)
         pwalletMain->Flush(false);
-    GenerateKores(false, 0, Params());
+    GenerateLibertas(false, 0, Params());
 #endif
     StopNode();
     DumpMasternodes();
     DumpBudgets();
     DumpMasternodePayments();
     StopTorControl();
-    //StopTor();
     UnregisterNodeSignals(GetNodeSignals());
 
     if (fFeeEstimatesInitialized)
@@ -354,8 +352,8 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-blocksonly", strprintf(_("Whether to operate in a blocks only mode (default: %u)"), DEFAULT_BLOCKSONLY));
     strUsage += HelpMessageOpt("-checkblocks=<n>", strprintf(_("How many blocks to check at startup (default: %u, 0 = all)"), DEFAULT_CHECKBLOCKS));
     strUsage += HelpMessageOpt("-checklevel=<n>", strprintf(_("How thorough the block verification of -checkblocks is (0-4, default: %u)"), DEFAULT_CHECKLEVEL));
-    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), BITCOIN_CONF_FILENAME));
-    if (mode == HMM_BITCOIND)
+    strUsage += HelpMessageOpt("-conf=<file>", strprintf(_("Specify configuration file (default: %s)"), LIBERTA_CONF_FILENAME));
+    if (mode == HMM_LIBERTAD)
     {
 #ifndef WIN32
         strUsage += HelpMessageOpt("-daemon", _("Run in the background as a daemon and accept commands"));
@@ -370,7 +368,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += HelpMessageOpt("-par=<n>", strprintf(_("Set the number of script verification threads (%u to %d, 0 = auto, <0 = leave that many cores free, default: %d)"),
         -GetNumCores(), MAX_SCRIPTCHECK_THREADS, DEFAULT_SCRIPTCHECK_THREADS));
 #ifndef WIN32
-    strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), BITCOIN_PID_FILENAME));
+    strUsage += HelpMessageOpt("-pid=<file>", strprintf(_("Specify pid file (default: %s)"), LIBERTA_PID_FILENAME));
 #endif
     strUsage += HelpMessageOpt("-prune=<n>", strprintf(_("Reduce storage requirements by pruning (deleting) old blocks. This mode is incompatible with -txindex and -rescan. "
             "Warning: Reverting this setting requires re-downloading the entire blockchain. "
@@ -486,7 +484,7 @@ std::string HelpMessage(HelpMessageMode mode)
         strUsage += HelpMessageOpt("-limitdescendantsize=<n>", strprintf("Do not accept transactions if any ancestor would have more than <n> kilobytes of in-mempool descendants (default: %u).", DEFAULT_DESCENDANT_SIZE_LIMIT));
     }
     string debugCategories = "addrman, alert, bench, coindb, db, lock, rand, rpc, selectcoins, mempool, mempoolrej, net, proxy, prune, http, libevent, tor, zmq"; // Don't translate these and qt below
-    if (mode == HMM_BITCOIN_QT)
+    if (mode == HMM_LIBERTA_QT)
         debugCategories += ", qt";
     strUsage += HelpMessageOpt("-debug=<category>", strprintf(_("Output debugging information (default: %u, supplying <category> is optional)"), 0) + ". " +
         _("If <category> is not supplied or if <category> = 1, output all debugging information.") + _("<category> can be:") + " " + debugCategories + ".");
@@ -536,7 +534,7 @@ std::string HelpMessage(HelpMessageMode mode)
     strUsage += "\n" + _("Obfustcation options:") + "\n";
     strUsage += "  -enableobfusctaiond=<n>          " + strprintf(_("Enable use of automated darksend for funds stored in this wallet (0-1, default: %u)"), 0) + "\n";
     strUsage += "  -obfuscationrounds=<n>          " + strprintf(_("Use N separate masternodes to anonymize funds  (2-8, default: %u)"), 2) + "\n";
-    strUsage += "  -anonymizekoreamount=<n>     " + strprintf(_("Keep N KORE anonymized (default: %u)"), 0) + "\n";
+    strUsage += "  -anonymizelibertaamount=<n>     " + strprintf(_("Keep N LBT anonymized (default: %u)"), 0) + "\n";
     strUsage += "  -liquidityprovider=<n>       " + strprintf(_("Provide liquidity to Darksend by infrequently mixing coins on a continual basis (0-100, default: %u, 1=very frequent, high fees, 100=very infrequent, low fees)"), 0) + "\n";
 
     strUsage += "\n" + _("SwiftTX options:") + "\n";
@@ -580,15 +578,15 @@ std::string HelpMessage(HelpMessageMode mode)
 std::string LicenseInfo()
 {
     // todo: remove urls from translations on next change
-    return FormatParagraph(strprintf(_("Copyright (C) 2009-%i The Kore Core Developers"), COPYRIGHT_YEAR)) + "\n" +
+    return FormatParagraph(strprintf(_("Copyright (C) 2009-%i The Liberta Core Developers"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
            FormatParagraph(strprintf(_("Copyright (C) 2014-%i The Dash Core Developers"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
            FormatParagraph(strprintf(_("Copyright (C) 2015-%i The PIVX Core Developers"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
-           FormatParagraph(strprintf(_("Copyright (C) 2010-%i Blockworkz Pvt Ltd"), COPYRIGHT_YEAR)) + "\n" +
+           FormatParagraph(strprintf(_("Copyright (C) 2010-%i Chainworkx Pvt Ltd"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
-           FormatParagraph(strprintf(_("Copyright (C) 2014-%i The KORE Core Developers"), COPYRIGHT_YEAR)) + "\n" +
+           FormatParagraph(strprintf(_("Copyright (C) 2014-%i The Liberta Core Developers"), COPYRIGHT_YEAR)) + "\n" +
            "\n" +
            FormatParagraph(_("This is experimental software.")) + "\n" +
            "\n" +
@@ -668,7 +666,7 @@ void CleanupBlockRevFiles()
 void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 {
     const CChainParams& chainparams = Params();
-    RenameThread("kore-loadblk");
+    RenameThread("liberta-loadblk");
     // -reindex
     if (fReindex) {
         CImportingNow imp;
@@ -725,7 +723,7 @@ void ThreadImport(std::vector<boost::filesystem::path> vImportFiles)
 }
 
 /** Sanity checks
- *  Ensure that Koreis running in a usable environment with all
+ *  Ensure that Liberta is running in a usable environment with all
  *  necessary library support.
  */
 bool InitSanityCheck(void)
@@ -821,12 +819,10 @@ void InitLogging()
     fLogIPs = GetBoolArg("-logips", DEFAULT_LOGIPS);
 
     LogPrintf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-    LogPrintf("Koreversion %s (%s)\n", FormatFullVersion(), CLIENT_DATE);
+    LogPrintf("Liberta version %s (%s)\n", FormatFullVersion(), CLIENT_DATE);
 }
 
-std::vector<std::string> onionseeds ={"jsfoupaz7kwoibq2.onion", "4aynkbwmoje6p27p.onion", "hxgchjn2dom3teev.onion", "hzvrfa5xa2qulysi.onion", "hggmh3vhkjebz4j5.onion", "gameldrtkm4u4ds2.onion", "k75pshpf226ra65s.onion", "zdwnbnrwty33uuev.onion", "l4meqo3zi74h7edw.onion", "k6a5ebhrkfxbwqvl.onion", "5j6hwetvycvjzdur.onion", "hvjjqjjajii2ycix.onion", "bqr7zsfgpztd4m4q.onion"};
-
-/** Initialize kore.
+/** Initialize liberta.
  *  @pre Parameters should be parsed and config file should be read.
  */
 bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
@@ -899,7 +895,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 		configfile.open(pathConfig.string().c_str(),fstream::out);
 		configfile<<"zapwallettxes=1"<<std::endl;
 		configfile<<"staking=1"<<std::endl;
-		for (auto a:onionseeds)
 		configfile<<"addnode="<< a <<std::endl;
 
 		configfile<<"txindex=1"<<std::endl;
@@ -1110,7 +1105,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 
     // Sanity check
     if (!InitSanityCheck())
-        return InitError(_("Initialization sanity check failed. Kore is shutting down."));
+        return InitError(_("Initialization sanity check failed. Liberta is shutting down."));
 
     std::string strDataDir = GetDataDir().string();
 #ifdef ENABLE_WALLET
@@ -1118,7 +1113,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     if (strWalletFile != boost::filesystem::basename(strWalletFile) + boost::filesystem::extension(strWalletFile))
         return InitError(strprintf(_("Wallet %s resides outside data directory %s"), strWalletFile, strDataDir));
 #endif
-    // Make sure only a single Koreprocess is using the data directory.
+    // Make sure only a single Liberta process is using the data directory.
     boost::filesystem::path pathLockFile = GetDataDir() / ".lock";
     FILE* file = fopen(pathLockFile.string().c_str(), "a"); // empty lock file; created if it doesn't exist.
     if (file) fclose(file);
@@ -1126,9 +1121,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     try {
         static boost::interprocess::file_lock lock(pathLockFile.string().c_str());
         if (!lock.try_lock())
-            return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Kore is probably already running."), strDataDir));
+            return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Liberta is probably already running."), strDataDir));
     } catch(const boost::interprocess::interprocess_exception& e) {
-        return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Kore is probably already running.") + " %s.", strDataDir, e.what()));
+        return InitError(strprintf(_("Cannot obtain a lock on data directory %s. Liberta is probably already running.") + " %s.", strDataDir, e.what()));
     }
 
 #ifndef WIN32
@@ -1305,14 +1300,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             if (!nets.count(net))
                 SetLimited(net);
         }
-    } else {
-        std::set<enum Network> nets;
-        nets.insert(NET_TOR);
-        for (int n = 0; n < NET_MAX; n++) {
-            enum Network net = (enum Network)n;
-            if (!nets.count(net))
-                SetLimited(net);
-        }
     }
 
     if (mapArgs.count("-whitelist")) {
@@ -1328,10 +1315,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     // -proxy sets a proxy for all outgoing network traffic
     // -noproxy (or -proxy=0) as well as the empty string can be used to not set a proxy, this is the default
     std::string proxyArg = GetArg("-proxy", "");
-    int proxyPort = 9050;
+    int proxyPort = 9080;
     if (proxyArg == "" || proxyArg == "0") {
         proxyArg = "127.0.0.1";
-        proxyPort = 9066;
+        proxyPort = 9055;
     }
     proxyType addrProxy = proxyType(CService(proxyArg, proxyPort), proxyRandomize);
     if (!addrProxy.IsValid())
@@ -1358,12 +1345,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             SetProxy(NET_TOR, addrOnion);
             SetReachable(NET_TOR);
         }
-    } else {
-        proxyType addrOnion = proxyType(CService("127.0.0.1", 9066), proxyRandomize);
-        if (!addrOnion.IsValid())
-            return InitError(strprintf(_("Invalid -onion address: '%s'"), "127.0.0.1"));
-        SetProxy(NET_TOR, addrOnion);
-        SetReachable(NET_TOR);
     }
 
     // see Step 2: parameter interactions for more information about these
@@ -1391,10 +1372,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             }
         }
         else {
-            CService addrBind;
-            if (!Lookup("127.0.0.1", addrBind, GetListenPort(), false))
-                return InitError(strprintf(_("Cannot resolve -bind address: '%s'"), "127.0.0.1"));
-            fBound |= Bind(addrBind, (BF_EXPLICIT | BF_REPORT_ERROR));
+            struct in_addr inaddr_any;
+            inaddr_any.s_addr = INADDR_ANY;
+            fBound |= Bind(CService(in6addr_any, GetListenPort()), BF_NONE);
+            fBound |= Bind(CService(inaddr_any, GetListenPort()), !fBound ? BF_REPORT_ERROR : BF_NONE);
         }
         if (!fBound)
             return InitError(_("Failed to listen on any port. Use -listen=0 if you want this."));
@@ -1411,15 +1392,6 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                 return InitError(strprintf(_("Cannot resolve -externalip address: '%s'"), strAddr));
             AddLocal(CService(strAddr, GetListenPort(), fNameLookup), LOCAL_MANUAL);
         }
-    } else {
-        string automatic_onion;
-        boost::filesystem::path const hostname_path = GetDataDir() / "onion" / "hostname";
-        if (!boost::filesystem::exists(hostname_path)) {
-            return InitError(_("No external address found."));
-        }
-        ifstream file(hostname_path.string().c_str());
-        file >> automatic_onion;
-        AddLocal(CService(automatic_onion, GetListenPort(), fNameLookup), LOCAL_MANUAL);
     }
 
     BOOST_FOREACH(const std::string& strDest, mapMultiArgs["-seednode"])
@@ -1664,10 +1636,10 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
                              " or address book entries might be missing or incorrect."));
             }
             else if (nLoadWalletRet == DB_TOO_NEW)
-                strErrors << _("Error loading wallet.dat: Wallet requires newer version of Kore") << "\n";
+                strErrors << _("Error loading wallet.dat: Wallet requires newer version of Liberta Core") << "\n";
             else if (nLoadWalletRet == DB_NEED_REWRITE)
             {
-                strErrors << _("Wallet needed to be rewritten: restart Kore to complete") << "\n";
+                strErrors << _("Wallet needed to be rewritten: restart Liberta Core to complete") << "\n";
                 LogPrintf("%s", strErrors.str());
                 return InitError(strErrors.str());
             }
@@ -1931,9 +1903,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
         nObfuscationRounds = 99999;
     }
 
-    nAnonymizeKoreAmount = GetArg("-anonymizekoreamount", 0);
-    if (nAnonymizeKoreAmount > 999999) nAnonymizeKoreAmount = 999999;
-    if (nAnonymizeKoreAmount < 2) nAnonymizeKoreAmount = 2;
+    nAnonymizeLibertaAmount = GetArg("-anonymizeLibertaamount", 0);
+    if (nAnonymizeLibertaAmount > 999999) nAnonymizeLibertaAmount = 999999;
+    if (nAnonymizeLibertaAmount < 2) nAnonymizeLibertaAmount = 2;
 
     fEnableSwiftTX = GetBoolArg("-enableswifttx", fEnableSwiftTX);
     nSwiftTXDepth = GetArg("-swifttxdepth", nSwiftTXDepth);
@@ -1948,7 +1920,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
     LogPrintf("fLiteMode %d\n", fLiteMode);
     LogPrintf("nSwiftTXDepth %d\n", nSwiftTXDepth);
     LogPrintf("Obfuscation rounds %d\n", nObfuscationRounds);
-    LogPrintf("Anonymize KORE Amount %d\n", nAnonymizeKoreAmount);
+    LogPrintf("Anonymize LBT Amount %d\n", nAnonymizeLibertaAmount);
     LogPrintf("Budget Mode %s\n", strBudgetMode.c_str());
 
     /* Denominations
@@ -1957,8 +1929,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
        is convertable to another.
 
        For example:
-       1KORE+1000 == (.1KORE+100)*10
-       10KORE+10000 == (1KORE+1000)*10
+       1LIBERTA+1000 == (.1LIBERTA+100)*10
+       10LIBERTA+10000 == (1LIBERTA+1000)*10
     */
     obfuScationDenominations.push_back((10000 * COIN) + 10000000);
     obfuScationDenominations.push_back((1000 * COIN) + 1000000);
@@ -2015,7 +1987,7 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 #ifdef ENABLE_WALLET
     // Mine proof-of-stake blocks in the background
     if (pwalletMain)
-        GenerateKores(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
+        GenerateLibertas(GetBoolArg("-gen", DEFAULT_GENERATE), GetArg("-genproclimit", DEFAULT_GENERATE_THREADS), chainparams);
     // Mine proof-of-stake blocks in the background
     if (!GetBoolArg("-staking", true))
         LogPrintf("Staking disabled\n");

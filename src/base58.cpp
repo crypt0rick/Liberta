@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 The Kore Core developers
+// Copyright (c) 2014-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -203,13 +203,13 @@ int CBase58Data::CompareTo(const CBase58Data& b58) const
 
 namespace
 {
-class CKoreAddressVisitor : public boost::static_visitor<bool>
+class CLibertaAddressVisitor : public boost::static_visitor<bool>
 {
 private:
-    CKoreAddress* addr;
+    CLibertaAddress* addr;
 
 public:
-    CKoreAddressVisitor(CKoreAddress* addrIn) : addr(addrIn) {}
+    CLibertaAddressVisitor(CLibertaAddress* addrIn) : addr(addrIn) {}
 
     bool operator()(const CKeyID& id) const { return addr->Set(id); }
     bool operator()(const CScriptID& id) const { return addr->Set(id); }
@@ -218,29 +218,29 @@ public:
 
 } // anon namespace
 
-bool CKoreAddress::Set(const CKeyID& id)
+bool CLibertaAddress::Set(const CKeyID& id)
 {
     SetData(Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS), &id, 20);
     return true;
 }
 
-bool CKoreAddress::Set(const CScriptID& id)
+bool CLibertaAddress::Set(const CScriptID& id)
 {
     SetData(Params().Base58Prefix(CChainParams::SCRIPT_ADDRESS), &id, 20);
     return true;
 }
 
-bool CKoreAddress::Set(const CTxDestination& dest)
+bool CLibertaAddress::Set(const CTxDestination& dest)
 {
-    return boost::apply_visitor(CKoreAddressVisitor(this), dest);
+    return boost::apply_visitor(CLibertaAddressVisitor(this), dest);
 }
 
-bool CKoreAddress::IsValid() const
+bool CLibertaAddress::IsValid() const
 {
     return IsValid(Params());
 }
 
-bool CKoreAddress::IsValid(const CChainParams& params) const
+bool CLibertaAddress::IsValid(const CChainParams& params) const
 {
     bool fCorrectSize = vchData.size() == 20;
     bool fKnownVersion = vchVersion == params.Base58Prefix(CChainParams::PUBKEY_ADDRESS) ||
@@ -248,7 +248,7 @@ bool CKoreAddress::IsValid(const CChainParams& params) const
     return fCorrectSize && fKnownVersion;
 }
 
-CTxDestination CKoreAddress::Get() const
+CTxDestination CLibertaAddress::Get() const
 {
     if (!IsValid())
         return CNoDestination();
@@ -262,7 +262,7 @@ CTxDestination CKoreAddress::Get() const
         return CNoDestination();
 }
 
-bool CKoreAddress::GetKeyID(CKeyID& keyID) const
+bool CLibertaAddress::GetKeyID(CKeyID& keyID) const
 {
     if (!IsValid() || vchVersion != Params().Base58Prefix(CChainParams::PUBKEY_ADDRESS))
         return false;
@@ -272,12 +272,12 @@ bool CKoreAddress::GetKeyID(CKeyID& keyID) const
     return true;
 }
 
-bool CKoreAddress::IsScript() const
+bool CLibertaAddress::IsScript() const
 {
     return IsValid() && vchVersion == Params().Base58Prefix(CChainParams::SCRIPT_ADDRESS);
 }
 
-void CKoreSecret::SetKey(const CKey& vchSecret)
+void CLibertaSecret::SetKey(const CKey& vchSecret)
 {
     assert(vchSecret.IsValid());
     SetData(Params().Base58Prefix(CChainParams::SECRET_KEY), vchSecret.begin(), vchSecret.size());
@@ -285,7 +285,7 @@ void CKoreSecret::SetKey(const CKey& vchSecret)
         vchData.push_back(1);
 }
 
-CKey CKoreSecret::GetKey()
+CKey CLibertaSecret::GetKey()
 {
     CKey ret;
     assert(vchData.size() >= 32);
@@ -293,19 +293,19 @@ CKey CKoreSecret::GetKey()
     return ret;
 }
 
-bool CKoreSecret::IsValid() const
+bool CLibertaSecret::IsValid() const
 {
     bool fExpectedFormat = vchData.size() == 32 || (vchData.size() == 33 && vchData[32] == 1);
     bool fCorrectVersion = vchVersion == Params().Base58Prefix(CChainParams::SECRET_KEY);
     return fExpectedFormat && fCorrectVersion;
 }
 
-bool CKoreSecret::SetString(const char* pszSecret)
+bool CLibertaSecret::SetString(const char* pszSecret)
 {
     return CBase58Data::SetString(pszSecret) && IsValid();
 }
 
-bool CKoreSecret::SetString(const std::string& strSecret)
+bool CLibertaSecret::SetString(const std::string& strSecret)
 {
     return SetString(strSecret.c_str());
 }

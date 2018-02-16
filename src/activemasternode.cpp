@@ -8,7 +8,7 @@
 #include "spork.h"
 
 //
-// Bootup the Masternode, look for a 500 KORE input and register on the network
+// Bootup the Masternode, look for a 500 LBT input and register on the network
 //
 void CActiveMasternode::ManageStatus()
 {
@@ -411,7 +411,7 @@ bool CActiveMasternode::GetVinFromOutput(COutput out, CTxIn& vin, CPubKey& pubke
 
     CTxDestination address1;
     ExtractDestination(pubScript, address1);
-    CKoreAddress address2(address1);
+    CLibertaAddress address2(address1);
 
     CKeyID keyID;
     if (!address2.GetKeyID(keyID)) {

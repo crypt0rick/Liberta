@@ -1,5 +1,5 @@
-Building Kore
+Building Liberta
 
-See doc/build-*.md for instructions on building kored,
+See doc/build-*.md for instructions on building libertad,
 the intended-for-services, no-graphical-interface, reference
-implementation of Kore.
+implementation of Liberta.

@@ -1,6 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2012 The Codex developers
-// Copyright (c) 2015-2017 The KORE developers
+// Copyright (c) 2015-2017 The Liberta developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -34,7 +33,7 @@ void SendMoney(const CTxDestination& address, CAmount nValue, CWalletTx& wtxNew,
         throw JSONRPCError(RPC_WALLET_ERROR, strError);
     }
 
-    // Parse Kore address
+    // Parse Liberta address
     CScript scriptPubKey = GetScriptForDestination(address);
 
     // Create and send the transaction
@@ -58,8 +57,8 @@ UniValue obfuscation(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() == 0)
         throw std::runtime_error(
-            "obfuscation <koreaddress> <amount>\n"
-            "koreaddress, reset, or auto (AutoDenominate)"
+            "obfuscation <libertaaddress> <amount>\n"
+            "libertaaddress, reset, or auto (AutoDenominate)"
             "<amount> is a real and will be rounded to the next 0.1" +
             HelpRequiringPassphrase());
 
@@ -80,14 +79,14 @@ UniValue obfuscation(const UniValue& params, bool fHelp)
 
     if (params.size() != 2)
         throw std::runtime_error(
-            "obfuscation <koreaddress> <amount>\n"
-            "koreaddress, denominate, or auto (AutoDenominate)"
+            "obfuscation <libertaaddress> <amount>\n"
+            "libertaaddress, denominate, or auto (AutoDenominate)"
             "<amount> is a real and will be rounded to the next 0.1" +
             HelpRequiringPassphrase());
 
-    CKoreAddress address(params[0].get_str());
+    CLibertaAddress address(params[0].get_str());
     if (!address.IsValid())
-        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Kore address");
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Liberta address");
 
     // Amount
     CAmount nAmount = AmountFromValue(params[1]);
@@ -143,7 +142,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
             "  genkey       - Generate new masternodeprivkey\n"
             "  enforce      - Enforce masternode payments\n"
             "  outputs      - Print masternode compatible outputs\n"
-            "  start        - Start masternode configured in kore.conf\n"
+            "  start        - Start masternode configured in liberta.conf\n"
             "  start-alias  - Start single masternode by assigned alias configured in masternode.conf\n"
             "  start-<mode> - Start masternodes configured in masternode.conf (<mode>: 'all', 'missing', 'disabled')\n"
             "  status       - Print masternode status information\n"
@@ -210,7 +209,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
             obj.push_back(Pair("IP:port", winner->addr.ToString()));
             obj.push_back(Pair("protocol", (int64_t)winner->protocolVersion));
             obj.push_back(Pair("vin", winner->vin.prevout.hash.ToString()));
-            obj.push_back(Pair("pubkey", CKoreAddress(winner->pubKeyCollateralAddress.GetID()).ToString()));
+            obj.push_back(Pair("pubkey", CLibertaAddress(winner->pubKeyCollateralAddress.GetID()).ToString()));
             obj.push_back(Pair("lastseen", (winner->lastPing == CMasternodePing()) ? winner->sigTime : (int64_t)winner->lastPing.sigTime));
             obj.push_back(Pair("activeseconds", (winner->lastPing == CMasternodePing()) ? 0 : (int64_t)(winner->lastPing.sigTime - winner->sigTime)));
             return obj;
@@ -387,7 +386,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
         CKey secret;
         secret.MakeNewKey(false);
 
-        return CKoreSecret(secret).ToString();
+        return CLibertaSecret(secret).ToString();
     }
 
     if (strCommand == "list-conf") {
@@ -435,7 +434,7 @@ UniValue masternode(const UniValue& params, bool fHelp)
 
         mnObj.push_back(Pair("vin", activeMasternode.vin.ToString()));
         mnObj.push_back(Pair("service", activeMasternode.service.ToString()));
-        if (pmn) mnObj.push_back(Pair("pubkey", CKoreAddress(pmn->pubKeyCollateralAddress.GetID()).ToString()));
+        if (pmn) mnObj.push_back(Pair("pubkey", CLibertaAddress(pmn->pubKeyCollateralAddress.GetID()).ToString()));
         mnObj.push_back(Pair("status", activeMasternode.GetStatus()));
         return mnObj;
     }
@@ -545,7 +544,7 @@ UniValue masternodelist(const UniValue& params, bool fHelp)
                 addrStream << std::setw(21) << strVin;
 
                 std::ostringstream stringStream;
-                stringStream << std::setw(9) << mn.Status() << " " << mn.protocolVersion << " " << CKoreAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " << std::setw(21) << mn.addr.ToString() << " " << (int64_t)mn.lastPing.sigTime << " " << std::setw(8) << (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << (int64_t)mn.GetLastPaid();
+                stringStream << std::setw(9) << mn.Status() << " " << mn.protocolVersion << " " << CLibertaAddress(mn.pubKeyCollateralAddress.GetID()).ToString() << " " << std::setw(21) << mn.addr.ToString() << " " << (int64_t)mn.lastPing.sigTime << " " << std::setw(8) << (int64_t)(mn.lastPing.sigTime - mn.sigTime) << " " << (int64_t)mn.GetLastPaid();
                 std::string output = stringStream.str();
                 stringStream << " " << strVin;
                 if (strFilter != "" && stringStream.str().find(strFilter) == std::string::npos &&
@@ -563,7 +562,7 @@ UniValue masternodelist(const UniValue& params, bool fHelp)
                     strVin.find(strFilter) == std::string::npos) continue;
                 obj.push_back(Pair(strVin, (int64_t)mn.protocolVersion));
             } else if (strMode == "pubkey") {
-                CKoreAddress address(mn.pubKeyCollateralAddress.GetID());
+                CLibertaAddress address(mn.pubKeyCollateralAddress.GetID());
 
                 if (strFilter != "" && address.ToString().find(strFilter) == std::string::npos &&
                     strVin.find(strFilter) == std::string::npos) continue;

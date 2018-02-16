@@ -1,5 +1,5 @@
 // Copyright (c) 2014-2015 The Dash Developers
-// Copyright (c) 2015-2017 The KORE developers
+// Copyright (c) 2015-2017 The Liberta developers
 // Distributed under the MIT/X11 software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -22,7 +22,7 @@ void budgetToJSON(CBudgetProposal* pbudgetProposal, UniValue& bObj)
 {
     CTxDestination address1;
     ExtractDestination(pbudgetProposal->GetPayee(), address1);
-    CKoreAddress address2(address1);
+    CLibertaAddress address2(address1);
 
     bObj.push_back(Pair("Name", pbudgetProposal->GetName()));
     bObj.push_back(Pair("URL", pbudgetProposal->GetURL()));
@@ -61,9 +61,9 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
             "\nAvailable commands:\n"
             "  prepare            - Prepare proposal for network by signing and creating tx\n"
             "  submit             - Submit proposal for network\n"
-            "  vote-many          - Vote on a Kore initiative\n"
-            "  vote-alias         - Vote on a Kore initiative\n"
-            "  vote               - Vote on a Kore initiative/budget\n"
+            "  vote-many          - Vote on a Liberta initiative\n"
+            "  vote-alias         - Vote on a Liberta initiative\n"
+            "  vote               - Vote on a Liberta initiative/budget\n"
             "  getvotes           - Show current masternode budgets\n"
             "  getinfo            - Show current masternode budgets\n"
             "  show               - Show all budgets\n"
@@ -87,7 +87,7 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
         mnEntries = masternodeConfig.getEntries();
 
         if (params.size() != 7)
-            throw runtime_error("Correct usage is 'mnbudget prepare proposal-name url payment_count block_start kore_address monthly_payment_kore'");
+            throw runtime_error("Correct usage is 'mnbudget prepare proposal-name url payment_count block_start liberta_address monthly_payment_liberta'");
 
         std::string strProposalName = params[1].get_str();
         if (strProposalName.size() > 20)
@@ -118,11 +118,11 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
         if (nBlockEnd < pindexPrev->nHeight)
             return "Invalid ending block, starting block + (payment_cycle*payments) must be more than current height.";
 
-        CKoreAddress address(params[5].get_str());
+        CLibertaAddress address(params[5].get_str());
         if (!address.IsValid())
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Kore address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Liberta address");
 
-        // Parse Kore address
+        // Parse Liberta address
         CScript scriptPubKey = GetScriptForDestination(address.Get());
         CAmount nAmount = AmountFromValue(params[6]);
 
@@ -163,7 +163,7 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
         mnEntries = masternodeConfig.getEntries();
 
         if (params.size() != 8)
-            throw runtime_error("Correct usage is 'mnbudget submit proposal-name url payment_count block_start kore_address monthly_payment_kore fee_tx'");
+            throw runtime_error("Correct usage is 'mnbudget submit proposal-name url payment_count block_start liberta_address monthly_payment_liberta fee_tx'");
 
         // Check these inputs the same way we check the vote commands:
         // **********************************************************
@@ -197,11 +197,11 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
         if (nBlockEnd < pindexPrev->nHeight)
             return "Invalid ending block, starting block + (payment_cycle*payments) must be more than current height.";
 
-        CKoreAddress address(params[5].get_str());
+        CLibertaAddress address(params[5].get_str());
         if (!address.IsValid())
-            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Kore address");
+            throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Invalid Liberta address");
 
-        // Parse Kore address
+        // Parse Liberta address
         CScript scriptPubKey = GetScriptForDestination(address.Get());
         CAmount nAmount = AmountFromValue(params[6]);
         uint256 hash = ParseHashV(params[7], "parameter 1");
@@ -368,7 +368,7 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
 
             CTxDestination address1;
             ExtractDestination(pbudgetProposal->GetPayee(), address1);
-            CKoreAddress address2(address1);
+            CLibertaAddress address2(address1);
 
             UniValue bObj(UniValue::VOBJ);
             bObj.push_back(Pair("URL", pbudgetProposal->GetURL()));
@@ -414,7 +414,7 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
 
             CTxDestination address1;
             ExtractDestination(pbudgetProposal->GetPayee(), address1);
-            CKoreAddress address2(address1);
+            CLibertaAddress address2(address1);
 
             UniValue bObj(UniValue::VOBJ);
             bObj.push_back(Pair("Name", pbudgetProposal->GetName()));
@@ -458,7 +458,7 @@ UniValue mnbudget(const UniValue& params, bool fHelp)
 
         CTxDestination address1;
         ExtractDestination(pbudgetProposal->GetPayee(), address1);
-        CKoreAddress address2(address1);
+        CLibertaAddress address2(address1);
 
         UniValue obj(UniValue::VOBJ);
         obj.push_back(Pair("Name", pbudgetProposal->GetName()));

@@ -1,5 +1,5 @@
 // Copyright (c) 2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The LibertaCore developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -106,7 +106,7 @@ UniValue getgenerate(const UniValue& params, bool fHelp)
         throw runtime_error(
             "getgenerate\n"
             "\nReturn if the server is set to generate coins or not. The default is false.\n"
-            "It is set with the command line argument -gen (or " + std::string(BITCOIN_CONF_FILENAME) + " setting gen)\n"
+            "It is set with the command line argument -gen (or " + std::string(LIBERTA_CONF_FILENAME) + " setting gen)\n"
             "It can also be set with the setgenerate call.\n"
             "\nResult\n"
             "true|false      (boolean) If the server is set to generate coins or not\n"
@@ -228,7 +228,7 @@ UniValue setgenerate(const UniValue& params, bool fHelp)
 
     mapArgs["-gen"] = (fGenerate ? "1" : "0");
     mapArgs ["-genproclimit"] = itostr(nGenProcLimit);
-    GenerateKores(fGenerate, nGenProcLimit, Params());
+    GenerateLibertas(fGenerate, nGenProcLimit, Params());
 
     return NullUniValue;
 }
@@ -312,10 +312,10 @@ UniValue checkkernel(const UniValue& params, bool fHelp)
     bool fCreateBlockTemplate = params.size() > 1 ? params[1].get_bool() : false;
 
     if (vNodes.empty())
-        throw JSONRPCError(-9, "Codex is not connected!");
+        throw JSONRPCError(-9, "Liberta is not connected!");
 
     if (IsInitialBlockDownload())
-        throw JSONRPCError(-10, "Codex is downloading blocks...");
+        throw JSONRPCError(-10, "Liberta is downloading blocks...");
 
     COutPoint kernel;
     CBlockIndex* pindexPrev = chainActive.Tip();
@@ -467,7 +467,7 @@ UniValue getmininginfo(const UniValue& params, bool fHelp)
 }
 
 
-// NOTE: Unlike wallet RPC (which use KORE values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
+// NOTE: Unlike wallet RPC (which use LIBERTA values), mining RPCs follow GBT (BIP 22) in using satoshi amounts
 UniValue prioritisetransaction(const UniValue& params, bool fHelp)
 {
     if (fHelp || params.size() != 3)
@@ -593,9 +593,7 @@ UniValue getwork(const UniValue& params, bool fHelp)
 		
         char pdata[128];
         
-        pblock->nBirthdayA = 0;
-        pblock->nBirthdayB = 0;
-
+       
                     arith_uint256 hashTarget = arith_uint256().SetCompact(pblock->nBits);
 		
 		memcpy( pdata, (char*)pblock, 88);
@@ -639,9 +637,7 @@ UniValue getwork(const UniValue& params, bool fHelp)
         if (fDebug)LogPrintf("Getwork Block Mappd %s\n", HexStr(BEGIN(*pblock), 88+BEGIN(*pblock)));
 
         pblock->nTime = pdata->nTime;
-        pblock->nNonce = pdata->nNonce;
-        pblock->nBirthdayA = pdata->nBirthdayA;
-        pblock->nBirthdayB = pdata->nBirthdayB;     
+        pblock->nNonce = pdata->nNonce; 
         pblock->hashMerkleRoot = BlockMerkleRoot(*pblock);
 
         if (fDebug)LogPrintf("Getwork Block Rebld %s\n", HexStr(BEGIN(*pblock), 88+BEGIN(*pblock)));
@@ -691,8 +687,8 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
             "\nIf the request parameters include a 'mode' key, that is used to explicitly select between the default 'template' request or a 'proposal'.\n"
             "It returns data needed to construct a block to work on.\n"
             "For full specification, see BIPs 22 and 9:\n"
-            "    https://github.com/kore/bips/blob/master/bip-0022.mediawiki\n"
-            "    https://github.com/kore/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
+            "    https://github.com/liberta/bips/blob/master/bip-0022.mediawiki\n"
+            "    https://github.com/liberta/bips/blob/master/bip-0009.mediawiki#getblocktemplate_changes\n"
 
             "\nArguments:\n"
             "1. \"jsonrequestobject\"       (string, optional) A json object in the following spec\n"
@@ -830,10 +826,10 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
         throw JSONRPCError(RPC_INVALID_PARAMETER, "Invalid mode");
 
     if (vNodes.empty())
-        throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Kore is not connected!");
+        throw JSONRPCError(RPC_CLIENT_NOT_CONNECTED, "Liberta is not connected!");
 
     if (IsInitialBlockDownload())
-        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Kore is downloading blocks...");
+        throw JSONRPCError(RPC_CLIENT_IN_INITIAL_DOWNLOAD, "Liberta is downloading blocks...");
 
     static unsigned int nTransactionsUpdatedLast;
 
@@ -1041,7 +1037,7 @@ UniValue getblocktemplate(const UniValue& params, bool fHelp)
     if (pblock->payee != CScript()) {
         CTxDestination address1;
         ExtractDestination(pblock->payee, address1);
-        CKoreAddress address2(address1);
+        CLibertaAddress address2(address1);
         result.push_back(Pair("payee", address2.ToString().c_str()));
         result.push_back(Pair("payee_amount", (int64_t)pblock->vtx[0].vout[1].nValue));
     } else {
@@ -1080,7 +1076,7 @@ UniValue submitblock(const UniValue& params, bool fHelp)
             "submitblock \"hexdata\" ( \"jsonparametersobject\" )\n"
             "\nAttempts to submit new block to network.\n"
             "The 'jsonparametersobject' parameter is currently ignored.\n"
-            "See https://en.kore.it/wiki/BIP_0022 for full specification.\n"
+            "See https://en.liberta.it/wiki/BIP_0022 for full specification.\n"
 
             "\nArguments\n"
             "1. \"hexdata\"    (string, required) the hex-encoded block data to submit\n"
@@ -1205,7 +1201,7 @@ UniValue estimatesmartfee(const UniValue& params, bool fHelp)
             "1. nblocks     (numeric)\n"
             "\nResult:\n"
             "{\n"
-            "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in KORE)\n"
+            "  \"feerate\" : x.x,     (numeric) estimate fee-per-kilobyte (in LBT)\n"
             "  \"blocks\" : n         (numeric) block number where estimate was found\n"
             "}\n"
             "\n"

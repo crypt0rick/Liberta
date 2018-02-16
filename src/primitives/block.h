@@ -1,10 +1,10 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
-// Copyright (c) 2009-2015 The KoreCore developers
+// Copyright (c) 2009-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
-#ifndef BITCOIN_PRIMITIVES_BLOCK_H
-#define BITCOIN_PRIMITIVES_BLOCK_H
+#ifndef LIBERTA_PRIMITIVES_BLOCK_H
+#define LIBERTA_PRIMITIVES_BLOCK_H
 
 #include "primitives/transaction.h"
 #include "serialize.h"
@@ -27,8 +27,6 @@ public:
     uint32_t nTime;
     uint32_t nBits;
     uint32_t nNonce;
-    uint32_t nBirthdayA;
-    uint32_t nBirthdayB;
 
     CBlockHeader()
     {
@@ -46,8 +44,6 @@ public:
         READWRITE(nTime);
         READWRITE(nBits);
         READWRITE(nNonce);
-        READWRITE(nBirthdayA);
-        READWRITE(nBirthdayB);
     }
 
     void SetNull()
@@ -58,21 +54,18 @@ public:
         nTime = 0;
         nBits = 0;
         nNonce = 0;
-        nBirthdayA = 0;
-		nBirthdayB = 0;
     }
 
     bool IsNull() const
     {
         return (nBits == 0);
     }
-    
+
     uint256 GetHash() const;
 	
     uint256 GetVerifiedHash() const;
 
-    uint256 CalculateBestBirthdayHash();
-
+   
     uint256 GetMidHash() const;
     int64_t GetBlockTime() const
     {
@@ -146,8 +139,6 @@ public:
         block.nTime          = nTime;
         block.nBits          = nBits;
         block.nNonce         = nNonce;
-		block.nBirthdayA     = nBirthdayA;
-        block.nBirthdayB     = nBirthdayB;         
         return block;
     }
 
@@ -190,4 +181,4 @@ struct CBlockLocator
     }
 };
 
-#endif // BITCOIN_PRIMITIVES_BLOCK_H
+#endif // LIBERTA_PRIMITIVES_BLOCK_H

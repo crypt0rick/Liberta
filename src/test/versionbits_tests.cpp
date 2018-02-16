@@ -1,11 +1,11 @@
-// Copyright (c) 2014-2015 The Kore Core developers
+// Copyright (c) 2014-2015 The Liberta Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "chain.h"
 #include "random.h"
 #include "versionbits.h"
-#include "test/test_kore.h"
+#include "test/test_liberta.h"
 #include "chainparams.h"
 #include "main.h"
 #include "consensus/params.h"

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-###   This script attempts to download the signature file SHA256SUMS.asc from kore.org
+###   This script attempts to download the signature file SHA256SUMS.asc from liberta.org
 ###   It first checks if the signature passes, and then downloads the files specified in
 ###   the file, and checks if the hashes of these files match those that are specified
 ###   in the signature file.
@@ -14,13 +14,13 @@ function clean_up {
    done
 }
 
-WORKINGDIR="/tmp/kore"
+WORKINGDIR="/tmp/liberta"
 TMPFILE="hashes.tmp"
 
 SIGNATUREFILENAME="SHA256SUMS.asc"
 RCSUBDIR="test/"
-BASEDIR="https://kore.org/bin/"
-VERSIONPREFIX="kore-core-"
+BASEDIR="https://liberta.org/bin/"
+VERSIONPREFIX="liberta-core-"
 RCVERSIONSTRING="rc"
 
 #this URL is used if a version number is not specified as an argument to the script
@@ -34,7 +34,7 @@ cd "$WORKINGDIR"
 
 #test if a version number has been passed as an argument
 if [ -n "$1" ]; then
-   #let's also check if the version number includes the prefix 'kore-',
+   #let's also check if the version number includes the prefix 'liberta-',
    #  and add this prefix if it doesn't
    if [[ $1 == "$VERSIONPREFIX"* ]]; then
       VERSION="$1"
@@ -82,7 +82,7 @@ if [ $RET -ne 0 ]; then
       echo "Bad signature."
    elif [ $RET -eq 2 ]; then
       #or if a gpg error has occurred
-      echo "gpg error. Do you have the Kore Core binary release signing key installed?"
+      echo "gpg error. Do you have the Liberta Core binary release signing key installed?"
    fi
 
    echo "gpg output:"

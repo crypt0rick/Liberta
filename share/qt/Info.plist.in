@@ -11,13 +11,13 @@
   </array>
 
   <key>CFBundleIconFile</key>
-  <string>kore.icns</string>
+  <string>liberta.icns</string>
 
   <key>CFBundlePackageType</key>
   <string>APPL</string>
 
   <key>CFBundleGetInfoString</key>
-  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@, Copyright © 2009-@COPYRIGHT_YEAR@ The Kore Core developers</string>
+  <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@, Copyright © 2009-@COPYRIGHT_YEAR@ The Liberta Core developers</string>
 
   <key>CFBundleShortVersionString</key>
   <string>@CLIENT_VERSION_MAJOR@.@CLIENT_VERSION_MINOR@.@CLIENT_VERSION_REVISION@</string>
@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Kore-Qt</string>
+  <string>Liberta-Qt</string>
   
   <key>CFBundleName</key>
-  <string>Kore-Qt</string>
+  <string>Liberta-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.korefoundation.Kore-Qt</string>
+  <string>org.libertafoundation.Liberta-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>
@@ -46,10 +46,10 @@
       <key>CFBundleTypeRole</key>
       <string>Editor</string>
       <key>CFBundleURLName</key>
-      <string>org.kore.KorePayment</string>
+      <string>org.liberta.LibertaPayment</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>kore</string>
+        <string>liberta</string>
       </array>
     </dict>
   </array>
@@ -58,9 +58,9 @@
   <array>
     <dict>
       <key>UTTypeIdentifier</key>
-      <string>org.kore.paymentrequest</string>
+      <string>org.liberta.paymentrequest</string>
       <key>UTTypeDescription</key>
-      <string>Kore payment request</string>
+      <string>Liberta payment request</string>
       <key>UTTypeConformsTo</key>
       <array>
         <string>public.data</string>
@@ -68,10 +68,10 @@
       <key>UTTypeTagSpecification</key>
       <dict>
         <key>public.mime-type</key>
-        <string>application/x-kore-payment-request</string>
+        <string>application/x-liberta-payment-request</string>
         <key>public.filename-extension</key>
         <array>
-          <string>korepaymentrequest</string>
+          <string>libertapaymentrequest</string>
         </array>
       </dict>
     </dict>
@@ -84,7 +84,7 @@
       <string>Editor</string>
       <key>LSItemContentTypes</key>
       <array>
-        <string>org.kore.paymentrequest</string>
+        <string>org.liberta.paymentrequest</string>
       </array>
       <key>LSHandlerRank</key>
       <string>Owner</string>

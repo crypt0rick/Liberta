@@ -592,8 +592,7 @@ void static LibertaMiner(const CChainParams& chainparams)
 
                 for(int i=0;i<1;i++){
                     pblock->nNonce=pblock->nNonce+1;
-                    testHash=pblock;
-                    nHashesDone++;
+		    nHashesDone++;
                     if (fDebug) LogPrintf("testHash %s\n", testHash.ToString().c_str());
                     if (fDebug) LogPrintf("Hash Target %s\n", hashTarget.ToString().c_str());
 

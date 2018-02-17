@@ -696,7 +696,7 @@ void tradingDialog::ActionsOnSwitch(int index = -1)
     case 6: // Show balance tab
         Response = GetBalance("BTC");
         if (Response.size() > 0 && Response != "Error") {
-            DisplayBalance(*ui->LibertaBalanceLabel, *ui->LibertaavailableLabel, *ui->LibertaPendingLabel, QString::fromUtf8("BTC"), Response);
+            DisplayBalance(*ui->LibertaBalanceLabel, *ui->LibertaAvailableLabel, *ui->LibertaPendingLabel, QString::fromUtf8("BTC"), Response);
         }
 
         Response = GetBalance("LBT");

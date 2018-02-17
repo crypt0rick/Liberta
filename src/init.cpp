@@ -895,7 +895,8 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
 		configfile.open(pathConfig.string().c_str(),fstream::out);
 		configfile<<"zapwallettxes=1"<<std::endl;
 		configfile<<"staking=1"<<std::endl;
-		configfile<<"addnode="<< a <<std::endl;
+		//for (auto a:seeds)
+		//configfile<<"addnode="<< a <<std::endl;
 
 		configfile<<"txindex=1"<<std::endl;
 		configfile<<"addrindex=1"<<std::endl;
@@ -1381,9 +1382,9 @@ bool AppInit2(boost::thread_group& threadGroup, CScheduler& scheduler)
             return InitError(_("Failed to listen on any port. Use -listen=0 if you want this."));
     }
 
-    coin_port_num = GetListenPort();
-    StartTor(threadGroup);
-    wait_initialized();
+ //   coin_port_num = GetListenPort();
+    //StartTor(threadGroup);
+   // wait_initialized();
 
     if (mapArgs.count("-externalip")) {
         BOOST_FOREACH(const std::string& strAddr, mapMultiArgs["-externalip"]) {

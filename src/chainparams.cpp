@@ -112,7 +112,7 @@ public:
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 227931;
         consensus.BIP34Hash = uint256S("0x000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8");
-        consensus.powLimit = uint256S("1fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.powLimit = uint256S("00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         consensus.posLimit = uint256S("0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         
         consensus.nTargetTimespan = 60;
@@ -146,11 +146,11 @@ public:
         nMaxTipAge = 24 * 60 * 60;
         nPruneAfterHeight = 100000;
 
-        genesis = CreateGenesisBlock(1515212226, 127, 0x2000ffff, 1, pow (7,2) * COIN);
+        genesis = CreateGenesisBlock(1515212226, 381, 0x2000ffff, 1, pow (7,2) * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
          //MineNewGenesisBlock();
-        assert(consensus.hashGenesisBlock == uint256S("0x008774d2d2da6d65511470a343bb1e7df64d772d66d6a8d928c3e46965dbe112"));
-        assert(genesis.hashMerkleRoot == uint256S("0x1d319a2f5c8261a40f8d1b804bb4c520273f5dea807cfaef97bd71ae943068f4"));
+        assert(consensus.hashGenesisBlock == uint256S("0x002376420891367ef13b31a59fe9769cffb4fff783b3e8ce6b67e2e1c8fce40b"));
+        assert(genesis.hashMerkleRoot == uint256S("0x6dc0d93788d72a9b37dfbb867143d5562dc06f171a5c9bae33df85163d64cfd5"));
          
         vSeeds.push_back(CDNSSeedData("liberta.sipa.be", "seed.liberta.sipa.be")); // Pieter Wuille
         vSeeds.push_back(CDNSSeedData("bluematt.me", "dnsseed.bluematt.me")); // Matt Corallo

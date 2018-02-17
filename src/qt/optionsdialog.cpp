@@ -225,7 +225,7 @@ void OptionsDialog::setMapper()
 
     /* Obfuscation Rounds */
     mapper->addMapping(ui->obfuscationRounds, OptionsModel::ObfuscationRounds);
-    mapper->addMapping(ui->anonymizeLiberta, OptionsModel::AnonymizeLibertaAmount);
+    mapper->addMapping(ui->anonymizeLBT, OptionsModel::AnonymizeLibertaAmount);
     mapper->addMapping(ui->showMasternodesTab, OptionsModel::ShowMasternodesTab);
 }
 

@@ -1,5 +1,5 @@
 ---
-name: "liberta-win-0.12"
+name: "liberta-win-0.1.0"
 enable_cache: true
 suites:
 - "trusty"
@@ -21,9 +21,9 @@ packages:
 - "zip"
 - "ca-certificates"
 - "python"
-reference_datetime: "2016-01-01 00:00:00"
+reference_datetime: "2018-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/liberta/liberta.git"
+- "url": "https://github.com/crypt0rick/liberta.git"
   "dir": "liberta"
 files: []
 script: |

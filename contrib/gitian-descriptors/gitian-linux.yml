@@ -18,9 +18,9 @@ packages:
 - "binutils-gold"
 - "ca-certificates"
 - "python"
-reference_datetime: "2016-01-01 00:00:00"
+reference_datetime: "2018-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/liberta/liberta.git"
+- "url": "https://github.com/crypt0rick/liberta.git"
   "dir": "liberta"
 files: []
 script: |

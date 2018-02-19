@@ -6,9 +6,9 @@ architectures:
 - "amd64"
 packages:
 - "faketime"
-reference_datetime: "2016-01-01 00:00:00"
+reference_datetime: "2018-01-01 00:00:00"
 remotes:
-- "url": "https://github.com/liberta/liberta-detached-sigs.git"
+- "url": "https://github.com/crypt0rick/liberta-detached-sigs.git"
   "dir": "signature"
 files:
 - "liberta-osx-unsigned.tar.gz"
